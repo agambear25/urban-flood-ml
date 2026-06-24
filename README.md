@@ -6,6 +6,8 @@ A **config-driven, multi-city** urban-flood susceptibility pipeline. One YAML pe
 floodml run delhi        # SAR flood mask → features → train → predict, one command
 ```
 
+> 🟢 **New to satellites / ML / this codebase?** Read [docs/how-it-works.md](docs/how-it-works.md) — a from-zero explainer that assumes no background.
+
 ![Multi-city susceptibility](docs/multicity_susceptibility.png)
 
 ---
