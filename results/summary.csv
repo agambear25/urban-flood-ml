@@ -1,0 +1,5 @@
+city,spatial_cv_auc,random_cv_auc,spatial_cv_std,n_samples
+delhi,0.918,0.972,0.024,80000
+chandigarh,0.850,0.898,0.041,80000
+mumbai,0.862,0.922,0.044,80000
+bengaluru,0.927,0.966,0.035,80000

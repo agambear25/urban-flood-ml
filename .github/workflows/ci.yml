@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Light deps only — tests run offline and never touch Earth Engine.
+      - run: pip install pydantic pyyaml numpy scipy pytest ruff
+      - run: pip install -e . --no-deps
+      - name: Lint
+        run: ruff check src tests
+      - name: Tests
+        run: pytest -q

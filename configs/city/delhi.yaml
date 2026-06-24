@@ -1,0 +1,15 @@
+name: Delhi
+slug: delhi
+ee_project: urban-flood-analysis-ncr-in
+bbox: [77.18, 28.50, 77.38, 28.78]   # Yamuna corridor through Delhi
+scale: 10
+sar:
+  pre_start: "2023-05-15"
+  pre_end:   "2023-06-30"
+  post_start: "2023-07-11"
+  post_end:   "2023-07-24"
+  orbit: DESCENDING
+threshold_db: -3.0
+perm_water_db: -18.0
+coastal: false
+notes: "Yamuna riverine + pluvial. Record July 2023 flood — the calibrated flagship."

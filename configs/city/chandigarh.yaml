@@ -1,0 +1,15 @@
+name: Chandigarh (tricity + Ghaggar)
+slug: chandigarh
+ee_project: urban-flood-analysis-ncr-in
+bbox: [76.65, 30.55, 76.95, 30.80]   # Chandigarh, Mohali, Dera Bassi / Ghaggar
+scale: 10
+sar:
+  pre_start: "2023-06-01"
+  pre_end:   "2023-06-30"
+  post_start: "2023-07-09"
+  post_end:   "2023-07-20"
+  orbit: DESCENDING
+threshold_db: -3.0
+perm_water_db: -18.0
+coastal: false
+notes: "Sukhna choe / Ghaggar overflow, July 2023. Well-drained planned city; flooding is mostly peri-urban."

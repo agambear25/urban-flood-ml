@@ -1,0 +1,15 @@
+name: Bengaluru
+slug: bengaluru
+ee_project: urban-flood-analysis-ncr-in
+bbox: [77.45, 12.85, 77.78, 13.14]   # tank-cascade + Bellandur / Outer Ring Road
+scale: 10
+sar:
+  pre_start: "2022-07-01"
+  pre_end:   "2022-08-15"
+  post_start: "2022-08-30"
+  post_end:   "2022-09-15"
+  orbit: DESCENDING
+threshold_db: -3.0
+perm_water_db: -18.0
+coastal: false
+notes: "Lake/tank cascade + stormwater-drain (rajakaluve) encroachment; Sept 2022 flooding. Pluvial/urban — SAR partial."

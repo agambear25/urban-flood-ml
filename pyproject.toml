@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "floodml"
+version = "0.1.0"
+description = "Config-driven, multi-city urban flood susceptibility ML pipeline (SAR + terrain + drainage)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  # Light deps installed by pip; the heavy geospatial stack comes from environment.yml (conda-forge).
+  "typer>=0.12",
+  "pydantic>=2.6",
+  "pyyaml>=6.0",
+  "mlflow>=2.12",
+]
+
+[project.scripts]
+floodml = "floodml.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,35 @@
+name: urban-flood-ml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  # scientific + geospatial
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib
+  - rasterio
+  - rioxarray
+  - xarray
+  - geopandas
+  - shapely
+  - pyproj
+  - osmnx
+  # earth engine
+  - earthengine-api
+  - geemap
+  # ML
+  - xgboost
+  - scikit-learn
+  - shap
+  # pipeline / MLOps
+  - typer
+  - pydantic
+  - pyyaml
+  - mlflow
+  - ruff
+  - pytest
+  - pip
+  - pip:
+      - geedim
+      - -e .
