@@ -2,6 +2,9 @@
 
 **A tool that maps flood risk across Indian cities using free satellite data** — so planners, emergency teams, and residents can see the most at-risk areas at a glance. Today it covers **Delhi, Mumbai, Bengaluru, and Chandigarh**, and it's built to scale to any city.
 
+### ▶️ [Try the live interactive map →](https://agambear25.github.io/urban-flood-ml/)
+Switch cities, drag the rainfall scenario, and **click any neighbourhood to see *why* it floods.**
+
 ![Flood risk maps for four cities](docs/multicity_susceptibility.png)
 
 ---
