@@ -112,6 +112,7 @@
         <span class="swatch" style="background:#7a0a0a;border-radius:50%"></span>chronic
         <span class="swatch" style="background:#e8731a;border-radius:50%"></span>recurring
       </div>
+      <div id="sparkline"></div>
       <div id="hslist"></div>
       <div class="note">A planning aid, not an official warning. River mode = floodplain inundation (satellite); street-waterlogging mode = known ponding spots + a sink/drainage model. Rainfall scenarios are illustrative.</div>
     </div>
@@ -152,7 +153,7 @@ async function loadCities(){
     document.querySelectorAll("#mode button").forEach(x=>x.classList.remove("on"));
     b.classList.add("on");state.mode=b.dataset.m;
     document.getElementById("rain-grp").style.opacity=state.mode==="waterlog"?.35:1;
-    refresh();});
+    refresh();resetPanel();});
   setCity("delhi");
 }
 
@@ -206,10 +207,24 @@ function refresh(){
 }
 
 function resetPanel(){
+  const wl=state.mode==="waterlog";
   document.getElementById("why-hint").style.display="";
   document.getElementById("loc-wrap").style.display="none";
-  renderWhy(state.data.top_drivers,"What drives flood risk across "+state.data.name);
-  document.getElementById("why-hint").textContent="Click anywhere on the map to see why that spot floods. Below: what drives risk city-wide.";
+  const drv=(wl&&state.data.wl_top_drivers)?state.data.wl_top_drivers:state.data.top_drivers;
+  renderWhy(drv,(wl?"What makes streets waterlog in ":"What drives flood risk across ")+state.data.name);
+  document.getElementById("why-hint").textContent=wl
+    ?"Click a spot or hotspot to see why it waterlogs. Below: what drives street ponding city-wide."
+    :"Click anywhere on the map to see why that spot floods. Below: what drives risk city-wide.";
+  renderSparkline();
+}
+
+function renderSparkline(){
+  const el=document.getElementById("sparkline"),f=state.data.frequency;
+  if(!f){el.innerHTML="";return;}
+  const max=Math.max(...f,1e-6),W=250,bw=W/12;
+  const bars=f.map((v,i)=>{const h=Math.max(2,v/max*34),mon=(i>=5&&i<=8);
+    return `<rect x="${i*bw+2}" y="${38-h}" width="${bw-3}" height="${h}" rx="1" fill="${mon?'#1c7ed6':'#cdd7e1'}"></rect>`;}).join("");
+  el.innerHTML=`<div style="font-size:12px;color:var(--muted);margin:12px 0 3px">Flood news by month — peaks every monsoon</div><svg width="${W}" height="40">${bars}</svg>`;
 }
 
 function renderWhy(factors,heading){
@@ -242,8 +257,11 @@ map.on("click",e=>{
     document.getElementById("why").innerHTML="";return;
   }
   document.getElementById("loc-name").textContent=`Selected spot (${e.latlng.lat.toFixed(3)}, ${e.latlng.lng.toFixed(3)})`;
-  const bd=document.getElementById("loc-badge");bd.textContent=cell.level+" risk";bd.style.background=BADGECOL[cell.level];
-  renderWhy(cell.why,"Why this spot is "+cell.level.toLowerCase()+" risk");
+  const wl=state.mode==="waterlog";
+  const lvl=(wl&&cell.wl_level)?cell.wl_level:cell.level;
+  const why=(wl&&cell.wl_why)?cell.wl_why:cell.why;
+  const bd=document.getElementById("loc-badge");bd.textContent=lvl+(wl?" waterlogging risk":" flood risk");bd.style.background=BADGECOL[lvl];
+  renderWhy(why,(wl?"Why this spot waterlogs — ":"Why this spot floods — ")+lvl.toLowerCase());
 });
 
 loadCities();
