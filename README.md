@@ -49,18 +49,21 @@ Config-driven, one command per stage:
 ```bash
 floodml run delhi   # SAR flood mask → fetch layers → features → train → predict
 ```
-- **Flood labels** — server-side Sentinel-1 GRD change detection in Google Earth Engine.
+- **Flood labels** — **multi-event** Sentinel-1 change detection: each city uses several real historical floods (e.g. Delhi 2019/2023/2025), combined into a frequency-weighted label so pixels that flooded repeatedly outweigh one-off noisy events.
 - **Features** — terrain (elevation, slope, HAND, curvature, local relief, sinks) + a uniform drainage backbone (MERIT-Hydro HAND/upstream-area + OSM drains → distance-to-drain, drainage density).
-- **Model** — per-city XGBoost, validated with **spatial block cross-validation** (the honest metric; random CV inflates ~0.05 via spatial leakage).
+- **Two models per city** — a **riverine** model (SAR flood labels) *and* an **urban-waterlogging** model (documented street-flood hotspots, positive-only PU learning). Both validated with **spatial block cross-validation**.
+- **Coverage** — each city covers the full metro + neighbouring districts (~1,400–2,800 km², run at 20 m).
 
-### Results (AUC)
+### Results (spatial-CV AUC)
 
-| City | Spatial-CV AUC | Random-CV AUC |
+| City | Riverine (multi-event) | Urban-waterlogging (PU) |
 |---|---|---|
-| Bengaluru | 0.927 | 0.966 |
-| Delhi | 0.918 | 0.972 |
-| Mumbai | 0.862 | 0.922 |
-| Chandigarh | 0.850 | 0.898 |
+| Delhi | 0.80 | 0.96 |
+| Chandigarh | 0.79 | 0.99 |
+| Bengaluru | 0.73 | 0.97 |
+| Mumbai | 0.70 | 0.97 |
+
+*The riverine AUCs are **lower** than earlier single-event numbers — honestly so: multi-event labels mix in pluvial events SAR barely sees, across much larger areas, which is a harder, more realistic task. The waterlogging model's top driver is `sink_depth` (local depressions/underpasses) in every city — the true urban-ponding mechanism, distinct from the riverine drivers. PU-AUCs are relative ranking, not calibrated probability.*
 
 ### Engineering
 - Installable `floodml` package (`src/`) with a **Typer CLI** and **Pydantic** per-city configs.

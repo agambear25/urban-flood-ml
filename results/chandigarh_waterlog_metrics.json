@@ -1,0 +1,20 @@
+{
+  "city": "chandigarh",
+  "spatial_cv_auc_pu": 0.9860878078204237,
+  "cv_kind": "spatial",
+  "n_positives": 1303,
+  "n_negatives": 3909,
+  "importance": {
+    "elevation": 0.016172369942069054,
+    "slope": 0.016924237832427025,
+    "curvature": 0.015340433456003666,
+    "local_relief": 0.03987707570195198,
+    "hand": 0.0719807967543602,
+    "dist_river": 0.050915274769067764,
+    "builtup": 0.043153226375579834,
+    "dist_drain": 0.023664919659495354,
+    "drain_density": 0.0,
+    "upstream_area": 0.00519174337387085,
+    "sink_depth": 0.7167799472808838
+  }
+}

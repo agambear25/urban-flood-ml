@@ -1,21 +1,21 @@
 {
   "city": "chandigarh",
-  "random_cv_auc": 0.7888922125000001,
-  "spatial_cv_auc": 0.7688796855380435,
-  "spatial_cv_std": 0.03807795299265029,
+  "random_cv_auc": 0.8150887140625,
+  "spatial_cv_auc": 0.791458785687643,
+  "spatial_cv_std": 0.02004729926707343,
   "n_samples": 80000,
   "model_path": "models/chandigarh_model.json",
   "importance": {
-    "elevation": 0.265735000371933,
-    "slope": 0.16092079877853394,
-    "curvature": 0.021376345306634903,
-    "local_relief": 0.09996365010738373,
-    "hand": 0.019944466650485992,
-    "dist_river": 0.020764127373695374,
-    "builtup": 0.3271472752094269,
-    "dist_drain": 0.021687250584363937,
-    "drain_density": 0.018040234223008156,
-    "upstream_area": 0.019270021468400955,
-    "sink_depth": 0.025150839239358902
+    "elevation": 0.24030208587646484,
+    "slope": 0.31042608618736267,
+    "curvature": 0.025440048426389694,
+    "local_relief": 0.1153809204697609,
+    "hand": 0.036230526864528656,
+    "dist_river": 0.02207132987678051,
+    "builtup": 0.16475263237953186,
+    "dist_drain": 0.022218292579054832,
+    "drain_density": 0.02068033441901207,
+    "upstream_area": 0.02046915888786316,
+    "sink_depth": 0.022028541192412376
   }
 }

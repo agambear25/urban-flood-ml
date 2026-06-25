@@ -1,0 +1,20 @@
+{
+  "city": "bengaluru",
+  "spatial_cv_auc_pu": 0.9725791208831488,
+  "cv_kind": "spatial",
+  "n_positives": 4346,
+  "n_negatives": 13038,
+  "importance": {
+    "elevation": 0.028833426535129547,
+    "slope": 0.006760482210665941,
+    "curvature": 0.020352423191070557,
+    "local_relief": 0.08232977986335754,
+    "hand": 0.02563011273741722,
+    "dist_river": 0.020783299580216408,
+    "builtup": 0.16323022544384003,
+    "dist_drain": 0.01424345001578331,
+    "drain_density": 0.026510443538427353,
+    "upstream_area": 0.010876644402742386,
+    "sink_depth": 0.6004497408866882
+  }
+}

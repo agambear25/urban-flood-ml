@@ -1,21 +1,21 @@
 {
   "city": "delhi",
-  "random_cv_auc": 0.8895222765625,
-  "spatial_cv_auc": 0.8300825974523747,
-  "spatial_cv_std": 0.05607939508906922,
+  "random_cv_auc": 0.8344552671875001,
+  "spatial_cv_auc": 0.7971755984185205,
+  "spatial_cv_std": 0.04199558901428974,
   "n_samples": 80000,
   "model_path": "models/delhi_model.json",
   "importance": {
-    "elevation": 0.22900475561618805,
-    "slope": 0.0756036639213562,
-    "curvature": 0.010502427816390991,
-    "local_relief": 0.09255953878164291,
-    "hand": 0.015170871280133724,
-    "dist_river": 0.08891469240188599,
-    "builtup": 0.41379934549331665,
-    "dist_drain": 0.02167575992643833,
-    "drain_density": 0.01489125657826662,
-    "upstream_area": 0.012321813963353634,
-    "sink_depth": 0.02555582858622074
+    "elevation": 0.19474631547927856,
+    "slope": 0.05771851912140846,
+    "curvature": 0.01316109485924244,
+    "local_relief": 0.1611505150794983,
+    "hand": 0.020698033273220062,
+    "dist_river": 0.10078983753919601,
+    "builtup": 0.34936296939849854,
+    "dist_drain": 0.027945363894104958,
+    "drain_density": 0.03168231248855591,
+    "upstream_area": 0.017853833734989166,
+    "sink_depth": 0.02489117719233036
   }
 }

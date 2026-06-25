@@ -1,0 +1,20 @@
+{
+  "city": "delhi",
+  "spatial_cv_auc_pu": 0.9601204166133016,
+  "cv_kind": "spatial",
+  "n_positives": 7815,
+  "n_negatives": 23445,
+  "importance": {
+    "elevation": 0.022100618109107018,
+    "slope": 0.007464033551514149,
+    "curvature": 0.026067353785037994,
+    "local_relief": 0.03335682675242424,
+    "hand": 0.017125260084867477,
+    "dist_river": 0.029299503192305565,
+    "builtup": 0.18946526944637299,
+    "dist_drain": 0.01629691570997238,
+    "drain_density": 0.012507302686572075,
+    "upstream_area": 0.016627788543701172,
+    "sink_depth": 0.62968909740448
+  }
+}

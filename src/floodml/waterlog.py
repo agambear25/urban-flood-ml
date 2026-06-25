@@ -77,8 +77,17 @@ def train_waterlog(cfg: CityConfig, data_dir: str | Path, model_dir: str | Path,
                                  random_state=seed, scale_pos_weight=spw)
 
     nfold = min(5, len(set(groups)))
-    spat = [roc_auc_score(y[te], mk().fit(X[tr], y[tr]).predict_proba(X[te])[:, 1])
-            for tr, te in GroupKFold(nfold).split(X, y, groups)]
+    spat = []
+    for tr, te in GroupKFold(nfold).split(X, y, groups):
+        if len(np.unique(y[te])) < 2:
+            continue  # single-class fold (clustered hotspots) -> can't score
+        spat.append(roc_auc_score(y[te], mk().fit(X[tr], y[tr]).predict_proba(X[te])[:, 1]))
+    cv_kind = "spatial"
+    if not spat:  # hotspots too clustered for block CV -> random-CV fallback
+        from sklearn.model_selection import StratifiedKFold
+        spat = [roc_auc_score(y[te], mk().fit(X[tr], y[tr]).predict_proba(X[te])[:, 1])
+                for tr, te in StratifiedKFold(5, shuffle=True, random_state=seed).split(X, y)]
+        cv_kind = "random"
 
     model = mk().fit(X, y)
     model_dir.mkdir(parents=True, exist_ok=True)
@@ -98,7 +107,7 @@ def train_waterlog(cfg: CityConfig, data_dir: str | Path, model_dir: str | Path,
         dst.write(susc, 1)
 
     importance = {f: float(v) for f, v in zip(FEATURES, model.feature_importances_, strict=False)}
-    metrics = {"city": cfg.slug, "spatial_cv_auc_pu": float(np.mean(spat)),
+    metrics = {"city": cfg.slug, "spatial_cv_auc_pu": float(np.mean(spat)), "cv_kind": cv_kind,
                "n_positives": npos, "n_negatives": int(len(neg_idx)), "importance": importance}
 
     if tracking_uri:

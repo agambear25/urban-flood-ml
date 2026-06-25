@@ -1,0 +1,20 @@
+{
+  "city": "mumbai",
+  "spatial_cv_auc_pu": 0.9734080003181586,
+  "cv_kind": "spatial",
+  "n_positives": 3906,
+  "n_negatives": 11718,
+  "importance": {
+    "elevation": 0.018480876460671425,
+    "slope": 0.004984196275472641,
+    "curvature": 0.01115425955504179,
+    "local_relief": 0.08806566894054413,
+    "hand": 0.08971529453992844,
+    "dist_river": 0.019557854160666466,
+    "builtup": 0.08537057787179947,
+    "dist_drain": 0.014610729180276394,
+    "drain_density": 0.01480997446924448,
+    "upstream_area": 0.016345558688044548,
+    "sink_depth": 0.6369050145149231
+  }
+}
