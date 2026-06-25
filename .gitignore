@@ -22,3 +22,6 @@ dist/
 # OS / EE
 .DS_Store
 *.credentials
+
+# scratch notebooks
+Untitled*.ipynb
