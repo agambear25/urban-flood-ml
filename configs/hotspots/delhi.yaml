@@ -1,0 +1,61 @@
+hotspots:
+- name: Minto Bridge underpass, New Delhi
+  tier: chronic
+- name: Pul Prahladpur underpass, Delhi
+  tier: chronic
+- name: Azad Market underpass, Delhi
+  tier: chronic
+- name: Moolchand underpass, Delhi
+  tier: chronic
+- name: Zakhira underpass, Delhi
+  tier: chronic
+- name: Pragati Maidan, Delhi
+  tier: chronic
+- name: ITO junction, Delhi
+  tier: recurring
+- name: Sarai Kale Khan, Delhi
+  tier: recurring
+- name: Mathura Road, Delhi
+  tier: recurring
+- name: Mukarba Chowk, Delhi
+  tier: recurring
+- name: Azadpur, Delhi
+  tier: recurring
+- name: Dhaula Kuan, Delhi
+  tier: recurring
+- name: Karol Bagh, Delhi
+  tier: recurring
+- name: Najafgarh, Delhi
+  tier: recurring
+- name: Okhla underpass, Delhi
+  tier: recurring
+- name: Sangam Vihar, Delhi
+  tier: recurring
+- name: Khanpur, Delhi
+  tier: recurring
+- name: Sarita Vihar underpass, Delhi
+  tier: recurring
+- name: Narsinghpur, Gurugram
+  tier: chronic
+- name: Hero Honda Chowk, Gurugram
+  tier: chronic
+- name: Subhash Chowk, Gurugram
+  tier: recurring
+- name: Rajiv Chowk, Gurugram
+  tier: recurring
+- name: Golf Course Road, Gurugram
+  tier: recurring
+- name: Signature Tower Chowk underpass, Gurugram
+  tier: recurring
+- name: NH-9 Lalkuan, Ghaziabad
+  tier: chronic
+- name: GT Road Vijay Nagar, Ghaziabad
+  tier: recurring
+- name: Gaushala underpass, Ghaziabad
+  tier: recurring
+- name: Hindon River floodplain, Ghaziabad
+  tier: recurring
+- name: Indirapuram, Ghaziabad
+  tier: recurring
+- name: DLF Phase 3 underpass, Noida-Gurugram border
+  tier: recurring

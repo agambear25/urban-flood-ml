@@ -1,15 +1,47 @@
-name: Chandigarh (tricity + Ghaggar)
+name: Chandigarh
 slug: chandigarh
 ee_project: urban-flood-analysis-ncr-in
-bbox: [76.65, 30.55, 76.95, 30.80]   # Chandigarh, Mohali, Dera Bassi / Ghaggar
-scale: 10
-sar:
-  pre_start: "2023-06-01"
-  pre_end:   "2023-06-30"
-  post_start: "2023-07-09"
-  post_end:   "2023-07-20"
-  orbit: DESCENDING
+bbox:
+- 76.58
+- 30.55
+- 77.02
+- 30.85
+scale: 20
+coastal: false
 threshold_db: -3.0
 perm_water_db: -18.0
-coastal: false
-notes: "Sukhna choe / Ghaggar overflow, July 2023. Well-drained planned city; flooding is mostly peri-urban."
+events:
+- name: 2018 lake/pluvial
+  mechanism: lake/pluvi
+  pre_start: '2018-09-01'
+  pre_end: '2018-09-15'
+  post_start: '2018-09-23'
+  post_end: '2018-09-30'
+  orbit: DESCENDING
+  weight: 0.8
+- name: 2020 lake/pluvial
+  mechanism: lake/pluvi
+  pre_start: '2020-08-01'
+  pre_end: '2020-08-14'
+  post_start: '2020-08-19'
+  post_end: '2020-08-28'
+  orbit: DESCENDING
+  weight: 0.8
+- name: 2023 riverine/pluvial
+  mechanism: riverine/p
+  pre_start: '2023-06-25'
+  pre_end: '2023-07-05'
+  post_start: '2023-07-09'
+  post_end: '2023-07-16'
+  orbit: DESCENDING
+  weight: 1.0
+- name: 2025 riverine/lake/pluv
+  mechanism: riverine/l
+  pre_start: '2025-07-20'
+  pre_end: '2025-08-04'
+  post_start: '2025-08-28'
+  post_end: '2025-09-08'
+  orbit: DESCENDING
+  weight: 1.0
+notes: Expanded to metro+neighbours (~1430 km2). 4 flood events (multi-temporal SAR
+  labels).

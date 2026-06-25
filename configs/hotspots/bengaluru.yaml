@@ -1,0 +1,41 @@
+hotspots:
+- name: Silk Board Junction, Bengaluru
+  tier: chronic
+- name: KR Circle, Bengaluru
+  tier: chronic
+- name: Hebbal Flyover, Bengaluru
+  tier: chronic
+- name: Bellandur-Iblur Junction, Outer Ring Road, Bengaluru
+  tier: chronic
+- name: Wipro Junction, Sarjapur Road, Bengaluru
+  tier: chronic
+- name: Hulimavu Lake Junction, Bannerghatta Road, Bengaluru
+  tier: recurring
+- name: Sony World Junction, Koramangala, Bengaluru
+  tier: recurring
+- name: HSR Layout 14th Main Road, Bengaluru
+  tier: recurring
+- name: HSR Layout 5th Main Road, Bengaluru
+  tier: recurring
+- name: Madiwala Ayyappa Junction, Bengaluru
+  tier: recurring
+- name: Roopena Agrahara, Hosur Road, Bengaluru
+  tier: recurring
+- name: Sagar Junction to Sagar Hospital Road, Bengaluru
+  tier: recurring
+- name: Shri Rangam Junction, Bengaluru
+  tier: recurring
+- name: NICE Junction, Bannerghatta Main Road, Bengaluru
+  tier: recurring
+- name: Jayadeva Underpass, Bengaluru
+  tier: chronic
+- name: Marathahalli, Outer Ring Road, Bengaluru
+  tier: chronic
+- name: Wind Tunnel Road, Murugeshpalya, Bengaluru
+  tier: recurring
+- name: Kundalahalli, Whitefield, Bengaluru
+  tier: recurring
+- name: Thubarahalli, Whitefield, Bengaluru
+  tier: recurring
+- name: Yelahanka, Sir MV Road, Bengaluru
+  tier: recurring

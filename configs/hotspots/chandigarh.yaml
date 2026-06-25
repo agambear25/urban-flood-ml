@@ -1,0 +1,33 @@
+hotspots:
+- name: Sector 48 open-air theatre area, Chandigarh
+  tier: chronic
+- name: Bapudham Colony, Sector 26, Chandigarh
+  tier: chronic
+- name: Sector 26 Fruit and Vegetable Market (Grain Market), Chandigarh
+  tier: recurring
+- name: Tribune Chowk, Chandigarh
+  tier: recurring
+- name: Dhanas - Panjab University road, Chandigarh
+  tier: recurring
+- name: Dadu Majra - Maloya stretch, Chandigarh
+  tier: recurring
+- name: Industrial Area Phase 1, Chandigarh
+  tier: recurring
+- name: Sector 17/22 roundabout, Chandigarh
+  tier: recurring
+- name: Sector 19 underpass, Panchkula
+  tier: chronic
+- name: Sector 20 market (GH-33), Panchkula
+  tier: chronic
+- name: Tawa Chowk, Panchkula
+  tier: recurring
+- name: Abhaypur, Panchkula
+  tier: recurring
+- name: Baltana bridge over Sukhna Choe, Zirakpur
+  tier: chronic
+- name: Mubarikpur causeway, Dera Bassi
+  tier: chronic
+- name: VIP Road, Zirakpur
+  tier: recurring
+- name: Patiala Ki Rao choe low-lying areas, Chandigarh
+  tier: recurring

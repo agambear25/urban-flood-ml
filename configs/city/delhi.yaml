@@ -1,15 +1,47 @@
 name: Delhi
 slug: delhi
 ee_project: urban-flood-analysis-ncr-in
-bbox: [76.84, 28.40, 77.35, 28.88]   # full Delhi NCT
-scale: 10
-sar:
-  pre_start: "2023-05-15"
-  pre_end:   "2023-06-30"
-  post_start: "2023-07-11"
-  post_end:   "2023-07-24"
-  orbit: DESCENDING
+bbox:
+- 76.95
+- 28.37
+- 77.48
+- 28.86
+scale: 20
+coastal: false
 threshold_db: -3.0
 perm_water_db: -18.0
-coastal: false
-notes: "Yamuna riverine + pluvial. Record July 2023 flood — the calibrated flagship."
+events:
+- name: 2023 riverine
+  mechanism: riverine
+  pre_start: '2023-05-15'
+  pre_end: '2023-06-30'
+  post_start: '2023-07-11'
+  post_end: '2023-07-24'
+  orbit: DESCENDING
+  weight: 1.0
+- name: 2025 riverine
+  mechanism: riverine
+  pre_start: '2025-07-15'
+  pre_end: '2025-08-15'
+  post_start: '2025-09-02'
+  post_end: '2025-09-09'
+  orbit: DESCENDING
+  weight: 1.0
+- name: 2019 riverine
+  mechanism: riverine
+  pre_start: '2019-06-20'
+  pre_end: '2019-07-31'
+  post_start: '2019-08-17'
+  post_end: '2019-08-26'
+  orbit: DESCENDING
+  weight: 1.0
+- name: 2024 pluvial
+  mechanism: pluvial
+  pre_start: '2024-05-20'
+  pre_end: '2024-06-20'
+  post_start: '2024-06-28'
+  post_end: '2024-07-06'
+  orbit: DESCENDING
+  weight: 0.3
+notes: Expanded to metro+neighbours (~2825 km2). 4 flood events (multi-temporal SAR
+  labels).

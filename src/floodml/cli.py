@@ -39,7 +39,9 @@ def flood_mask(city: str):
     cfg = load_city(city, CONFIGS)
     gee.init_ee(cfg.ee_project)
     p, counts = gee.build_flood_mask(cfg, _data_dir(city) / "flood_mask.tif")
-    typer.echo(f"[{city}] flood mask -> {p}  (S1 images: pre={counts['pre']} post={counts['post']})")
+    typer.echo(f"[{city}] flood mask ({len(counts)} events) -> {p}")
+    for name, c in counts.items():
+        typer.echo(f"    {name}: S1 images pre={c['pre']} post={c['post']}")
 
 
 @app.command()
@@ -75,6 +77,18 @@ def predict(city: str):
     """Predict the susceptibility surface for all pixels."""
     p = prd.predict_city(_data_dir(city), MODELS / f"{city}_model.json")
     typer.echo(f"[{city}] susceptibility -> {p}")
+
+
+@app.command("train-waterlog")
+def train_waterlog_cmd(city: str):
+    """Train the urban-waterlogging (documented-hotspot) model — positive-only PU learning."""
+    from . import waterlog
+    cfg = load_city(city, CONFIGS)
+    res = waterlog.train_waterlog(cfg, _data_dir(city), MODELS)
+    RESULTS.mkdir(exist_ok=True)
+    (RESULTS / f"{city}_waterlog_metrics.json").write_text(json.dumps(res, indent=2))
+    typer.echo(f"[{city}] waterlog PU spatial-AUC {res['spatial_cv_auc_pu']:.3f} "
+               f"({res['n_positives']} hotspot px, {res['n_negatives']} pseudo-neg)")
 
 
 @app.command()

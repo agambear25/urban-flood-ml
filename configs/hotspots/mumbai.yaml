@@ -1,0 +1,33 @@
+hotspots:
+- name: Hindmata junction, Dadar, Mumbai
+  tier: chronic
+- name: Milan Subway, Santacruz, Mumbai
+  tier: chronic
+- name: Andheri Subway, Mumbai
+  tier: chronic
+- name: Malad Subway, Mumbai
+  tier: chronic
+- name: Sion Subway, Mumbai
+  tier: chronic
+- name: King's Circle / Gandhi Market, Matunga, Mumbai
+  tier: chronic
+- name: Kurla LBS Marg, Mumbai
+  tier: chronic
+- name: Chunabhatti, Mumbai
+  tier: chronic
+- name: Bandra Kurla Complex (BKC), Mumbai
+  tier: recurring
+- name: Sion Gandhi Market, Mumbai
+  tier: chronic
+- name: Goregaon Subway, Mumbai
+  tier: recurring
+- name: Kurar, Malad East, Mumbai
+  tier: recurring
+- name: Postal Colony, Chembur, Mumbai
+  tier: recurring
+- name: Worli Naka, Mumbai
+  tier: recurring
+- name: Byculla, Mumbai
+  tier: recurring
+- name: Parel TT junction, Mumbai
+  tier: recurring

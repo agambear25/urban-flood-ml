@@ -8,13 +8,16 @@ from pydantic import BaseModel, Field
 
 
 class SARWindows(BaseModel):
-    """Date windows for the pre-flood and post-flood Sentinel-1 composites."""
+    """One flood event: pre-flood (dry) and post-flood (during) Sentinel-1 windows."""
 
+    name: str = "event"
+    mechanism: str = ""               # riverine | pluvial | coastal | lake
     pre_start: str
     pre_end: str
     post_start: str
     post_end: str
-    orbit: str = "DESCENDING"  # ASCENDING | DESCENDING
+    orbit: str = "DESCENDING"         # ASCENDING | DESCENDING
+    weight: float = 1.0               # label reliability (riverine/lake ~1.0, weak pluvial ~0.3)
 
 
 class CityConfig(BaseModel):
@@ -22,8 +25,8 @@ class CityConfig(BaseModel):
     slug: str
     ee_project: str
     bbox: list[float] = Field(..., description="[west, south, east, north] in EPSG:4326")
-    scale: int = 10  # metres
-    sar: SARWindows
+    scale: int = 10  # metres (use 20 for big AOIs to keep RAM in check)
+    events: list[SARWindows]          # one or more flood events -> multi-event label
     threshold_db: float = -3.0   # backscatter drop that counts as flood
     perm_water_db: float = -18.0  # pixels already this dark before = permanent water
     coastal: bool = False  # mask the sea for coastal cities (Mumbai)

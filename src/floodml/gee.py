@@ -9,6 +9,8 @@ from pathlib import Path
 
 import ee
 import geemap
+import numpy as np
+import rasterio
 
 from .config import CityConfig
 
@@ -45,26 +47,55 @@ def _s1_composite(region, start, end, orbit):
     return col, col.median()
 
 
-def build_flood_mask(cfg: CityConfig, out: Path) -> tuple[Path, dict]:
-    """Server-side Sentinel-1 change detection -> binary flood mask GeoTIFF."""
-    region = aoi(cfg)
-    pre_col, pre = _s1_composite(region, cfg.sar.pre_start, cfg.sar.pre_end, cfg.sar.orbit)
-    post_col, post = _s1_composite(region, cfg.sar.post_start, cfg.sar.post_end, cfg.sar.orbit)
-    counts = {"pre": pre_col.size().getInfo(), "post": post_col.size().getInfo()}
-
-    # light speckle smoothing, then dB change
+def _event_flood(cfg: CityConfig, region, w):
+    """Binary flood image for ONE event (server-side change detection)."""
+    pre_col, pre = _s1_composite(region, w.pre_start, w.pre_end, w.orbit)
+    post_col, post = _s1_composite(region, w.post_start, w.post_end, w.orbit)
     pre_f = pre.focal_median(40, "circle", "meters")
     post_f = post.focal_median(40, "circle", "meters")
     diff = post_f.subtract(pre_f)
-
     flood = diff.lt(cfg.threshold_db)
-    # drop permanent water (JRC) and anything already dark (river channel / sea)
+    # drop permanent (and, for coastal cities, tidal) water + anything already dark
     jrc = ee.Image("JRC/GSW1_4/GlobalSurfaceWater").select("occurrence").unmask(0)
-    flood = flood.And(jrc.gt(50).Not()).And(pre_f.gt(cfg.perm_water_db))
-    flood = flood.rename("flood").toByte().clip(region)
+    perm_cut = 20 if cfg.coastal else 50
+    flood = flood.And(jrc.gt(perm_cut).Not()).And(pre_f.gt(cfg.perm_water_db))
+    return flood.unmask(0), {"pre": pre_col.size().getInfo(), "post": post_col.size().getInfo()}
 
-    _download(flood, out, cfg)
-    return out, counts
+
+def build_flood_mask(cfg: CityConfig, out: Path) -> tuple[Path, dict]:
+    """Multi-event Sentinel-1 change detection.
+
+    Writes two GeoTIFFs: `flood_mask` (flooded in ANY event, 1/0) and `flood_count`
+    (frequency-weighted event count) used as training sample weights.
+    """
+    region = aoi(cfg)
+    per_event = {}
+    arrays, weights, prof = [], [], None
+    # Download each event mask separately (light per-tile compute), then combine LOCALLY —
+    # combining all events server-side overruns GEE's per-tile compute limit on big AOIs.
+    for i, w in enumerate(cfg.events):
+        flood, c = _event_flood(cfg, region, w)
+        per_event[w.name] = c
+        ep = out.parent / f"_event_{i}.tif"
+        _download(flood.toByte().clip(region), ep, cfg)
+        with rasterio.open(ep) as s:
+            arrays.append(s.read(1)); prof = s.profile
+        weights.append(float(w.weight))
+        ep.unlink(missing_ok=True)
+
+    h = min(a.shape[0] for a in arrays); wd = min(a.shape[1] for a in arrays)
+    count = np.zeros((h, wd), dtype="float32")
+    for a, wt in zip(arrays, weights, strict=False):
+        count += (a[:h, :wd] == 1).astype("float32") * wt
+    flood_any = (count > 0).astype("uint8")
+
+    prof.update(count=1, height=h, width=wd, dtype="uint8", nodata=255, compress="lzw")
+    with rasterio.open(out, "w", **prof) as dst:
+        dst.write(flood_any, 1)
+    cprof = prof.copy(); cprof.update(dtype="float32", nodata=None)
+    with rasterio.open(out.parent / "flood_count.tif", "w", **cprof) as dst:
+        dst.write(count, 1)
+    return out, per_event
 
 
 def fetch_static_layers(cfg: CityConfig, data_dir: Path, force: bool = False) -> dict[str, Path]:

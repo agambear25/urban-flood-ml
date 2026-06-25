@@ -1,15 +1,55 @@
 name: Mumbai
 slug: mumbai
 ee_project: urban-flood-analysis-ncr-in
-bbox: [72.78, 18.89, 73.00, 19.27]   # island city + suburbs + Mithi river
-scale: 10
-sar:
-  pre_start: "2024-04-01"
-  pre_end:   "2024-05-31"
-  post_start: "2024-07-01"
-  post_end:   "2024-07-31"
-  orbit: DESCENDING
+bbox:
+- 72.78
+- 18.88
+- 73.1
+- 19.32
+scale: 20
+coastal: true
 threshold_db: -3.0
 perm_water_db: -18.0
-coastal: true
-notes: "Coastal + tidal + Mithi + intense pluvial. SAR is weak in dense urban/coastal — label quality limited (honest)."
+events:
+- name: 2017 pluvial
+  mechanism: pluvial (e
+  pre_start: '2017-08-01'
+  pre_end: '2017-08-20'
+  post_start: '2017-08-29'
+  post_end: '2017-09-04'
+  orbit: DESCENDING
+  weight: 0.3
+- name: 2019 pluvial + Mithi ri
+  mechanism: 'pluvial + '
+  pre_start: '2019-06-10'
+  pre_end: '2019-06-30'
+  post_start: '2019-07-01'
+  post_end: '2019-07-05'
+  orbit: DESCENDING
+  weight: 1.0
+- name: 2019 pluvial + Mithi ri
+  mechanism: 'pluvial + '
+  pre_start: '2019-08-10'
+  pre_end: '2019-08-25'
+  post_start: '2019-09-04'
+  post_end: '2019-09-08'
+  orbit: DESCENDING
+  weight: 1.0
+- name: 2020 pluvial + coastal
+  mechanism: 'pluvial + '
+  pre_start: '2020-07-10'
+  pre_end: '2020-07-28'
+  post_start: '2020-08-05'
+  post_end: '2020-08-09'
+  orbit: DESCENDING
+  weight: 0.4
+- name: 2021 pluvial + slope fa
+  mechanism: 'pluvial + '
+  pre_start: '2021-06-25'
+  pre_end: '2021-07-12'
+  post_start: '2021-07-18'
+  post_end: '2021-07-22'
+  orbit: DESCENDING
+  weight: 0.3
+notes: Expanded to metro+neighbours (~1650 km2). 5 flood events (multi-temporal SAR
+  labels).

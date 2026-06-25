@@ -20,8 +20,13 @@ def _load(data_dir: Path):
     with rasterio.open(data_dir / "feature_stack.tif") as s:
         bands = list(s.descriptions)
         stack = s.read().astype("float32")
+    count = None  # frequency-weighted multi-event count (sample weights)
+    cpath = data_dir / "flood_count.tif"
+    if cpath.exists():
+        with rasterio.open(cpath) as s:
+            count = s.read(1).astype("float32")
     order = [bands.index(f) for f in FEATURES]
-    return flood, stack[order]
+    return flood, stack[order], count
 
 
 def _model(seed: int):
@@ -34,7 +39,7 @@ def _model(seed: int):
 def train_city(cfg: CityConfig, data_dir: str | Path, model_dir: str | Path,
                tracking_uri: str | None = None, n: int = 40000, seed: int = 0) -> dict:
     data_dir, model_dir = Path(data_dir), Path(model_dir)
-    flood, stack = _load(data_dir)
+    flood, stack, count = _load(data_dir)
     valid = (flood != 255) & np.isfinite(stack).all(axis=0)
 
     rng = np.random.default_rng(seed)
@@ -49,6 +54,13 @@ def train_city(cfg: CityConfig, data_dir: str | Path, model_dir: str | Path,
     y = np.r_[np.ones(len(flood_px), int), np.zeros(len(dry_px), int)]
     X = np.stack([stack[b][idx[:, 0], idx[:, 1]] for b in range(len(FEATURES))], axis=1)
 
+    # frequency-weighted sample weights: pixels that flooded in MORE events count more
+    if count is not None:
+        cw = count[idx[:, 0], idx[:, 1]]
+        sw = np.where(y == 1, np.maximum(cw, 1.0), 1.0).astype("float32")
+    else:
+        sw = np.ones(len(y), dtype="float32")
+
     bh, bw = max(flood.shape[0] // 5, 1), max(flood.shape[1] // 5, 1)
     groups = (idx[:, 0] // bh) * 10 + (idx[:, 1] // bw)
 
@@ -57,7 +69,7 @@ def train_city(cfg: CityConfig, data_dir: str | Path, model_dir: str | Path,
     spat = [roc_auc_score(y[te], _model(seed).fit(X[tr], y[tr]).predict_proba(X[te])[:, 1])
             for tr, te in GroupKFold(5).split(X, y, groups)]
 
-    model = _model(seed).fit(X, y)
+    model = _model(seed).fit(X, y, sample_weight=sw)
     model_dir.mkdir(parents=True, exist_ok=True)
     model_path = model_dir / f"{cfg.slug}_model.json"
     model.save_model(model_path)
