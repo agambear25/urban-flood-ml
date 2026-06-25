@@ -69,7 +69,13 @@
 <div class="wrap">
   <div class="bar">
     <div class="grp"><span class="lbl">City</span><span id="cities"></span></div>
-    <div class="grp"><span class="lbl">Rainfall scenario</span>
+    <div class="grp"><span class="lbl">Flood type</span>
+      <span class="seg" id="mode">
+        <button data-m="river" class="on">River flooding</button>
+        <button data-m="waterlog">Street waterlogging</button>
+      </span>
+    </div>
+    <div class="grp" id="rain-grp"><span class="lbl">Rainfall</span>
       <span class="seg" id="rain">
         <button data-sc="light">Light</button>
         <button data-sc="moderate" class="on">Moderate</button>
@@ -102,11 +108,12 @@
         <span class="swatch" style="background:var(--risk4)"></span>Very high
       </div>
       <div class="legend" id="hs-legend">
-        <span>Waterlogging hotspots:</span>
+        <span>Hotspots:</span>
         <span class="swatch" style="background:#7a0a0a;border-radius:50%"></span>chronic
         <span class="swatch" style="background:#e8731a;border-radius:50%"></span>recurring
       </div>
-      <div class="note">A planning aid, not an official warning. It detects river/open-water flooding well but not shallow street-flooding between buildings. Rainfall scenarios are illustrative.</div>
+      <div id="hslist"></div>
+      <div class="note">A planning aid, not an official warning. River mode = floodplain inundation (satellite); street-waterlogging mode = known ponding spots + a sink/drainage model. Rainfall scenarios are illustrative.</div>
     </div>
   </div>
 
@@ -121,7 +128,7 @@
 const ACC={delhi:80,mumbai:70,bengaluru:73,chandigarh:79};
 const RISKCOL=["var(--risk1)","var(--risk1)","var(--risk2)","var(--risk3)","var(--risk4)"];
 const BADGECOL={"Low":"#b8860b","Medium":"#cc6a1f","High":"#c2401d","Very high":"#9c1106"};
-let state={city:"delhi",sc:"moderate",data:null,overlay:null};
+let state={city:"delhi",sc:"moderate",mode:"river",data:null,overlay:null,hsData:[],markers:{}};
 const map=L.map("map",{zoomControl:true,scrollWheelZoom:false}).setView([28.6,77.2],11);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {maxZoom:18,attribution:"© OpenStreetMap"}).addTo(map);
@@ -141,6 +148,11 @@ async function loadCities(){
   document.querySelectorAll("#rain button").forEach(b=>b.onclick=()=>{
     document.querySelectorAll("#rain button").forEach(x=>x.classList.remove("on"));
     b.classList.add("on");state.sc=b.dataset.sc;refresh();});
+  document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("#mode button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on");state.mode=b.dataset.m;
+    document.getElementById("rain-grp").style.opacity=state.mode==="waterlog"?.35:1;
+    refresh();});
   setCity("delhi");
 }
 
@@ -149,24 +161,46 @@ async function setCity(slug){
   state.data=await (await fetch(`assets/${slug}.json`)).json();
   map.fitBounds(state.data.bounds);
   if(state.hotspots){map.removeLayer(state.hotspots);state.hotspots=null;}
+  state.hsData=[];state.markers={};
   try{
     const hs=await (await fetch(`assets/${slug}_hotspots.json`)).json();
-    state.hotspots=L.layerGroup(hs.map(h=>L.circleMarker([h.lat,h.lon],
-      {radius:6,weight:1.5,color:"#fff",
-       fillColor:h.tier==="chronic"?"#7a0a0a":"#e8731a",fillOpacity:.95})
-      .bindPopup(`<b>${h.name}</b><br><span style="color:#777">${h.tier} waterlogging hotspot</span>`)));
-    state.hotspots.addTo(map);
+    state.hsData=hs.slice().sort((a,b)=>(a.tier==="chronic"?0:1)-(b.tier==="chronic"?0:1));
+    const layer=L.layerGroup();
+    hs.forEach(h=>{
+      const m=L.circleMarker([h.lat,h.lon],{radius:6,weight:1.5,color:"#fff",
+        fillColor:h.tier==="chronic"?"#7a0a0a":"#e8731a",fillOpacity:.95})
+        .bindPopup(`<b>${h.name}</b><br><span style="color:#777">${h.tier} waterlogging hotspot</span>`);
+      m.addTo(layer);state.markers[h.name]=m;
+    });
+    state.hotspots=layer;layer.addTo(map);
   }catch(e){}
+  renderHotspotList();
   resetPanel();
   refresh();
 }
 
+function renderHotspotList(){
+  const el=document.getElementById("hslist");
+  if(!state.hsData.length){el.innerHTML="";return;}
+  const rows=state.hsData.slice(0,12).map(h=>
+    `<div class="hsrow" data-n="${h.name}" style="display:flex;align-items:center;gap:8px;padding:6px 0;cursor:pointer;border-bottom:1px solid var(--line);font-size:13px">
+       <span style="width:9px;height:9px;border-radius:50%;flex:none;background:${h.tier==="chronic"?"#7a0a0a":"#e8731a"}"></span>
+       <span style="flex:1">${h.name}</span>
+       <span style="font-size:11px;color:var(--muted)">${h.tier}</span></div>`).join("");
+  el.innerHTML=`<div style="font-size:12px;color:var(--muted);margin:12px 0 4px">Known waterlogging spots — click to locate on map</div>${rows}`;
+  el.querySelectorAll(".hsrow").forEach(r=>r.onclick=()=>{
+    const m=state.markers[r.dataset.n];if(m){map.flyTo(m.getLatLng(),14);m.openPopup();}});
+}
+
 function refresh(){
-  const d=state.data,sc=state.sc;
+  const d=state.data,sc=state.sc,wl=state.mode==="waterlog";
   if(state.overlay)map.removeLayer(state.overlay);
-  state.overlay=L.imageOverlay(d.overlays[sc],d.bounds,{opacity:.68}).addTo(map);
+  const url=wl&&d.waterlog_overlay?d.waterlog_overlay:d.overlays[sc];
+  state.overlay=L.imageOverlay(url,d.bounds,{opacity:wl?.72:.68}).addTo(map);
   const s=d.scenarios[sc];
-  document.getElementById("k-people").textContent=fmt(s.people);
+  document.getElementById("k-people").textContent=wl?state.hsData.length:fmt(s.people);
+  document.getElementById("k-people-s").textContent=wl?"on the map (click the list)":"under this rainfall scenario";
+  document.querySelector(".kpi.alarm .l").textContent=wl?"Known waterlogging spots":"People in at-risk areas";
   document.getElementById("k-area").textContent=Math.round(s.area_km2)+" km²";
   document.getElementById("k-acc").textContent="≈"+ACC[d.slug]+"%";
 }
