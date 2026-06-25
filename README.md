@@ -1,107 +1,85 @@
-# urban-flood-ml
+# 🌊 urban-flood-ml — which neighbourhoods flood, and why
 
-A **config-driven, multi-city** urban-flood susceptibility pipeline. One YAML per city → Sentinel-1 SAR flood labels + a terrain & drainage feature stack + a per-city **XGBoost** model validated with **spatial** cross-validation. Built as an installable package with a CLI, MLflow tracking, and CI — not a pile of notebooks.
+**A tool that maps flood risk across Indian cities using free satellite data** — so planners, emergency teams, and residents can see the most at-risk areas at a glance. Today it covers **Delhi, Mumbai, Bengaluru, and Chandigarh**, and it's built to scale to any city.
 
+![Flood risk maps for four cities](docs/multicity_susceptibility.png)
+
+---
+
+## What it does
+
+- 🛰️ **Spots real floods from space.** It reads satellite radar to map where a city *actually* flooded — and radar sees through monsoon cloud, when normal satellites are blind.
+- 🗺️ **Predicts flood-prone areas.** A model learns the ground pattern of those flooded places (low, flat, near drainage…) and shades every neighbourhood by how flood-prone it is.
+- 🏙️ **Runs any city from a single setup file.** The same pipeline maps four cities today; adding a new one is one small config file, not new code.
+
+## Why it stands out
+
+- **Four cities, one reusable engine** — not four copy-pasted projects.
+- Every city's map is **checked against a real past flood**, and correctly separates flood-prone from safe ground **85–93% of the time**.
+- **Built like real software** — an installable tool you run with one command, with automated tests and experiment tracking — not a throwaway script.
+- **Honest about what it can't do** (see below) instead of overpromising.
+
+## How it works, in plain English
+
+1. **Find** — satellite radar spots where water sat during a past flood.
+2. **Learn** — a model studies the terrain at those flooded spots (Is it low? Flat? Near a drain?).
+3. **Map** — it shades every *other* spot that shares the same risky pattern.
+
+## Honest about its limits
+
+This is an **experimental planning tool, not an official flood warning system.** It detects river and open-water flooding well, but it **can't see shallow street-flooding between buildings**. Risk is *relative* within each city and validated on *one* past flood. Knowing and stating these limits is part of doing it right.
+
+## Built with
+
+`Python` · `Google Earth Engine` (free satellite data) · `machine learning (XGBoost)` · `OpenStreetMap` · `MLflow`
+
+*Companion project: [yamuna-flood-mapper](https://github.com/agambear25/yamuna-flood-mapper) — the original Delhi case study with an interactive dashboard, which this engine grew out of.*
+
+---
+
+<details>
+<summary><b>🔧 Technical details</b> (for engineers — click to expand)</summary>
+
+### Pipeline
+Config-driven, one command per stage:
 ```bash
-floodml run delhi        # SAR flood mask → features → train → predict, one command
+floodml run delhi   # SAR flood mask → fetch layers → features → train → predict
 ```
+- **Flood labels** — server-side Sentinel-1 GRD change detection in Google Earth Engine.
+- **Features** — terrain (elevation, slope, HAND, curvature, local relief, sinks) + a uniform drainage backbone (MERIT-Hydro HAND/upstream-area + OSM drains → distance-to-drain, drainage density).
+- **Model** — per-city XGBoost, validated with **spatial block cross-validation** (the honest metric; random CV inflates ~0.05 via spatial leakage).
 
-> 🟢 **New to satellites / ML / this codebase?** Read [docs/how-it-works.md](docs/how-it-works.md) — a from-zero explainer that assumes no background.
+### Results (AUC)
 
-![Multi-city susceptibility](docs/multicity_susceptibility.png)
+| City | Spatial-CV AUC | Random-CV AUC |
+|---|---|---|
+| Bengaluru | 0.927 | 0.966 |
+| Delhi | 0.918 | 0.972 |
+| Mumbai | 0.862 | 0.922 |
+| Chandigarh | 0.850 | 0.898 |
 
----
-
-## Results — 4 cities, one pipeline
-
-| City | Spatial-CV AUC | Random-CV AUC | Dominant features |
-|---|---|---|---|
-| **Bengaluru** | **0.927** | 0.966 | local relief, built-up (tank-cascade + urban) |
-| **Delhi** | **0.918** | 0.972 | built-up, distance-to-river (riverine) |
-| **Mumbai** | **0.862** | 0.922 | built-up, low elevation (coastal) |
-| **Chandigarh** | **0.850** | 0.898 | built-up, local relief, elevation |
-
-**Why two AUCs?** Geospatial data is spatially autocorrelated, so ordinary *random* cross-validation leaks neighbouring pixels and lies. The **spatial** (block) CV number is the honest one — and the ~0.05–0.06 gap is exactly that leakage being removed. The spatial number is what's reported.
-
----
-
-## How it works
-
-```
-configs/city/<name>.yaml
-        │
-        ▼
-  floodml flood-mask   Sentinel-1 SAR change detection (Earth Engine, server-side) → flood label
-  floodml fetch        global static layers: Copernicus DEM, ESA WorldCover, MERIT-Hydro
-  floodml features     terrain (slope, HAND, curvature, relief, sinks) + drainage backbone
-  floodml train        XGBoost + random vs spatial CV, logged to MLflow
-  floodml predict      per-pixel susceptibility surface
-```
-
-A new city = **a new YAML**, not a copied notebook. The drainage feature backbone (MERIT-Hydro HAND/upstream-area + OSM drains → distance-to-drain, drainage density, underpass sinks) is computed *identically everywhere* so the four models stay comparable.
-
----
-
-## Engineering (the part that isn't a notebook dump)
-
-- **Installable package** `src/floodml/` with a **Typer CLI** (`floodml`) and **Pydantic**-validated per-city configs — reproducible, one command per stage.
-- **MLflow** tracking — every run's params/metrics/feature-importance logged with a `city` tag, so the experiment table itself tells the four-city story (`mlflow ui`).
+### Engineering
+- Installable `floodml` package (`src/`) with a **Typer CLI** and **Pydantic** per-city configs.
+- **MLflow** experiment tracking (every run's params/metrics/feature-importance, tagged by city).
 - **GitHub Actions CI** — ruff lint + offline pytest on every push.
-- **Deliberately *not* used:** Kubernetes, Airflow, feature stores. For a solo 4-city project those are overkill — and saying so is the point.
+- Deliberately *not* used: Kubernetes, Airflow, feature stores (over-engineering for a 4-city project).
 
----
+### Honest caveats (detail)
+- SAR labels capture riverine/open-water flooding, not in-street urban waterlogging — so the dense-city models are *susceptibility*, not street-flood predictors.
+- `built-up` ranks high partly as a SAR blind-spot (radar can't see flooding inside built-up areas).
+- Open OSM drainage data is thin, so drainage features contribute marginally.
 
-## ⚠️ Honest limitations
-
-This is **experimental decision-support, not a flood-warning system.**
-
-- **SAR sees riverine/open-water flooding, not street waterlogging.** In dense Mumbai/Bengaluru the labels capture peri-urban inundation, not the in-street flooding that strands people — so those models are *susceptibility*, not street-flood predictors.
-- **`built-up` ranks high partly as a sensor blind-spot** — SAR can't see flooding *inside* built-up areas, so the model partly learns "built-up → dry."
-- **The drainage features contribute marginally** — open OSM drain coverage is thin, so they're computed uniformly but don't dominate. Real municipal storm-drain networks (e.g. Bengaluru's BBMP rajakaluve) are the documented next step.
-- **One SAR event per city → relative, single-event susceptibility.** Not a calibrated depth model.
-
----
-
-## Reproduce
-
+### Reproduce
 ```bash
-conda env create -f environment.yml
-conda activate urban-flood-ml
-floodml run delhi          # then chandigarh / mumbai / bengaluru
-python scripts/overview.py # rebuild the figure + summary
+conda env create -f environment.yml && conda activate urban-flood-ml
+floodml run delhi      # then chandigarh / mumbai / bengaluru
+python scripts/overview.py
 ```
 Needs a free Google Earth Engine account; set `ee_project` in each `configs/city/*.yaml`.
 
----
+### Roadmap
+- A calibrated **SFINCS** 2D hydrodynamic flood simulation for Delhi (validated against the 2023 flood) + a Mumbai tide+rain scenario.
+- Bengaluru's official BBMP drainage network as extra features.
+- Rainfall-forecast overlay (Open-Meteo + GPM IMERG) for dynamic, rainfall-conditioned risk.
 
-## Repository structure
-
-```
-urban-flood-ml/
-├── src/floodml/          # the package
-│   ├── config.py         # Pydantic per-city config
-│   ├── gee.py            # Earth Engine: SAR flood mask + static layers
-│   ├── features.py       # terrain + drainage feature stack
-│   ├── train.py          # XGBoost + spatial CV + MLflow
-│   ├── predict.py        # susceptibility surface
-│   └── cli.py            # Typer CLI
-├── configs/city/*.yaml   # delhi, chandigarh, mumbai, bengaluru
-├── tests/                # offline unit tests
-├── .github/workflows/    # CI
-├── models/ · results/    # trained models + metrics (committed)
-└── scripts/overview.py
-```
-
----
-
-## Roadmap
-
-The senior next steps (scoped, deliberately deferred so this ships):
-
-- **Hydrodynamic flagship (Delhi):** a calibrated **SFINCS** 2D rain-on-grid simulation, validated against the 2023 SAR flood (CSI/hit-rate) — turning susceptibility into modelled-and-verified depth. Plus a **Mumbai compound tide+rain** scenario.
-- **Drainage Tier-2:** ingest Bengaluru's official BBMP rajakaluve network as extra features.
-- **Forecast overlay:** Open-Meteo + GPM IMERG → rainfall-conditioned *dynamic* risk levels.
-
----
-
-*Sentinel-1 · Copernicus DEM · ESA WorldCover · MERIT-Hydro · WorldPop · OpenStreetMap, via Google Earth Engine. Built with rasterio, geopandas, xgboost, mlflow.*
+</details>
