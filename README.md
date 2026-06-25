@@ -1,92 +1,79 @@
-# 🌊 urban-flood-ml — which neighbourhoods flood, and why
+# urban-flood-ml
 
-**A tool that maps flood risk across Indian cities using free satellite data** — so planners, emergency teams, and residents can see the most at-risk areas at a glance. Today it covers **Delhi, Mumbai, Bengaluru, and Chandigarh**, and it's built to scale to any city.
+**An open tool that maps where Indian cities flood — so the people who live in the most at-risk streets can be warned to prepare.**
 
-### ▶️ [Try the live interactive map →](https://agambear25.github.io/urban-flood-ml/)
-Switch cities, drag the rainfall scenario, and **click any neighbourhood to see *why* it floods.**
+Most flood maps stop at the river. But the flooding that actually traps people is the *street waterlogging* — the underpass that fills up, the junction that becomes a lake every monsoon. This project maps **both**, for four cities, from free satellite and public data — built so that, with a rainfall trigger on top, it could one day **alert residents of high-risk neighbourhoods before the water arrives**. It's a public-good project, not a commercial one.
 
-![Flood risk maps for four cities](docs/multicity_susceptibility.png)
+### ▶️ [Open the live map →](https://agambear25.github.io/urban-flood-ml/)
+Switch city, switch flood type (river vs. street waterlogging), and **click a named hotspot** (Minto Bridge, ITO, Hebbal…) to locate it.
+
+![Flood risk across four cities](docs/multicity_susceptibility.png)
 
 ---
 
 ## What it does
 
-- 🛰️ **Spots real floods from space.** It reads satellite radar to map where a city *actually* flooded — and radar sees through monsoon cloud, when normal satellites are blind.
-- 🗺️ **Predicts flood-prone areas.** A model learns the ground pattern of those flooded places (low, flat, near drainage…) and shades every neighbourhood by how flood-prone it is.
-- 🏙️ **Runs any city from a single setup file.** The same pipeline maps four cities today; adding a new one is one small config file, not new code.
-- 🚧 **Tracks *street* waterlogging the satellite can't see.** A traceable, multi-source [event database](events/) — geocoded chronic hotspots (Minto Bridge, Pul Prahladpur…) + news-mined flood frequency — shown live on the map and usable as model labels.
+- 🛰️ **Finds where floods actually happened** — reads Sentinel-1 satellite radar (which sees through monsoon cloud) across *multiple* historical floods per city.
+- 🗺️ **Maps two kinds of flooding** — a **river/floodplain** model *and* a separate **street-waterlogging** model (the ponding in low spots and underpasses that the satellite can't see).
+- 📍 **Names the danger spots** — a traceable database of documented waterlogging hotspots, shown on the map by name.
+- 🏙️ **Covers 4 cities, scales to any** — Delhi, Mumbai, Bengaluru, Chandigarh today; a new city is one config file, not new code.
 
-## Why it stands out
+**The point:** translate "this area is flood-prone" into "*these specific streets*, and *these people*" — the first step toward warning residents to move vehicles, clear drains, and prepare.
 
-- **Four cities, one reusable engine** — not four copy-pasted projects.
-- Every city's map is **checked against a real past flood**, and correctly separates flood-prone from safe ground **85–93% of the time**.
-- **Built like real software** — an installable tool you run with one command, with automated tests and experiment tracking — not a throwaway script.
-- **Honest about what it can't do** (see below) instead of overpromising.
+## How it works, in plain terms
 
-## How it works, in plain English
+1. **Find** — satellite radar shows where water sat during past floods → that's the training signal.
+2. **Learn** — a model studies the ground at those flooded spots (low? flat? a dip? near a drain?) and learns the pattern.
+3. **Map** — it shades every *other* place that shares the risky pattern, and overlays the named hotspots people already know flood.
 
-1. **Find** — satellite radar spots where water sat during a past flood.
-2. **Learn** — a model studies the terrain at those flooded spots (Is it low? Flat? Near a drain?).
-3. **Map** — it shades every *other* spot that shares the same risky pattern.
+A rainfall forecast on top turns this static risk into a *"prepare today"* alert — the natural next step.
 
 ## Honest about its limits
 
-This is an **experimental planning tool, not an official flood warning system.** It detects river and open-water flooding well, but it **can't see shallow street-flooding between buildings**. Risk is *relative* within each city and validated on *one* past flood. Knowing and stating these limits is part of doing it right.
-
-## Built with
-
-`Python` · `Google Earth Engine` (free satellite data) · `machine learning (XGBoost)` · `OpenStreetMap` · `MLflow`
-
-*Companion project: [yamuna-flood-mapper](https://github.com/agambear25/yamuna-flood-mapper) — the original Delhi case study with an interactive dashboard, which this engine grew out of.*
+This is an **experimental planning aid, not an official warning system.** River flooding is detected well; in-street waterlogging is harder (the satellite barely sees it, so that model leans on documented hotspots + terrain). Risk is *relative* within each city, and the hotspot list is media/advisory-derived, not exhaustive — **absence of a marker doesn't mean safe.** These limits are stated on the map itself. Saying them plainly is part of doing this responsibly.
 
 ---
 
 <details>
-<summary><b>🔧 Technical details</b> (for engineers — click to expand)</summary>
+<summary><b>🔧 For developers</b> (click to expand)</summary>
 
-### Pipeline
-Config-driven, one command per stage:
+### Pipeline — config-driven, one command per stage
 ```bash
-floodml run delhi   # SAR flood mask → fetch layers → features → train → predict
+floodml run delhi             # multi-event SAR flood label → features → train → predict
+floodml train-waterlog delhi  # the urban-waterlogging (hotspot) model
+python events/build_events.py # the traceable event database
 ```
-- **Flood labels** — **multi-event** Sentinel-1 change detection: each city uses several real historical floods (e.g. Delhi 2019/2023/2025), combined into a frequency-weighted label so pixels that flooded repeatedly outweigh one-off noisy events.
-- **Features** — terrain (elevation, slope, HAND, curvature, local relief, sinks) + a uniform drainage backbone (MERIT-Hydro HAND/upstream-area + OSM drains → distance-to-drain, drainage density).
-- **Two models per city** — a **riverine** model (SAR flood labels) *and* an **urban-waterlogging** model (documented street-flood hotspots, positive-only PU learning). Both validated with **spatial block cross-validation**.
-- **Coverage** — each city covers the full metro + neighbouring districts (~1,400–2,800 km², run at 20 m).
+A city is a YAML in `configs/city/` + a hotspot list in `configs/hotspots/`. No copy-pasted code.
 
-### Results (spatial-CV AUC)
+### Two models per city (spatial-CV AUC)
 
-| City | Riverine (multi-event) | Urban-waterlogging (PU) |
+| City | River (multi-event SAR) | Street waterlogging (PU) |
 |---|---|---|
 | Delhi | 0.80 | 0.96 |
 | Chandigarh | 0.79 | 0.99 |
 | Bengaluru | 0.73 | 0.97 |
 | Mumbai | 0.70 | 0.97 |
 
-*The riverine AUCs are **lower** than earlier single-event numbers — honestly so: multi-event labels mix in pluvial events SAR barely sees, across much larger areas, which is a harder, more realistic task. The waterlogging model's top driver is `sink_depth` (local depressions/underpasses) in every city — the true urban-ponding mechanism, distinct from the riverine drivers. PU-AUCs are relative ranking, not calibrated probability.*
+*River AUCs are honestly lower than single-event numbers — multi-event labels across full metros are a harder, more realistic task. The waterlogging model's top driver is `sink_depth` (local depressions/underpasses) in every city — the real street-ponding mechanism. PU-AUCs are relative ranking, not calibrated probability.*
 
-### Engineering
-- Installable `floodml` package (`src/`) with a **Typer CLI** and **Pydantic** per-city configs.
-- **MLflow** experiment tracking (every run's params/metrics/feature-importance, tagged by city).
-- **GitHub Actions CI** — ruff lint + offline pytest on every push.
-- Deliberately *not* used: Kubernetes, Airflow, feature stores (over-engineering for a 4-city project).
-
-### Honest caveats (detail)
-- SAR labels capture riverine/open-water flooding, not in-street urban waterlogging — so the dense-city models are *susceptibility*, not street-flood predictors.
-- `built-up` ranks high partly as a SAR blind-spot (radar can't see flooding inside built-up areas).
-- Open OSM drainage data is thin, so drainage features contribute marginally.
+### How it's built
+- **Labels** — multi-event Sentinel-1 change detection (each city stacks several real floods → frequency-weighted label). Street-flood labels come from geocoded documented hotspots (positive-only PU learning).
+- **Features** — terrain (elevation, slope, HAND, curvature, local relief, sinks) + drainage backbone (MERIT-Hydro + OSM drains).
+- **Models** — per-city XGBoost, validated with **spatial block cross-validation** (the honest metric).
+- **Event DB** — `events/` — provenance-rich records from documented hotspots + GDELT news + Global Flood Database, with flood-news frequency over time.
+- **Engineering** — installable `floodml` package, **Typer** CLI, **Pydantic** configs, **MLflow** tracking, **GitHub Actions** CI. (Deliberately no Kubernetes/Airflow — overkill for this.)
 
 ### Reproduce
 ```bash
 conda env create -f environment.yml && conda activate urban-flood-ml
-floodml run delhi      # then chandigarh / mumbai / bengaluru
-python scripts/overview.py
+floodml run delhi   # needs a free Google Earth Engine account (set ee_project in the config)
 ```
-Needs a free Google Earth Engine account; set `ee_project` in each `configs/city/*.yaml`.
 
 ### Roadmap
-- A calibrated **SFINCS** 2D hydrodynamic flood simulation for Delhi (validated against the 2023 flood) + a Mumbai tide+rain scenario.
-- Bengaluru's official BBMP drainage network as extra features.
-- Rainfall-forecast overlay (Open-Meteo + GPM IMERG) for dynamic, rainfall-conditioned risk.
+Rainfall trigger (Open-Meteo / GPM IMERG) → rainfall-conditioned *alerts*; a "why it ponds" panel per hotspot; the India Flood Inventory as an extra label source.
 
 </details>
+
+---
+
+*Built with Sentinel-1, Copernicus DEM, MERIT-Hydro, ESA WorldCover, WorldPop & OpenStreetMap (via Google Earth Engine). Free data, open code, public purpose.*
