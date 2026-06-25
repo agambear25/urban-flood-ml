@@ -1,7 +1,7 @@
 name: Delhi
 slug: delhi
 ee_project: urban-flood-analysis-ncr-in
-bbox: [77.18, 28.50, 77.38, 28.78]   # Yamuna corridor through Delhi
+bbox: [76.84, 28.40, 77.35, 28.88]   # full Delhi NCT
 scale: 10
 sar:
   pre_start: "2023-05-15"
