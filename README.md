@@ -14,6 +14,7 @@ Switch cities, drag the rainfall scenario, and **click any neighbourhood to see 
 - 🛰️ **Spots real floods from space.** It reads satellite radar to map where a city *actually* flooded — and radar sees through monsoon cloud, when normal satellites are blind.
 - 🗺️ **Predicts flood-prone areas.** A model learns the ground pattern of those flooded places (low, flat, near drainage…) and shades every neighbourhood by how flood-prone it is.
 - 🏙️ **Runs any city from a single setup file.** The same pipeline maps four cities today; adding a new one is one small config file, not new code.
+- 🚧 **Tracks *street* waterlogging the satellite can't see.** A traceable, multi-source [event database](events/) — geocoded chronic hotspots (Minto Bridge, Pul Prahladpur…) + news-mined flood frequency — shown live on the map and usable as model labels.
 
 ## Why it stands out
 

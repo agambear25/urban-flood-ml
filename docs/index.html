@@ -101,6 +101,11 @@
         <span class="swatch" style="background:var(--risk3)"></span>High
         <span class="swatch" style="background:var(--risk4)"></span>Very high
       </div>
+      <div class="legend" id="hs-legend">
+        <span>Waterlogging hotspots:</span>
+        <span class="swatch" style="background:#7a0a0a;border-radius:50%"></span>chronic
+        <span class="swatch" style="background:#e8731a;border-radius:50%"></span>recurring
+      </div>
       <div class="note">A planning aid, not an official warning. It detects river/open-water flooding well but not shallow street-flooding between buildings. Rainfall scenarios are illustrative.</div>
     </div>
   </div>
@@ -142,8 +147,16 @@ async function loadCities(){
 async function setCity(slug){
   state.city=slug;
   state.data=await (await fetch(`assets/${slug}.json`)).json();
-  const b=state.data.bounds;
-  map.fitBounds(b);
+  map.fitBounds(state.data.bounds);
+  if(state.hotspots){map.removeLayer(state.hotspots);state.hotspots=null;}
+  try{
+    const hs=await (await fetch(`assets/${slug}_hotspots.json`)).json();
+    state.hotspots=L.layerGroup(hs.map(h=>L.circleMarker([h.lat,h.lon],
+      {radius:6,weight:1.5,color:"#fff",
+       fillColor:h.tier==="chronic"?"#7a0a0a":"#e8731a",fillOpacity:.95})
+      .bindPopup(`<b>${h.name}</b><br><span style="color:#777">${h.tier} waterlogging hotspot</span>`)));
+    state.hotspots.addTo(map);
+  }catch(e){}
   resetPanel();
   refresh();
 }
