@@ -13,34 +13,34 @@ perm_water_db: -18.0
 events:
 - name: 2023 riverine
   mechanism: riverine
-  pre_start: '2023-05-15'
-  pre_end: '2023-06-30'
+  pre_start: '2023-05-22'
+  pre_end: '2023-06-29'
   post_start: '2023-07-11'
-  post_end: '2023-07-24'
+  post_end: '2023-07-29'
   orbit: DESCENDING
   weight: 1.0
 - name: 2025 riverine
   mechanism: riverine
-  pre_start: '2025-07-15'
-  pre_end: '2025-08-15'
+  pre_start: '2025-07-14'
+  pre_end: '2025-08-21'
   post_start: '2025-09-02'
-  post_end: '2025-09-09'
+  post_end: '2025-09-20'
   orbit: DESCENDING
   weight: 1.0
 - name: 2019 riverine
   mechanism: riverine
-  pre_start: '2019-06-20'
-  pre_end: '2019-07-31'
+  pre_start: '2019-06-28'
+  pre_end: '2019-08-05'
   post_start: '2019-08-17'
-  post_end: '2019-08-26'
+  post_end: '2019-09-04'
   orbit: DESCENDING
   weight: 1.0
 - name: 2024 pluvial
   mechanism: pluvial
-  pre_start: '2024-05-20'
-  pre_end: '2024-06-20'
+  pre_start: '2024-05-09'
+  pre_end: '2024-06-16'
   post_start: '2024-06-28'
-  post_end: '2024-07-06'
+  post_end: '2024-07-16'
   orbit: DESCENDING
   weight: 0.3
 notes: Expanded to metro+neighbours (~2825 km2). 4 flood events (multi-temporal SAR

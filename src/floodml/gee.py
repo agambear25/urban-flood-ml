@@ -48,9 +48,26 @@ def _s1_composite(region, start, end, orbit):
 
 
 def _event_flood(cfg: CityConfig, region, w):
-    """Binary flood image for ONE event (server-side change detection)."""
-    pre_col, pre = _s1_composite(region, w.pre_start, w.pre_end, w.orbit)
-    post_col, post = _s1_composite(region, w.post_start, w.post_end, w.orbit)
+    """Binary flood image for ONE event (server-side change detection).
+
+    Tries the configured orbit; if it has no Sentinel-1 coverage in either window,
+    falls back to the other orbit. If neither has coverage, returns all-dry.
+    """
+    pre = post = None
+    counts = {"pre": 0, "post": 0}
+    orbits = [w.orbit, "ASCENDING" if w.orbit == "DESCENDING" else "DESCENDING"]
+    for orb in orbits:
+        pre_col, pre_i = _s1_composite(region, w.pre_start, w.pre_end, orb)
+        post_col, post_i = _s1_composite(region, w.post_start, w.post_end, orb)
+        npre, npost = pre_col.size().getInfo(), post_col.size().getInfo()
+        if npre > 0 and npost > 0:
+            pre, post = pre_i, post_i
+            counts = {"pre": npre, "post": npost, "orbit": orb}
+            break
+        counts = {"pre": npre, "post": npost}
+    if pre is None:  # no S1 coverage in any orbit -> contributes nothing
+        return ee.Image(0).rename("flood").toByte().clip(region), counts
+
     pre_f = pre.focal_median(40, "circle", "meters")
     post_f = post.focal_median(40, "circle", "meters")
     diff = post_f.subtract(pre_f)
@@ -59,7 +76,7 @@ def _event_flood(cfg: CityConfig, region, w):
     jrc = ee.Image("JRC/GSW1_4/GlobalSurfaceWater").select("occurrence").unmask(0)
     perm_cut = 20 if cfg.coastal else 50
     flood = flood.And(jrc.gt(perm_cut).Not()).And(pre_f.gt(cfg.perm_water_db))
-    return flood.unmask(0), {"pre": pre_col.size().getInfo(), "post": post_col.size().getInfo()}
+    return flood.unmask(0), counts
 
 
 def build_flood_mask(cfg: CityConfig, out: Path) -> tuple[Path, dict]:
@@ -79,11 +96,13 @@ def build_flood_mask(cfg: CityConfig, out: Path) -> tuple[Path, dict]:
         ep = out.parent / f"_event_{i}.tif"
         _download(flood.toByte().clip(region), ep, cfg)
         with rasterio.open(ep) as s:
-            arrays.append(s.read(1)); prof = s.profile
+            arrays.append(s.read(1))
+            prof = s.profile
         weights.append(float(w.weight))
         ep.unlink(missing_ok=True)
 
-    h = min(a.shape[0] for a in arrays); wd = min(a.shape[1] for a in arrays)
+    h = min(a.shape[0] for a in arrays)
+    wd = min(a.shape[1] for a in arrays)
     count = np.zeros((h, wd), dtype="float32")
     for a, wt in zip(arrays, weights, strict=False):
         count += (a[:h, :wd] == 1).astype("float32") * wt
@@ -92,7 +111,8 @@ def build_flood_mask(cfg: CityConfig, out: Path) -> tuple[Path, dict]:
     prof.update(count=1, height=h, width=wd, dtype="uint8", nodata=255, compress="lzw")
     with rasterio.open(out, "w", **prof) as dst:
         dst.write(flood_any, 1)
-    cprof = prof.copy(); cprof.update(dtype="float32", nodata=None)
+    cprof = prof.copy()
+    cprof.update(dtype="float32", nodata=None)
     with rasterio.open(out.parent / "flood_count.tif", "w", **cprof) as dst:
         dst.write(count, 1)
     return out, per_event

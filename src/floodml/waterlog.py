@@ -31,11 +31,14 @@ def train_waterlog(cfg: CityConfig, data_dir: str | Path, model_dir: str | Path,
         raise FileNotFoundError("no waterlog_label.tif — run events/build_events.py first")
 
     with rasterio.open(lab_path) as s:
-        lab = s.read(1); prof = s.profile; tr = s.transform
+        lab = s.read(1)
+        prof = s.profile
+        tr = s.transform
     with rasterio.open(data_dir / "flood_mask.tif") as s:
         flood = s.read(1)
     with rasterio.open(data_dir / "feature_stack.tif") as s:
-        bands = list(s.descriptions); stack = s.read().astype("float32")
+        bands = list(s.descriptions)
+        stack = s.read().astype("float32")
     stack = stack[[bands.index(f) for f in FEATURES]]
 
     valid = (flood != 255) & np.isfinite(stack).all(axis=0)
@@ -89,7 +92,8 @@ def train_waterlog(cfg: CityConfig, data_dir: str | Path, model_dir: str | Path,
     susc = np.full(h * w, np.nan, dtype="float32")
     susc[vflat] = model.predict_proba(flat[vflat])[:, 1]
     susc = susc.reshape(h, w)
-    sp = prof.copy(); sp.update(count=1, dtype="float32", nodata=np.nan, compress="lzw")
+    sp = prof.copy()
+    sp.update(count=1, dtype="float32", nodata=np.nan, compress="lzw")
     with rasterio.open(data_dir / "waterlog_susceptibility.tif", "w", **sp) as dst:
         dst.write(susc, 1)
 
@@ -101,7 +105,8 @@ def train_waterlog(cfg: CityConfig, data_dir: str | Path, model_dir: str | Path,
         mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment("urban-flood-ml")
     with mlflow.start_run(run_name=cfg.slug + "-waterlog"):
-        mlflow.set_tag("city", cfg.slug); mlflow.set_tag("model", "waterlog")
+        mlflow.set_tag("city", cfg.slug)
+        mlflow.set_tag("model", "waterlog")
         mlflow.log_metrics({"spatial_cv_auc_pu": metrics["spatial_cv_auc_pu"], "n_positives": npos})
         mlflow.log_dict(importance, "waterlog_importance.json")
     return metrics
