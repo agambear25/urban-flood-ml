@@ -1,270 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Urban Flood Risk — India</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FloodLens — urban flood risk</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
-  :root{
-    --ink:#11243a; --muted:#5d6b7a; --line:#e4e9ef; --bg:#f4f7fa; --card:#fff;
-    --accent:#0d6efd; --accentbg:#e7f0ff;
-    --risk1:#fed976; --risk2:#fd8d3c; --risk3:#e2562a; --risk4:#9c1106;
-    --up:#d6452c; --down:#2b7fd0;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-       color:var(--ink);background:var(--bg);line-height:1.5}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 56px}
-  header{background:linear-gradient(135deg,#0a2a4e,#0d6efd);color:#fff;padding:30px 0 26px}
-  header .wrap{padding-bottom:0}
-  h1{margin:0 0 6px;font-size:26px;font-weight:650;letter-spacing:-.2px}
-  .tag{font-size:15px;opacity:.92;max-width:760px}
-  .bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
-       margin:18px 0 16px;padding:14px 16px;background:var(--card);border:1px solid var(--line);
-       border-radius:12px;box-shadow:0 1px 3px rgba(20,40,70,.05)}
-  .grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .grp .lbl{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-right:2px}
-  .pill{border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13.5px;font-weight:500;
-        padding:7px 14px;border-radius:999px;cursor:pointer;transition:.12s}
-  .pill:hover{background:var(--bg)}
-  .pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .seg button{border:0;background:#fff;font-size:13.5px;font-weight:500;padding:7px 16px;cursor:pointer;color:var(--ink)}
-  .seg button.on{background:#0a2a4e;color:#fff}
-  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
-  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-  .kpi .v{font-size:30px;font-weight:680;line-height:1.1}
-  .kpi .l{font-size:13px;font-weight:600;margin-top:3px}
-  .kpi .s{font-size:12px;color:var(--muted);margin-top:1px}
-  .kpi.alarm .v{color:var(--risk4)}
-  .main{display:grid;grid-template-columns:1.65fr 1fr;gap:16px;align-items:stretch}
-  #map{height:560px;border-radius:12px;border:1px solid var(--line);z-index:1}
-  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column}
-  .panel h3{margin:0 0 2px;font-size:17px;font-weight:600}
-  .hint{font-size:13px;color:var(--muted);margin:0 0 14px}
-  .loc{font-size:18px;font-weight:600;margin:2px 0 4px}
-  .badge{display:inline-block;font-size:12px;font-weight:600;padding:3px 11px;border-radius:999px;color:#fff}
-  .why{margin-top:14px}
-  .row{display:grid;grid-template-columns:148px 1fr 46px;align-items:center;gap:10px;margin:9px 0}
-  .row .f{font-size:13px}
-  .track{position:relative;height:16px;background:var(--bg);border-radius:5px}
-  .mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line)}
-  .fill{position:absolute;top:2px;bottom:2px;border-radius:3px}
-  .row .val{font-size:12.5px;font-weight:600;text-align:right}
-  .legend{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin-top:14px}
-  .swatch{width:16px;height:12px;border-radius:2px;display:inline-block}
-  .note{margin-top:18px;background:#fff8e6;border:1px solid #ffe39e;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#7a5600}
-  footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
-  a{color:var(--accent);text-decoration:none}
-  @media(max-width:820px){.main{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}#map{height:380px}}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;color:#14202b;font-size:14px;height:100vh;display:flex;flex-direction:column;}
+  header{display:flex;align-items:center;gap:12px;padding:9px 13px;border-bottom:1px solid #e0e6ea;flex-wrap:wrap;}
+  .brand{font-weight:800;font-size:16px;}.brand .b2{color:#2e7d8c;}
+  select#citySel{font-weight:600;border:1px solid #cdd8df;border-radius:8px;padding:5px 10px;background:#fff;font-size:14px;}
+  .lenses{display:flex;gap:4px;margin-left:auto;}
+  .lens{border:1px solid #cdd8df;background:#fff;border-radius:8px;padding:6px 11px;cursor:pointer;font-weight:600;font-size:12.5px;color:#3a4a56;}
+  .lens.active{background:#14202b;color:#fff;border-color:#14202b;}
+  .body{flex:1;display:flex;min-height:0;}
+  #map{flex:1;}
+  .side{width:360px;border-left:1px solid #e0e6ea;display:flex;flex-direction:column;min-height:0;}
+  .panel{padding:13px 14px;overflow:auto;flex:1;}
+  .ph{color:#6a7884;font-size:13px;}
+  .band{display:inline-block;font-weight:800;font-size:11px;padding:2px 9px;border-radius:999px;color:#fff;}
+  .b-severe{background:#c62828;}.b-high{background:#ef6c00;}.b-moderate{background:#f9a825;color:#3a2c00;}.b-low{background:#2e7d32;}
+  .tier{font-size:11px;color:#6a7884;text-transform:capitalize;margin-left:6px;}
+  .imagery{font-size:11.5px;color:#41525e;margin:9px 0;border:1px dashed #c3ced6;border-radius:7px;padding:6px 9px;background:#f7fafb;}
+  h3{font-size:16px;margin-bottom:6px;}h4{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#7a8893;margin:12px 0 5px;}
+  ul.why{margin-left:16px;}ul.why li{margin:3px 0;}
+  .score{font-size:11px;color:#8593a0;margin-top:8px;}
+  .dl a{display:inline-block;border:1px solid #cdd8df;border-radius:8px;padding:6px 10px;margin:3px 4px 0 0;font-size:12px;font-weight:600;color:#1d3c5a;text-decoration:none;}
+  .disc{border:1px solid #e3b3b3;background:#fdf3f3;color:#8c2f2f;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;margin-top:10px;}
+  .events{padding:8px 14px;border-top:1px solid #eef2f4;font-size:11.5px;color:#5b6b78;}
+  .chip{display:inline-block;background:#eef3f5;border-radius:999px;padding:2px 8px;margin:2px 3px 0 0;font-weight:600;color:#37474f;}
+  .mhead{display:flex;align-items:center;gap:8px;}
+  .mplay{width:24px;height:24px;border-radius:50%;border:none;background:#14202b;color:#fff;cursor:pointer;font-size:11px;flex:none;}
+  .mcap{margin-left:auto;font-weight:700;color:#1d3c5a;}
+  .mrow{display:flex;align-items:flex-end;gap:8px;height:54px;margin:7px 0 2px;}
+  .mcol{display:flex;flex-direction:column;align-items:center;cursor:pointer;}
+  .mbar{width:20px;background:#9cc1d6;border-radius:3px 3px 0 0;transition:background .2s;}
+  .mcol.on .mbar{background:#1565c0;}
+  .myr{font-size:10px;color:#5b6b78;margin-top:2px;}
+  .mcol.on .myr{font-weight:800;color:#14202b;}
+  .mnote{font-size:10px;color:#90a0ab;}
+  .caveats{padding:9px 14px;border-top:1px solid #eef2f4;font-size:11px;color:#6a7884;background:#fcfdfe;}
+  .caveats summary{cursor:pointer;font-weight:700;color:#5b6b78;}
+  .caveats li{margin:4px 0 4px 16px;}
+  .legend{background:rgba(255,255,255,.94);padding:7px 9px;border-radius:8px;font-size:11px;line-height:1.5;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+  .legend b{display:block;margin-bottom:3px;}.sw{display:inline-block;width:13px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+  .opacity{background:rgba(255,255,255,.94);padding:6px 9px;border-radius:8px;font-size:11px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <h1>Urban flood risk — India</h1>
-  <div class="tag">Mapping where cities flood — river floodplains <i>and</i> the streets that waterlog — so residents of high-risk areas can be warned to prepare. A free, open, public-good tool. Switch the <b>flood type</b> and click a named hotspot to locate it.</div>
-</div></header>
-
-<div class="wrap">
-  <div class="bar">
-    <div class="grp"><span class="lbl">City</span><span id="cities"></span></div>
-    <div class="grp"><span class="lbl">Flood type</span>
-      <span class="seg" id="mode">
-        <button data-m="river" class="on">River flooding</button>
-        <button data-m="waterlog">Street waterlogging</button>
-      </span>
-    </div>
-    <div class="grp" id="rain-grp"><span class="lbl">Rainfall</span>
-      <span class="seg" id="rain">
-        <button data-sc="light">Light</button>
-        <button data-sc="moderate" class="on">Moderate</button>
-        <button data-sc="heavy">Heavy</button>
-      </span>
-    </div>
+<header>
+  <div class="brand">Flood<span class="b2">Lens</span></div>
+  <select id="citySel">
+    <option value="delhi">Delhi</option>
+    <option value="mumbai">Mumbai</option>
+    <option value="bengaluru">Bengaluru</option>
+    <option value="chandigarh">Chandigarh</option>
+  </select>
+  <div class="lenses">
+    <div class="lens active" data-lens="address">🏠 Explore</div>
+    <div class="lens" data-lens="route">🚗 Route</div>
+    <div class="lens" data-lens="data">📊 Data</div>
   </div>
-
-  <div class="kpis">
-    <div class="kpi alarm"><div class="v" id="k-people">—</div><div class="l">People in at-risk areas</div><div class="s" id="k-people-s">under this rainfall scenario</div></div>
-    <div class="kpi"><div class="v" id="k-area">—</div><div class="l">Area flagged at risk</div><div class="s">of the mapped city</div></div>
-    <div class="kpi"><div class="v" id="k-acc">—</div><div class="l">Map accuracy</div><div class="s">vs. a real past flood</div></div>
+</header>
+<div class="body">
+  <div id="map"></div>
+  <div class="side">
+    <div class="panel" id="panel"><p class="ph">Loading…</p></div>
+    <div class="events" id="events"></div>
+    <details class="caveats" id="caveats"><summary>How to read this — and its limits</summary><ul></ul></details>
   </div>
-
-  <div class="main">
-    <div id="map"></div>
-    <div class="panel">
-      <h3>Why is this area at risk?</h3>
-      <p class="hint" id="why-hint">Click anywhere on the map to see the reasons that spot floods.</p>
-      <div id="loc-wrap" style="display:none">
-        <div class="loc" id="loc-name">—</div>
-        <span class="badge" id="loc-badge">—</span>
-      </div>
-      <div class="why" id="why"></div>
-      <div class="legend">
-        <span>Risk:</span>
-        <span class="swatch" style="background:var(--risk1)"></span>Low
-        <span class="swatch" style="background:var(--risk2)"></span>Med
-        <span class="swatch" style="background:var(--risk3)"></span>High
-        <span class="swatch" style="background:var(--risk4)"></span>Very high
-      </div>
-      <div class="legend" id="hs-legend">
-        <span>Hotspots:</span>
-        <span class="swatch" style="background:#7a0a0a;border-radius:50%"></span>chronic
-        <span class="swatch" style="background:#e8731a;border-radius:50%"></span>recurring
-      </div>
-      <div id="sparkline"></div>
-      <div id="hslist"></div>
-      <div class="note">A planning aid, not an official warning. River mode = floodplain inundation (satellite); street-waterlogging mode = known ponding spots + a sink/drainage model. Rainfall scenarios are illustrative.</div>
-    </div>
-  </div>
-
-  <footer>
-    Sentinel-1 radar · Copernicus DEM · WorldPop · OpenStreetMap, via Google Earth Engine. Reasons generated from the model's SHAP values.
-    Source: <a href="https://github.com/agambear25/urban-flood-ml">github.com/agambear25/urban-flood-ml</a>
-  </footer>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const ACC={delhi:80,mumbai:70,bengaluru:73,chandigarh:79};
-const RISKCOL=["var(--risk1)","var(--risk1)","var(--risk2)","var(--risk3)","var(--risk4)"];
-const BADGECOL={"Low":"#b8860b","Medium":"#cc6a1f","High":"#c2401d","Very high":"#9c1106"};
-let state={city:"delhi",sc:"moderate",mode:"river",data:null,overlay:null,hsData:[],markers:{}};
-const map=L.map("map",{zoomControl:true,scrollWheelZoom:false}).setView([28.6,77.2],11);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  {maxZoom:18,attribution:"© OpenStreetMap"}).addTo(map);
+const BAND={severe:"b-severe",high:"b-high",moderate:"b-moderate",low:"b-low"};
+const BAND_LEGEND=[["severe","#c62828"],["high","#ef6c00"],["moderate","#f9a825"],["low","#2e7d32"]];
+let lens="address", clickedSpot=null, city="delhi";
+let overlay=null, hotspotLayer=null, overlayOpacity=0.55;
+let monsoonTimer=null, monsoonIdx=0, monsoonEvents=[];
+let routeA=null, routeB=null, routeGroup=null, currentHotspots=[];
+const SEVW={severe:3,high:2,moderate:1,low:0};
 
-const fmt=n=>n>=1e6?(n/1e6).toFixed(2)+"M":n>=1e3?Math.round(n/1e3)+"k":(""+Math.round(n));
+const map=L.map("map",{zoomControl:true});
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+  {attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19,subdomains:"abcd"}).addTo(map);
 
-async function loadCities(){
-  const cities=await (await fetch("assets/cities.json")).json();
-  const box=document.getElementById("cities");
-  cities.forEach(c=>{
-    const b=document.createElement("button");
-    b.className="pill"+(c.slug==="delhi"?" on":"");b.textContent=c.name;b.dataset.slug=c.slug;
-    b.onclick=()=>{document.querySelectorAll("#cities .pill").forEach(x=>x.classList.remove("on"));
-      b.classList.add("on");setCity(c.slug);};
-    box.appendChild(b);
-  });
-  document.querySelectorAll("#rain button").forEach(b=>b.onclick=()=>{
-    document.querySelectorAll("#rain button").forEach(x=>x.classList.remove("on"));
-    b.classList.add("on");state.sc=b.dataset.sc;refresh();});
-  document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>{
-    document.querySelectorAll("#mode button").forEach(x=>x.classList.remove("on"));
-    b.classList.add("on");state.mode=b.dataset.m;
-    document.getElementById("rain-grp").style.opacity=state.mode==="waterlog"?.35:1;
-    refresh();resetPanel();});
-  setCity("delhi");
+// static legend + opacity controls (band scheme is identical across cities)
+const lg=L.control({position:"bottomright"});
+lg.onAdd=()=>{const d=L.DomUtil.create("div","legend");
+  d.innerHTML="<b>Flood-proneness (relative)</b>"+BAND_LEGEND.map(([n,c])=>
+    `<div><span class="sw" style="background:${c}"></span>${n}</div>`).join("")+
+    '<div style="margin-top:4px"><span class="sw" style="background:#37474f;border-radius:50%"></span>reported hotspot</div>';
+  return d;};
+lg.addTo(map);
+const oc=L.control({position:"topright"});
+oc.onAdd=()=>{const d=L.DomUtil.create("div","opacity");
+  d.innerHTML='risk overlay <input id="op" type="range" min="0" max="100" value="55" style="vertical-align:middle">';
+  L.DomEvent.disableClickPropagation(d);
+  setTimeout(()=>document.getElementById("op").addEventListener("input",e=>{
+    overlayOpacity=e.target.value/100; if(overlay) overlay.setOpacity(overlayOpacity);}),0);
+  return d;};
+oc.addTo(map);
+map.on("click", onMapClick);
+
+const panel=document.getElementById("panel");
+function esc(s){return (s==null?"":String(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+function showSpot(p){
+  clickedSpot=p;
+  if(lens!=="address"){renderLens();return;}
+  panel.innerHTML=`<h3>${esc(p.name)}</h3>
+    <span class="band ${BAND[p.band]||"b-low"}">${(p.band||"").toUpperCase()}</span>
+    <span class="tier">${esc(p.tier||"")} hotspot</span>
+    <div class="imagery">🛰️ ${esc(p.imagery)}</div>
+    <h4>Why the model flags it</h4>
+    <ul class="why">${(p.why||[]).map(w=>`<li>${esc(w)}</li>`).join("")||"<li>—</li>"}</ul>
+    <div class="score">relative score ${p.relative_score} · a ranking within the city, not a probability</div>`;
 }
-
-async function setCity(slug){
-  state.city=slug;
-  state.data=await (await fetch(`assets/${slug}.json`)).json();
-  map.fitBounds(state.data.bounds);
-  if(state.hotspots){map.removeLayer(state.hotspots);state.hotspots=null;}
-  state.hsData=[];state.markers={};
-  try{
-    const hs=await (await fetch(`assets/${slug}_hotspots.json`)).json();
-    state.hsData=hs.slice().sort((a,b)=>(a.tier==="chronic"?0:1)-(b.tier==="chronic"?0:1));
-    const layer=L.layerGroup();
-    hs.forEach(h=>{
-      const m=L.circleMarker([h.lat,h.lon],{radius:6,weight:1.5,color:"#fff",
-        fillColor:h.tier==="chronic"?"#7a0a0a":"#e8731a",fillOpacity:.95})
-        .bindPopup(`<b>${h.name}</b><br><span style="color:#777">${h.tier} waterlogging hotspot</span>`);
-      m.addTo(layer);state.markers[h.name]=m;
-    });
-    state.hotspots=layer;layer.addTo(map);
-  }catch(e){}
-  renderHotspotList();
-  resetPanel();
-  refresh();
+function showEmpty(){
+  clickedSpot=null;
+  if(lens!=="address")return;
+  panel.innerHTML=`<p class="ph"><b>No reported flood point here.</b><br>The map has no record at this spot — that means <b>"not on record", not "safe"</b>. Click a coloured marker to see why it floods.</p>`;
 }
-
-function renderHotspotList(){
-  const el=document.getElementById("hslist");
-  if(!state.hsData.length){el.innerHTML="";return;}
-  const rows=state.hsData.slice(0,12).map(h=>
-    `<div class="hsrow" data-n="${h.name}" style="display:flex;align-items:center;gap:8px;padding:6px 0;cursor:pointer;border-bottom:1px solid var(--line);font-size:13px">
-       <span style="width:9px;height:9px;border-radius:50%;flex:none;background:${h.tier==="chronic"?"#7a0a0a":"#e8731a"}"></span>
-       <span style="flex:1">${h.name}</span>
-       <span style="font-size:11px;color:var(--muted)">${h.tier}</span></div>`).join("");
-  el.innerHTML=`<div style="font-size:12px;color:var(--muted);margin:12px 0 4px">Known waterlogging spots — click to locate on map</div>${rows}`;
-  el.querySelectorAll(".hsrow").forEach(r=>r.onclick=()=>{
-    const m=state.markers[r.dataset.n];if(m){map.flyTo(m.getLatLng(),14);m.openPopup();}});
-}
-
-function refresh(){
-  const d=state.data,sc=state.sc,wl=state.mode==="waterlog";
-  if(state.overlay)map.removeLayer(state.overlay);
-  const url=wl&&d.waterlog_overlay?d.waterlog_overlay:d.overlays[sc];
-  state.overlay=L.imageOverlay(url,d.bounds,{opacity:wl?.72:.68}).addTo(map);
-  const s=d.scenarios[sc];
-  document.getElementById("k-people").textContent=wl?state.hsData.length:fmt(s.people);
-  document.getElementById("k-people-s").textContent=wl?"on the map (click the list)":"under this rainfall scenario";
-  document.querySelector(".kpi.alarm .l").textContent=wl?"Known waterlogging spots":"People in at-risk areas";
-  document.getElementById("k-area").textContent=Math.round(s.area_km2)+" km²";
-  document.getElementById("k-acc").textContent="≈"+ACC[d.slug]+"%";
-}
-
-function resetPanel(){
-  const wl=state.mode==="waterlog";
-  document.getElementById("why-hint").style.display="";
-  document.getElementById("loc-wrap").style.display="none";
-  const drv=(wl&&state.data.wl_top_drivers)?state.data.wl_top_drivers:state.data.top_drivers;
-  renderWhy(drv,(wl?"What makes streets waterlog in ":"What drives flood risk across ")+state.data.name);
-  document.getElementById("why-hint").textContent=wl
-    ?"Click a spot or hotspot to see why it waterlogs. Below: what drives street ponding city-wide."
-    :"Click anywhere on the map to see why that spot floods. Below: what drives risk city-wide.";
-  renderSparkline();
-}
-
-function renderSparkline(){
-  const el=document.getElementById("sparkline"),f=state.data.frequency;
-  if(!f){el.innerHTML="";return;}
-  const max=Math.max(...f,1e-6),W=250,bw=W/12;
-  const bars=f.map((v,i)=>{const h=Math.max(2,v/max*34),mon=(i>=5&&i<=8);
-    return `<rect x="${i*bw+2}" y="${38-h}" width="${bw-3}" height="${h}" rx="1" fill="${mon?'#1c7ed6':'#cdd7e1'}"></rect>`;}).join("");
-  el.innerHTML=`<div style="font-size:12px;color:var(--muted);margin:12px 0 3px">Flood news by month — peaks every monsoon</div><svg width="${W}" height="40">${bars}</svg>`;
-}
-
-function renderWhy(factors,heading){
-  const maxAbs=Math.max(...factors.map(f=>Math.abs(f.value)),.01);
-  const html=factors.map(f=>{
-    const w=Math.max(6,Math.abs(f.value)/maxAbs*44);
-    const up=f.dir==="up";
-    const fill=up?`left:50%;width:${w}%;background:var(--up);border-radius:0 3px 3px 0`
-                 :`right:50%;width:${w}%;background:var(--down);border-radius:3px 0 0 3px`;
-    const val=(up?"+":"−")+Math.abs(f.value).toFixed(2);
-    return `<div class="row"><div class="f">${f.factor}</div>
-      <div class="track"><div class="mid"></div><div class="fill" style="${fill}"></div></div>
-      <div class="val" style="color:${up?'var(--up)':'var(--down)'}">${val}</div></div>`;
-  }).join("");
-  document.getElementById("why").innerHTML=
-    `<div style="font-size:12px;color:var(--muted);margin-bottom:2px">${heading}</div>`+html;
-}
-
-map.on("click",e=>{
-  const d=state.data;if(!d)return;
-  const[[S,W],[N,E]]=d.bounds,{rows,cols}=d.grid;
-  const c=Math.floor((e.latlng.lng-W)/(E-W)*cols);
-  const r=Math.floor((N-e.latlng.lat)/(N-S)*rows);
-  const cell=d.cells.find(x=>x.r===r&&x.c===c);
-  document.getElementById("why-hint").style.display="none";
-  document.getElementById("loc-wrap").style.display="";
-  if(!cell){
-    document.getElementById("loc-name").textContent="No data here";
-    const bd=document.getElementById("loc-badge");bd.textContent="outside mapped area / water";bd.style.background="#888";
-    document.getElementById("why").innerHTML="";return;
+function renderLens(){
+  document.querySelectorAll(".lens").forEach(t=>t.classList.toggle("active",t.dataset.lens===lens));
+  if(lens==="address"){clickedSpot?showSpot(clickedSpot):showEmpty();}
+  else if(lens==="route"){ routeInstructions(); } else {
+    panel.innerHTML=`<h3>Data — ${esc(city)}</h3><p class="ph">The same data, downloadable:</p>
+      <div class="dl"><a href="web/${city}/risk.png" download>risk overlay (PNG)</a>
+      <a href="web/${city}/hotspots.geojson" download>hotspots (GeoJSON)</a>
+      <a href="web/${city}/meta.json" download>meta (JSON)</a></div>
+      <div class="disc">⚠ Relative screening signal — not an actuarial flood model. No return periods, depths, or loss curves.</div>`;
   }
-  document.getElementById("loc-name").textContent=`Selected spot (${e.latlng.lat.toFixed(3)}, ${e.latlng.lng.toFixed(3)})`;
-  const wl=state.mode==="waterlog";
-  const lvl=(wl&&cell.wl_level)?cell.wl_level:cell.level;
-  const why=(wl&&cell.wl_why)?cell.wl_why:cell.why;
-  const bd=document.getElementById("loc-badge");bd.textContent=lvl+(wl?" waterlogging risk":" flood risk");bd.style.background=BADGECOL[lvl];
-  renderWhy(why,(wl?"Why this spot waterlogs — ":"Why this spot floods — ")+lvl.toLowerCase());
-});
+}
+document.querySelectorAll(".lens").forEach(t=>t.addEventListener("click",()=>{lens=t.dataset.lens;renderLens();}));
+document.getElementById("citySel").addEventListener("change",e=>loadCity(e.target.value));
 
-loadCities();
+function onMapClick(e){ if(lens==="route"){ setRoutePoint(e.latlng); } else { showEmpty(); } }
+function ensureRouteGroup(){ if(!routeGroup) routeGroup=L.layerGroup().addTo(map); return routeGroup; }
+function clearRoute(){ routeA=null; routeB=null; if(routeGroup) routeGroup.clearLayers(); }
+function routeInstructions(){
+  panel.innerHTML=`<h3>Route</h3><p class="ph">Click your <b>start</b> on the map, then your <b>destination</b>. I'll draw the routes, flag the known flood spots you'd pass, and recommend the lower-risk one.</p>`;
+}
+function ptMarker(ll,color){ return L.circleMarker(ll,{radius:7,color:"#fff",weight:2,fillColor:color,fillOpacity:1}); }
+function setRoutePoint(ll){
+  ensureRouteGroup();
+  if(!routeA || (routeA && routeB)){ clearRoute(); routeA=ll; routeGroup.addLayer(ptMarker(ll,"#1565c0"));
+    if(lens==="route") panel.innerHTML=`<h3>Route</h3><p class="ph">Start set. Now click your <b>destination</b>.</p>`; }
+  else { routeB=ll; routeGroup.addLayer(ptMarker(ll,"#6a1b9a")); computeRoute(); }
+}
+async function computeRoute(){
+  if(lens==="route") panel.innerHTML=`<h3>Route</h3><p class="ph">Finding routes…</p>`;
+  try{
+    const u=`https://router.project-osrm.org/route/v1/driving/${routeA.lng},${routeA.lat};${routeB.lng},${routeB.lat}?overview=full&geometries=geojson&alternatives=true`;
+    const data=await (await fetch(u)).json();
+    if(!data.routes||!data.routes.length){ if(lens==="route") panel.innerHTML=`<h3>Route</h3><p class="ph">No driving route found between those points.</p>`; return; }
+    routeGroup.clearLayers();
+    routeGroup.addLayer(ptMarker(routeA,"#1565c0")); routeGroup.addLayer(ptMarker(routeB,"#6a1b9a"));
+    const scored=data.routes.map(r=>{
+      const latlngs=r.geometry.coordinates.map(c=>L.latLng(c[1],c[0]));
+      const spots=onRouteSpots(latlngs);
+      return {latlngs,spots,score:spots.reduce((a,s)=>a+SEVW[s.band||"low"],0),dist:r.distance,dur:r.duration};
+    }).sort((a,b)=>a.score-b.score||a.dur-b.dur);
+    scored.forEach((s,rank)=>routeGroup.addLayer(L.polyline(s.latlngs,{color:rank===0?"#2e7d32":"#9aa7b1",weight:rank===0?6:4,opacity:rank===0?0.95:0.55})));
+    renderRouteResults(scored);
+  }catch(err){ if(lens==="route") panel.innerHTML=`<h3>Route</h3><p class="ph">Routing service is unavailable right now (${esc(err.message)}). A production build would run its own routing engine.</p><p class="ph"><a href="#" onclick="clearRoute();routeInstructions();return false;">try again</a></p>`; }
+}
+function onRouteSpots(latlngs){
+  const out=[];
+  currentHotspots.forEach(f=>{
+    const c=f.geometry.coordinates, hl=L.latLng(c[1],c[0]);
+    let min=1e12; for(let k=0;k<latlngs.length;k+=2){ const d=hl.distanceTo(latlngs[k]); if(d<min) min=d; }
+    if(min<450) out.push(f.properties);
+  });
+  return out.sort((a,b)=>SEVW[b.band]-SEVW[a.band]);
+}
+function renderRouteResults(scored){
+  if(lens!=="route") return;
+  const fmt=s=>`${(s.dist/1000).toFixed(1)} km · ${Math.round(s.dur/60)} min`;
+  const opt=(s,rank)=>{
+    const names=s.spots.slice(0,3).map(x=>(x.name||"").split(",")[0]).join(", ");
+    const sub=s.spots.length?`passes ${s.spots.length} known flood spot${s.spots.length>1?"s":""}${names?": "+names:""}`:"no known flood spots on the way";
+    return `<div style="border:1px solid ${rank===0?"#2e7d32":"#e6ecf0"};border-radius:9px;padding:9px 10px;margin-bottom:7px;${rank===0?"box-shadow:0 0 0 2px #2e7d3222;":""}">
+      <b>${rank===0?"🛟 Lower-risk":"Alternative"}</b> — ${fmt(s)}<br>
+      <span style="font-size:12px;color:#51606b">${esc(sub)}</span></div>`;
+  };
+  panel.innerHTML=`<h3>Route options</h3>${scored.map(opt).join("")}
+    <p class="ph" style="margin-top:6px">"Lower-risk" = passes fewer / less-severe <b>known</b> flood points (within ~450 m of the route). Known points only — not every flood, and not live water. <a href="#" onclick="clearRoute();routeInstructions();return false;">clear</a></p>`;
+}
+
+function renderMonsoon(events){
+  monsoonEvents=events; monsoonIdx=0;
+  const scale=200;  // mm cap for bar height (absolute, so Mumbai reads taller than the others)
+  const bars=events.map((e,i)=>{
+    const mm=e.peak_day_mm||0, h=Math.max(4,Math.min(1,mm/scale)*46);
+    return `<div class="mcol" data-i="${i}"><div class="mbar" style="height:${h}px"></div><div class="myr">${e.date.slice(0,4)}</div></div>`;
+  }).join("");
+  document.getElementById("events").innerHTML=
+    `<div class="mhead"><button class="mplay" id="mplay">▶</button><b>Rain on recorded flood events</b><span class="mcap" id="mcap"></span></div>
+     <div class="mrow">${bars}</div>
+     <div class="mnote">peak single-day rain · satellite city-average (under-reads local cloudbursts)</div>`;
+  document.getElementById("mplay").addEventListener("click",toggleMonsoon);
+  document.querySelectorAll("#events .mcol").forEach(c=>c.addEventListener("click",()=>{stopMonsoon();showMonsoon(+c.dataset.i);}));
+  showMonsoon(0);
+}
+function showMonsoon(i){
+  monsoonIdx=i; const e=monsoonEvents[i]; if(!e)return;
+  document.querySelectorAll("#events .mcol").forEach((c,j)=>c.classList.toggle("on",j===i));
+  document.getElementById("mcap").textContent=`${e.date.slice(0,4)}: ~${e.peak_day_mm==null?"?":e.peak_day_mm} mm on the wettest day`;
+}
+function stopMonsoon(){if(monsoonTimer){clearInterval(monsoonTimer);monsoonTimer=null;}const b=document.getElementById("mplay");if(b)b.textContent="▶";}
+function toggleMonsoon(){
+  if(monsoonTimer){stopMonsoon();return;}
+  const b=document.getElementById("mplay");if(b)b.textContent="⏸";
+  monsoonTimer=setInterval(()=>showMonsoon((monsoonIdx+1)%monsoonEvents.length),1100);
+}
+
+async function loadCity(slug){
+  city=slug; clickedSpot=null; stopMonsoon();
+  panel.innerHTML='<p class="ph">Loading…</p>';
+  if(overlay){map.removeLayer(overlay);overlay=null;}
+  if(hotspotLayer){map.removeLayer(hotspotLayer);hotspotLayer=null;}
+  try{
+    const meta=await (await fetch(`web/${slug}/meta.json?v=`+Date.now())).json();
+    const b=meta.bounds, bounds=[[b.south,b.west],[b.north,b.east]];
+    map.setView([(b.south+b.north)/2,(b.west+b.east)/2],11);
+    const fit=()=>{map.invalidateSize(true); if(map.getSize().y>60) map.fitBounds(bounds);};
+    setTimeout(fit,250); window.addEventListener("load",()=>setTimeout(fit,120));
+    const colors={}; meta.bands.forEach(x=>colors[x.name]=x.color);
+
+    overlay=L.imageOverlay(`web/${slug}/risk.png?v=`+Date.now(),bounds,{opacity:overlayOpacity}).addTo(map);
+
+    const hs=await (await fetch(`web/${slug}/hotspots.geojson?v=`+Date.now())).json();
+    hotspotLayer=L.geoJSON(hs,{pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:7,weight:2,color:"#fff",
+        fillColor:colors[f.properties.band]||"#777",fillOpacity:0.95}),
+      onEachFeature:(f,layer)=>layer.on("click",e=>{L.DomEvent.stopPropagation(e);showSpot(f.properties);})
+    }).addTo(map);
+    currentHotspots=hs.features; clearRoute();
+
+    renderMonsoon(meta.events);
+    document.querySelector("#caveats ul").innerHTML=meta.caveats.map(c=>`<li>${esc(c)}</li>`).join("");
+    if(lens==="address") showEmpty(); else renderLens();
+  }catch(err){panel.innerHTML=`<p class="ph">Couldn't load ${esc(slug)}: ${esc(err.message)}</p>`;}
+}
+
+loadCity("delhi");
 </script>
 </body>
 </html>

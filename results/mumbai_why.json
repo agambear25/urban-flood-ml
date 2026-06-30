@@ -1,0 +1,286 @@
+{
+  "city": "mumbai",
+  "model": "street-waterlogging (relative ranking, not a probability)",
+  "n_hotspots": 9,
+  "hotspots": [
+    {
+      "name": "Andheri Subway",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (5.8 m)",
+          "contribution": 6.5735
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (4.2 m)",
+          "contribution": 4.2697
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (6.1 m)",
+          "contribution": 0.5026
+        },
+        {
+          "factor": "curvature",
+          "direction": "lowers",
+          "plain": "convex ground that sheds water",
+          "contribution": -0.2659
+        }
+      ]
+    },
+    {
+      "name": "Sion Subway",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (5.0 m)",
+          "contribution": 6.6759
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (9.0 m)",
+          "contribution": 4.1862
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.378
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 0.14
+        }
+      ]
+    },
+    {
+      "name": "Kurla LBS Marg",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (4.4 m)",
+          "contribution": 7.6383
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (2.3 m)",
+          "contribution": 1.2663
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.3664
+        },
+        {
+          "factor": "local_relief",
+          "direction": "lowers",
+          "plain": "a local high point (11.2 m)",
+          "contribution": -0.2749
+        }
+      ]
+    },
+    {
+      "name": "Bandra Kurla Complex (BKC)",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.4 m)",
+          "contribution": 6.4184
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (4.6 m)",
+          "contribution": 4.4105
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "raises",
+          "plain": "a lot of land drains toward it",
+          "contribution": 0.5855
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.5609
+        }
+      ]
+    },
+    {
+      "name": "Kurar",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.1 m)",
+          "contribution": 6.3586
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (9.2 m)",
+          "contribution": 4.6113
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (6.4 m)",
+          "contribution": 0.7283
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 0.482
+        }
+      ]
+    },
+    {
+      "name": "Postal Colony",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.9 m)",
+          "contribution": 7.0965
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (4.7 m)",
+          "contribution": 4.6504
+        },
+        {
+          "factor": "drain_density",
+          "direction": "lowers",
+          "plain": "plenty of drains nearby",
+          "contribution": -0.8057
+        },
+        {
+          "factor": "curvature",
+          "direction": "lowers",
+          "plain": "convex ground that sheds water",
+          "contribution": -0.3623
+        }
+      ]
+    },
+    {
+      "name": "Byculla",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (4.4 m)",
+          "contribution": 6.5851
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (6.6 m)",
+          "contribution": 4.3568
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (0.9 m)",
+          "contribution": 1.2399
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.609
+        }
+      ]
+    },
+    {
+      "name": "Worli Naka",
+      "tier": "recurring",
+      "relative_risk": 0.999,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.2 m)",
+          "contribution": 8.1584
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (0.1 m)",
+          "contribution": 1.0019
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "lowers",
+          "plain": "little land drains toward it",
+          "contribution": -0.7682
+        },
+        {
+          "factor": "dist_river",
+          "direction": "lowers",
+          "plain": "far from any river (496 m)",
+          "contribution": -0.534
+        }
+      ]
+    },
+    {
+      "name": "Chunabhatti",
+      "tier": "chronic",
+      "relative_risk": 0.975,
+      "why": [
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (9.7 m)",
+          "contribution": 2.1889
+        },
+        {
+          "factor": "sink_depth",
+          "direction": "lowers",
+          "plain": "not a low point (0.0 m)",
+          "contribution": -2.0059
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 1.862
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "raises",
+          "plain": "a lot of land drains toward it",
+          "contribution": 1.5837
+        }
+      ]
+    }
+  ]
+}

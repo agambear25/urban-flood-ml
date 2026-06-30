@@ -1,0 +1,5 @@
+held_out_city,prevalence,within_city_spatial_roc_auc,crosscity_roc_auc,generalization_gap,crosscity_pr_auc,pr_auc_baseline,brier_raw,brier_calibrated
+delhi,0.0635,0.7972,0.7188,0.0784,0.1413,0.0635,0.3070,0.0581
+mumbai,0.0597,0.6961,0.5927,0.1035,0.0812,0.0597,0.6388,0.2725
+bengaluru,0.0335,0.7277,0.7058,0.0219,0.1469,0.0335,0.0828,0.0313
+chandigarh,0.0629,0.7915,0.7739,0.0176,0.1945,0.0629,0.2332,0.0548

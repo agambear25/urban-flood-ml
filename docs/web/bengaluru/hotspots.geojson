@@ -1,0 +1,225 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.6240368,
+     12.9158171
+    ]
+   },
+   "properties": {
+    "name": "Silk Board Junction",
+    "tier": "chronic",
+    "band": "low",
+    "relative_score": 0.906,
+    "why": [
+     "low-lying overall",
+     "low above the nearest drainage (0.0 m)",
+     "not a low point (0.4 m)"
+    ],
+    "imagery": "satellite-checkable"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.5871953,
+     12.9757084
+    ]
+   },
+   "properties": {
+    "name": "KR Circle",
+    "tier": "chronic",
+    "band": "high",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (11.4 m)",
+     "lower than the area around it (8.0 m)",
+     "on higher ground overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.5898003,
+     13.0408577
+    ]
+   },
+   "properties": {
+    "name": "Hebbal Flyover",
+    "tier": "chronic",
+    "band": "high",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (3.3 m)",
+     "lower than the area around it (9.6 m)",
+     "little land drains toward it"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.6380054,
+     12.9127356
+    ]
+   },
+   "properties": {
+    "name": "HSR Layout 14th Main Road",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (4.6 m)",
+     "lower than the area around it (5.2 m)",
+     "low-lying overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.6324478,
+     12.9155668
+    ]
+   },
+   "properties": {
+    "name": "HSR Layout 5th Main Road",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (3.5 m)",
+     "lower than the area around it (3.2 m)",
+     "low-lying overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.6260402,
+     12.9119896
+    ]
+   },
+   "properties": {
+    "name": "Roopena Agrahara",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (0.9 m)",
+     "lower than the area around it (9.5 m)",
+     "plenty of drains nearby"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.5999675,
+     12.9180566
+    ]
+   },
+   "properties": {
+    "name": "Jayadeva Underpass",
+    "tier": "chronic",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (6.2 m)",
+     "lower than the area around it (13.2 m)",
+     "low-lying overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.699052,
+     12.9822462
+    ]
+   },
+   "properties": {
+    "name": "Marathahalli",
+    "tier": "chronic",
+    "band": "high",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (1.9 m)",
+     "few drains nearby",
+     "a lot of land drains toward it"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.7168965,
+     12.9688497
+    ]
+   },
+   "properties": {
+    "name": "Kundalahalli",
+    "tier": "recurring",
+    "band": "high",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (3.8 m)",
+     "few drains nearby",
+     "low-lying overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.7215365,
+     12.9559247
+    ]
+   },
+   "properties": {
+    "name": "Thubarahalli",
+    "tier": "recurring",
+    "band": "high",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (1.8 m)",
+     "few drains nearby",
+     "low-lying overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  }
+ ]
+}

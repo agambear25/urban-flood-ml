@@ -1,0 +1,596 @@
+{
+  "city": "delhi",
+  "model": "street-waterlogging (relative ranking, not a probability)",
+  "n_hotspots": 19,
+  "hotspots": [
+    {
+      "name": "Moolchand underpass",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (5.0 m)",
+          "contribution": 6.5029
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (4.6 m)",
+          "contribution": 2.2433
+        },
+        {
+          "factor": "dist_drain",
+          "direction": "raises",
+          "plain": "far from any mapped drain (56 m)",
+          "contribution": 1.0313
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.3596
+        }
+      ]
+    },
+    {
+      "name": "Pragati Maidan",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (4.4 m)",
+          "contribution": 6.2142
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (2.0 m)",
+          "contribution": 2.8309
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.8089
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (1.2 km)",
+          "contribution": 0.7038
+        }
+      ]
+    },
+    {
+      "name": "Sarai Kale Khan",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (2.3 m)",
+          "contribution": 7.0823
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (2.5 m)",
+          "contribution": 2.9651
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -1.5519
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (877 m)",
+          "contribution": 1.2235
+        }
+      ]
+    },
+    {
+      "name": "Mathura Road",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.1 m)",
+          "contribution": 5.9819
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (4.1 m)",
+          "contribution": 2.3186
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (1.4 km)",
+          "contribution": 1.2003
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "raises",
+          "plain": "a lot of land drains toward it",
+          "contribution": 0.5171
+        }
+      ]
+    },
+    {
+      "name": "Mukarba Chowk",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (2.6 m)",
+          "contribution": 6.7411
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (6.3 km)",
+          "contribution": 1.1638
+        },
+        {
+          "factor": "dist_drain",
+          "direction": "raises",
+          "plain": "far from any mapped drain (68 m)",
+          "contribution": 1.1636
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "raises",
+          "plain": "a lot of land drains toward it",
+          "contribution": 0.7307
+        }
+      ]
+    },
+    {
+      "name": "Karol Bagh",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.5 m)",
+          "contribution": 6.6054
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (2.9 km)",
+          "contribution": 1.3055
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 0.2815
+        },
+        {
+          "factor": "builtup",
+          "direction": "raises",
+          "plain": "heavily built-up and paved (100% built-up)",
+          "contribution": 0.2249
+        }
+      ]
+    },
+    {
+      "name": "Najafgarh",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (2.1 m)",
+          "contribution": 6.8059
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (20.0 km)",
+          "contribution": 2.0582
+        },
+        {
+          "factor": "dist_drain",
+          "direction": "raises",
+          "plain": "far from any mapped drain (508 m)",
+          "contribution": 0.2698
+        },
+        {
+          "factor": "builtup",
+          "direction": "raises",
+          "plain": "heavily built-up and paved (100% built-up)",
+          "contribution": 0.2343
+        }
+      ]
+    },
+    {
+      "name": "Sangam Vihar",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.0 m)",
+          "contribution": 6.9557
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 1.9297
+        },
+        {
+          "factor": "dist_drain",
+          "direction": "lowers",
+          "plain": "close to a mapped drain (1.5 km)",
+          "contribution": -0.5731
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (6.7 km)",
+          "contribution": 0.5334
+        }
+      ]
+    },
+    {
+      "name": "Khanpur",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (2.8 m)",
+          "contribution": 6.8464
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 0.4274
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (1.1 m)",
+          "contribution": 0.3024
+        },
+        {
+          "factor": "builtup",
+          "direction": "raises",
+          "plain": "heavily built-up and paved (100% built-up)",
+          "contribution": 0.2554
+        }
+      ]
+    },
+    {
+      "name": "Subhash Chowk",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.4 m)",
+          "contribution": 6.5228
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (28.8 km)",
+          "contribution": 2.2638
+        },
+        {
+          "factor": "local_relief",
+          "direction": "lowers",
+          "plain": "a local high point (9.8 m)",
+          "contribution": -0.4789
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "raises",
+          "plain": "a lot of land drains toward it",
+          "contribution": 0.4498
+        }
+      ]
+    },
+    {
+      "name": "Rajiv Chowk",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.8 m)",
+          "contribution": 6.1739
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (3.4 m)",
+          "contribution": 2.263
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (27.7 km)",
+          "contribution": 1.6218
+        },
+        {
+          "factor": "dist_drain",
+          "direction": "raises",
+          "plain": "far from any mapped drain (2.5 km)",
+          "contribution": 0.6358
+        }
+      ]
+    },
+    {
+      "name": "Golf Course Road",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.8 m)",
+          "contribution": 6.2501
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (4.5 m)",
+          "contribution": 2.4852
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 1.7041
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 0.6335
+        }
+      ]
+    },
+    {
+      "name": "Signature Tower Chowk underpass",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.7 m)",
+          "contribution": 6.5326
+        },
+        {
+          "factor": "dist_drain",
+          "direction": "raises",
+          "plain": "far from any mapped drain (2.9 km)",
+          "contribution": 1.4371
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (24.5 km)",
+          "contribution": 0.453
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "raises",
+          "plain": "a lot of land drains toward it",
+          "contribution": 0.438
+        }
+      ]
+    },
+    {
+      "name": "GT Road Vijay Nagar",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.9 m)",
+          "contribution": 6.8049
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (8.7 km)",
+          "contribution": 1.832
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "raises",
+          "plain": "a lot of land drains toward it",
+          "contribution": 0.5702
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (0.2 m)",
+          "contribution": 0.2686
+        }
+      ]
+    },
+    {
+      "name": "Indirapuram",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (4.2 m)",
+          "contribution": 8.1715
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (8.6 km)",
+          "contribution": 1.8107
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -1.089
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (16.2 m)",
+          "contribution": 0.4036
+        }
+      ]
+    },
+    {
+      "name": "Okhla underpass",
+      "tier": "recurring",
+      "relative_risk": 0.999,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.0 m)",
+          "contribution": 6.8703
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (2.2 km)",
+          "contribution": 1.0029
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.3928
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 0.3266
+        }
+      ]
+    },
+    {
+      "name": "Sarita Vihar underpass",
+      "tier": "recurring",
+      "relative_risk": 0.999,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.0 m)",
+          "contribution": 6.8703
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (2.2 km)",
+          "contribution": 1.0029
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.3928
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 0.3266
+        }
+      ]
+    },
+    {
+      "name": "Dhaula Kuan",
+      "tier": "recurring",
+      "relative_risk": 0.941,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "lowers",
+          "plain": "not a low point (0.4 m)",
+          "contribution": -1.7083
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (8.8 km)",
+          "contribution": 1.6311
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 1.546
+        },
+        {
+          "factor": "dist_drain",
+          "direction": "raises",
+          "plain": "far from any mapped drain (2.5 km)",
+          "contribution": 1.0097
+        }
+      ]
+    },
+    {
+      "name": "Azadpur",
+      "tier": "recurring",
+      "relative_risk": 0.781,
+      "why": [
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (2.8 km)",
+          "contribution": 1.6526
+        },
+        {
+          "factor": "sink_depth",
+          "direction": "lowers",
+          "plain": "not a low point (0.0 m)",
+          "contribution": -1.6009
+        },
+        {
+          "factor": "dist_drain",
+          "direction": "raises",
+          "plain": "far from any mapped drain (94 m)",
+          "contribution": 1.1913
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -0.8331
+        }
+      ]
+    }
+  ]
+}

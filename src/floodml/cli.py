@@ -6,6 +6,9 @@ from pathlib import Path
 
 import typer
 
+from . import eval_crosscity as evalx
+from . import explain as expl
+from . import export_web as expw
 from . import features as feat
 from . import gee
 from . import predict as prd
@@ -89,6 +92,45 @@ def train_waterlog_cmd(city: str):
     (RESULTS / f"{city}_waterlog_metrics.json").write_text(json.dumps(res, indent=2))
     typer.echo(f"[{city}] waterlog PU spatial-AUC {res['spatial_cv_auc_pu']:.3f} "
                f"({res['n_positives']} hotspot px, {res['n_negatives']} pseudo-neg)")
+
+
+@app.command("eval-crosscity")
+def eval_crosscity_cmd():
+    """Leave-one-city-out evaluation: train on N-1 cities, test on the unseen one.
+
+    Reports cross-city ROC-AUC vs within-city spatial CV (the generalization gap),
+    PR-AUC against each city's true flood prevalence, and calibration (Brier, raw vs
+    isotonic). Reads only on-disk data; writes results/ + docs/eval/ figures.
+    """
+    res = evalx.crosscity_eval()
+    for r in res["results"]:
+        typer.echo(
+            f"[{r['held_out_city']:>10}] unseen ROC-AUC {r['crosscity_roc_auc']:.3f} "
+            f"(within-city {r['within_city_spatial_roc_auc']:.3f}, "
+            f"gap {r['generalization_gap']:+.3f}) | PR-AUC {r['crosscity_pr_auc']:.3f} "
+            f"vs base {r['pr_auc_baseline']:.3f} | Brier {r['brier_raw']:.3f}->{r['brier_calibrated']:.3f}")
+
+
+@app.command("export-web")
+def export_web_cmd(city: str):
+    """Export precomputed web data (risk overlay + hotspots + meta) for the map under web/<city>/."""
+    res = expw.export_city(city)
+    typer.echo(f"[{city}] web export → web/{city}/  ({res['n_hotspots']} hotspots, events {res['events']})")
+
+
+@app.command()
+def explain(city: str, top: int = 8):
+    """Explain WHY the model flags each documented waterlogging hotspot in a city.
+
+    Uses exact per-prediction feature contributions (tree SHAP) and prints them in plain
+    English; writes results/<city>_why.json + docs/eval/why_<city>.png.
+    """
+    res = expl.explain_city(city, top=top)
+    typer.echo(f"[{city}] {res['n_hotspots']} hotspots ({res['model']})")
+    for h in res["hotspots"][:top]:
+        reasons = "; ".join(f"{'↑' if f['direction']=='raises' else '↓'} {f['plain']}"
+                            for f in h["why"])
+        typer.echo(f"  {h['name']}  (risk {h['relative_risk']:.2f}): {reasons}")
 
 
 @app.command()

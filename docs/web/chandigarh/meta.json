@@ -1,0 +1,67 @@
+{
+  "city": "Chandigarh",
+  "slug": "chandigarh",
+  "bounds": {
+    "west": 76.57994066673461,
+    "south": 30.549906182336684,
+    "east": 77.02011515595318,
+    "north": 30.850302813346254
+  },
+  "surface": "street-waterlogging susceptibility (relative, quantile bands)",
+  "bands": [
+    {
+      "name": "low",
+      "color": "#2e7d32"
+    },
+    {
+      "name": "moderate",
+      "color": "#f9a825"
+    },
+    {
+      "name": "high",
+      "color": "#ef6c00"
+    },
+    {
+      "name": "severe",
+      "color": "#c62828"
+    }
+  ],
+  "thresholds_pct": {
+    "moderate": 50,
+    "high": 75,
+    "severe": 90
+  },
+  "events": [
+    {
+      "name": "2018 lake/pluvial",
+      "date": "2018-09-23",
+      "peak_day_mm": 37.3,
+      "window_days": 18
+    },
+    {
+      "name": "2020 lake/pluvial",
+      "date": "2020-08-19",
+      "peak_day_mm": 36.9,
+      "window_days": 18
+    },
+    {
+      "name": "2023 riverine/pluvial",
+      "date": "2023-07-09",
+      "peak_day_mm": 81.4,
+      "window_days": 18
+    },
+    {
+      "name": "2025 riverine/lake/pluv",
+      "date": "2025-08-28",
+      "peak_day_mm": 74.9,
+      "window_days": 18
+    }
+  ],
+  "n_hotspots": 3,
+  "caveats": [
+    "Risk is RELATIVE within this city (quantile bands) from ~30 m data \u2014 not an absolute probability, not plot-level.",
+    "Hotspots and flood history are presence-only and reporting-biased (news / traffic-police); an unmarked area is 'not on record', not 'safe'.",
+    "Satellite radar sees open water (rivers, large junctions), not street water between buildings.",
+    "Flood events are the dated satellite events we have (2018, 2020, 2023, 2025) \u2014 a small set, not every flood."
+  ]
+}

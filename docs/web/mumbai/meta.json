@@ -1,0 +1,73 @@
+{
+  "city": "Mumbai",
+  "slug": "mumbai",
+  "bounds": {
+    "west": 72.77988735185221,
+    "south": 18.87989232633998,
+    "east": 73.1000469191124,
+    "north": 19.320066815558548
+  },
+  "surface": "street-waterlogging susceptibility (relative, quantile bands)",
+  "bands": [
+    {
+      "name": "low",
+      "color": "#2e7d32"
+    },
+    {
+      "name": "moderate",
+      "color": "#f9a825"
+    },
+    {
+      "name": "high",
+      "color": "#ef6c00"
+    },
+    {
+      "name": "severe",
+      "color": "#c62828"
+    }
+  ],
+  "thresholds_pct": {
+    "moderate": 50,
+    "high": 75,
+    "severe": 90
+  },
+  "events": [
+    {
+      "name": "2017 pluvial",
+      "date": "2017-08-29",
+      "peak_day_mm": 120.8,
+      "window_days": 18
+    },
+    {
+      "name": "2019 pluvial + Mithi ri",
+      "date": "2019-07-01",
+      "peak_day_mm": 108.5,
+      "window_days": 18
+    },
+    {
+      "name": "2019 pluvial + Mithi ri",
+      "date": "2019-09-04",
+      "peak_day_mm": 108.5,
+      "window_days": 18
+    },
+    {
+      "name": "2020 pluvial + coastal",
+      "date": "2020-08-05",
+      "peak_day_mm": 121.5,
+      "window_days": 18
+    },
+    {
+      "name": "2021 pluvial + slope fa",
+      "date": "2021-07-18",
+      "peak_day_mm": 182.6,
+      "window_days": 18
+    }
+  ],
+  "n_hotspots": 9,
+  "caveats": [
+    "Risk is RELATIVE within this city (quantile bands) from ~30 m data \u2014 not an absolute probability, not plot-level.",
+    "Hotspots and flood history are presence-only and reporting-biased (news / traffic-police); an unmarked area is 'not on record', not 'safe'.",
+    "Satellite radar sees open water (rivers, large junctions), not street water between buildings.",
+    "Flood events are the dated satellite events we have (2017, 2019, 2019, 2020, 2021) \u2014 a small set, not every flood."
+  ]
+}

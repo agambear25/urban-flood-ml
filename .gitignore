@@ -23,5 +23,8 @@ dist/
 .DS_Store
 *.credentials
 
+# editor / local dev config
+.claude/
+
 # scratch notebooks
 Untitled*.ipynb

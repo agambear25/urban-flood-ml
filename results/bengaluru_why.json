@@ -1,0 +1,317 @@
+{
+  "city": "bengaluru",
+  "model": "street-waterlogging (relative ranking, not a probability)",
+  "n_hotspots": 10,
+  "hotspots": [
+    {
+      "name": "KR Circle",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (11.4 m)",
+          "contribution": 6.9696
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (8.0 m)",
+          "contribution": 4.5049
+        },
+        {
+          "factor": "elevation",
+          "direction": "lowers",
+          "plain": "on higher ground overall",
+          "contribution": -1.5701
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (7.0 m)",
+          "contribution": 0.6196
+        }
+      ]
+    },
+    {
+      "name": "Hebbal Flyover",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.3 m)",
+          "contribution": 6.0353
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (9.6 m)",
+          "contribution": 5.4402
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "lowers",
+          "plain": "little land drains toward it",
+          "contribution": -1.3323
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 0.4385
+        }
+      ]
+    },
+    {
+      "name": "HSR Layout 14th Main Road",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (4.6 m)",
+          "contribution": 6.2916
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (5.2 m)",
+          "contribution": 4.7628
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 0.67
+        },
+        {
+          "factor": "curvature",
+          "direction": "lowers",
+          "plain": "convex ground that sheds water",
+          "contribution": -0.3573
+        }
+      ]
+    },
+    {
+      "name": "HSR Layout 5th Main Road",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.5 m)",
+          "contribution": 6.4141
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (3.2 m)",
+          "contribution": 4.6835
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 0.6144
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (0.2 m)",
+          "contribution": 0.6
+        }
+      ]
+    },
+    {
+      "name": "Roopena Agrahara",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (0.9 m)",
+          "contribution": 6.1833
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (9.5 m)",
+          "contribution": 4.7165
+        },
+        {
+          "factor": "drain_density",
+          "direction": "lowers",
+          "plain": "plenty of drains nearby",
+          "contribution": -0.6287
+        },
+        {
+          "factor": "curvature",
+          "direction": "raises",
+          "plain": "a concave hollow that collects water",
+          "contribution": 0.3573
+        }
+      ]
+    },
+    {
+      "name": "Jayadeva Underpass",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (6.2 m)",
+          "contribution": 6.6997
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (13.2 m)",
+          "contribution": 4.5009
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 0.9848
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 0.4278
+        }
+      ]
+    },
+    {
+      "name": "Marathahalli",
+      "tier": "chronic",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.9 m)",
+          "contribution": 6.2437
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 1.7406
+        },
+        {
+          "factor": "upstream_area",
+          "direction": "raises",
+          "plain": "a lot of land drains toward it",
+          "contribution": 1.23
+        },
+        {
+          "factor": "local_relief",
+          "direction": "lowers",
+          "plain": "a local high point (16.7 m)",
+          "contribution": -0.4896
+        }
+      ]
+    },
+    {
+      "name": "Kundalahalli",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (3.8 m)",
+          "contribution": 6.9029
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 1.3033
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 0.6547
+        },
+        {
+          "factor": "local_relief",
+          "direction": "lowers",
+          "plain": "a local high point (16.0 m)",
+          "contribution": -0.451
+        }
+      ]
+    },
+    {
+      "name": "Thubarahalli",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (1.8 m)",
+          "contribution": 7.0574
+        },
+        {
+          "factor": "drain_density",
+          "direction": "raises",
+          "plain": "few drains nearby",
+          "contribution": 1.292
+        },
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 0.7668
+        },
+        {
+          "factor": "builtup",
+          "direction": "raises",
+          "plain": "heavily built-up and paved (100% built-up)",
+          "contribution": 0.4071
+        }
+      ]
+    },
+    {
+      "name": "Silk Board Junction",
+      "tier": "chronic",
+      "relative_risk": 0.906,
+      "why": [
+        {
+          "factor": "elevation",
+          "direction": "raises",
+          "plain": "low-lying overall",
+          "contribution": 1.5138
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (0.0 m)",
+          "contribution": 1.3296
+        },
+        {
+          "factor": "sink_depth",
+          "direction": "lowers",
+          "plain": "not a low point (0.4 m)",
+          "contribution": -1.2664
+        },
+        {
+          "factor": "curvature",
+          "direction": "raises",
+          "plain": "a concave hollow that collects water",
+          "contribution": 0.9147
+        }
+      ]
+    }
+  ]
+}

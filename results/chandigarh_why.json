@@ -1,0 +1,100 @@
+{
+  "city": "chandigarh",
+  "model": "street-waterlogging (relative ranking, not a probability)",
+  "n_hotspots": 3,
+  "hotspots": [
+    {
+      "name": "Tribune Chowk",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (4.3 m)",
+          "contribution": 6.7723
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (4.1 m)",
+          "contribution": 1.7698
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (0.3 m)",
+          "contribution": 1.7427
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (1.6 km)",
+          "contribution": 0.7453
+        }
+      ]
+    },
+    {
+      "name": "VIP Road",
+      "tier": "recurring",
+      "relative_risk": 1.0,
+      "why": [
+        {
+          "factor": "sink_depth",
+          "direction": "raises",
+          "plain": "a pronounced bowl / low point (underpass-like) (4.8 m)",
+          "contribution": 6.3915
+        },
+        {
+          "factor": "local_relief",
+          "direction": "raises",
+          "plain": "lower than the area around it (5.1 m)",
+          "contribution": 1.5856
+        },
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (2.1 m)",
+          "contribution": 1.0361
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (1.4 km)",
+          "contribution": 0.6745
+        }
+      ]
+    },
+    {
+      "name": "Industrial Area Phase 1",
+      "tier": "recurring",
+      "relative_risk": 0.997,
+      "why": [
+        {
+          "factor": "hand",
+          "direction": "raises",
+          "plain": "low above the nearest drainage (1.1 m)",
+          "contribution": 3.2287
+        },
+        {
+          "factor": "sink_depth",
+          "direction": "lowers",
+          "plain": "not a low point (0.3 m)",
+          "contribution": -1.9844
+        },
+        {
+          "factor": "dist_river",
+          "direction": "raises",
+          "plain": "near a river or large channel (1.3 km)",
+          "contribution": 1.4899
+        },
+        {
+          "factor": "curvature",
+          "direction": "raises",
+          "plain": "a concave hollow that collects water",
+          "contribution": 1.1224
+        }
+      ]
+    }
+  ]
+}

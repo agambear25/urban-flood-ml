@@ -1,0 +1,67 @@
+{
+  "city": "Bengaluru",
+  "slug": "bengaluru",
+  "bounds": {
+    "west": 77.39992285807891,
+    "south": 12.779972221054784,
+    "east": 77.85015847847961,
+    "north": 13.180261511658443
+  },
+  "surface": "street-waterlogging susceptibility (relative, quantile bands)",
+  "bands": [
+    {
+      "name": "low",
+      "color": "#2e7d32"
+    },
+    {
+      "name": "moderate",
+      "color": "#f9a825"
+    },
+    {
+      "name": "high",
+      "color": "#ef6c00"
+    },
+    {
+      "name": "severe",
+      "color": "#c62828"
+    }
+  ],
+  "thresholds_pct": {
+    "moderate": 50,
+    "high": 75,
+    "severe": 90
+  },
+  "events": [
+    {
+      "name": "2017 pluvial",
+      "date": "2017-08-13",
+      "peak_day_mm": 38.0,
+      "window_days": 18
+    },
+    {
+      "name": "2020 pluvial",
+      "date": "2020-10-22",
+      "peak_day_mm": 18.4,
+      "window_days": 18
+    },
+    {
+      "name": "2022 lake",
+      "date": "2022-09-03",
+      "peak_day_mm": 47.5,
+      "window_days": 18
+    },
+    {
+      "name": "2024 lake",
+      "date": "2024-10-21",
+      "peak_day_mm": 18.5,
+      "window_days": 18
+    }
+  ],
+  "n_hotspots": 10,
+  "caveats": [
+    "Risk is RELATIVE within this city (quantile bands) from ~30 m data \u2014 not an absolute probability, not plot-level.",
+    "Hotspots and flood history are presence-only and reporting-biased (news / traffic-police); an unmarked area is 'not on record', not 'safe'.",
+    "Satellite radar sees open water (rivers, large junctions), not street water between buildings.",
+    "Flood events are the dated satellite events we have (2017, 2020, 2022, 2024) \u2014 a small set, not every flood."
+  ]
+}

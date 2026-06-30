@@ -1,0 +1,71 @@
+{
+  "task": "leave-one-city-out (riverine SAR model)",
+  "seed": 0,
+  "features": [
+    "elevation",
+    "slope",
+    "curvature",
+    "local_relief",
+    "hand",
+    "dist_river",
+    "builtup",
+    "dist_drain",
+    "drain_density",
+    "upstream_area",
+    "sink_depth"
+  ],
+  "results": [
+    {
+      "held_out_city": "delhi",
+      "prevalence": 0.06347666666666667,
+      "within_city_spatial_roc_auc": 0.7971755984185205,
+      "crosscity_roc_auc": 0.7187640395813422,
+      "crosscity_pr_auc": 0.1413097740372055,
+      "pr_auc_baseline": 0.06347666666666667,
+      "brier_raw": 0.3070259392261505,
+      "brier_calibrated": 0.05810976400971413,
+      "n_test": 300000,
+      "n_train": 240000,
+      "generalization_gap": 0.0784
+    },
+    {
+      "held_out_city": "mumbai",
+      "prevalence": 0.059666666666666666,
+      "within_city_spatial_roc_auc": 0.6961332321316351,
+      "crosscity_roc_auc": 0.5926675091443068,
+      "crosscity_pr_auc": 0.08116579898322562,
+      "pr_auc_baseline": 0.059666666666666666,
+      "brier_raw": 0.6388408541679382,
+      "brier_calibrated": 0.27254435420036316,
+      "n_test": 300000,
+      "n_train": 240000,
+      "generalization_gap": 0.1035
+    },
+    {
+      "held_out_city": "bengaluru",
+      "prevalence": 0.03352666666666667,
+      "within_city_spatial_roc_auc": 0.7277255816786778,
+      "crosscity_roc_auc": 0.7057886702648228,
+      "crosscity_pr_auc": 0.14693740660946797,
+      "pr_auc_baseline": 0.03352666666666667,
+      "brier_raw": 0.08278615772724152,
+      "brier_calibrated": 0.03125421702861786,
+      "n_test": 300000,
+      "n_train": 240000,
+      "generalization_gap": 0.0219
+    },
+    {
+      "held_out_city": "chandigarh",
+      "prevalence": 0.06291333333333333,
+      "within_city_spatial_roc_auc": 0.791458785687643,
+      "crosscity_roc_auc": 0.7738874313769387,
+      "crosscity_pr_auc": 0.19452924703332292,
+      "pr_auc_baseline": 0.06291333333333333,
+      "brier_raw": 0.2331615686416626,
+      "brier_calibrated": 0.05475927144289017,
+      "n_test": 300000,
+      "n_train": 240000,
+      "generalization_gap": 0.0176
+    }
+  ]
+}

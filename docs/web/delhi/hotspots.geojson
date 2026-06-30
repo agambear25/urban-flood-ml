@@ -1,0 +1,423 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.2326415,
+     28.565615
+    ]
+   },
+   "properties": {
+    "name": "Moolchand underpass",
+    "tier": "chronic",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (5.0 m)",
+     "lower than the area around it (4.6 m)",
+     "far from any mapped drain (56 m)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.2434616,
+     28.6172378
+    ]
+   },
+   "properties": {
+    "name": "Pragati Maidan",
+    "tier": "chronic",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (4.4 m)",
+     "lower than the area around it (2.0 m)",
+     "on higher ground overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.2580654,
+     28.5891891
+    ]
+   },
+   "properties": {
+    "name": "Sarai Kale Khan",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (2.3 m)",
+     "lower than the area around it (2.5 m)",
+     "on higher ground overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.298901,
+     28.5105663
+    ]
+   },
+   "properties": {
+    "name": "Mathura Road",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (3.1 m)",
+     "lower than the area around it (4.1 m)",
+     "near a river or large channel (1.4 km)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.1554817,
+     28.7349081
+    ]
+   },
+   "properties": {
+    "name": "Mukarba Chowk",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (2.6 m)",
+     "near a river or large channel (6.3 km)",
+     "far from any mapped drain (68 m)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.1803722,
+     28.7070448
+    ]
+   },
+   "properties": {
+    "name": "Azadpur",
+    "tier": "recurring",
+    "band": "low",
+    "relative_score": 0.781,
+    "why": [
+     "near a river or large channel (2.8 km)",
+     "not a low point (0.0 m)",
+     "far from any mapped drain (94 m)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.1617158,
+     28.5918719
+    ]
+   },
+   "properties": {
+    "name": "Dhaula Kuan",
+    "tier": "recurring",
+    "band": "low",
+    "relative_score": 0.941,
+    "why": [
+     "not a low point (0.4 m)",
+     "near a river or large channel (8.8 km)",
+     "low-lying overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.1890227,
+     28.6529982
+    ]
+   },
+   "properties": {
+    "name": "Karol Bagh",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (3.5 m)",
+     "near a river or large channel (2.9 km)",
+     "few drains nearby"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     76.9865067,
+     28.6124504
+    ]
+   },
+   "properties": {
+    "name": "Najafgarh",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (2.1 m)",
+     "near a river or large channel (20.0 km)",
+     "far from any mapped drain (508 m)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.2885562,
+     28.5381584
+    ]
+   },
+   "properties": {
+    "name": "Okhla underpass",
+    "tier": "recurring",
+    "band": "high",
+    "relative_score": 0.999,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (3.0 m)",
+     "near a river or large channel (2.2 km)",
+     "on higher ground overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.2484672,
+     28.5057128
+    ]
+   },
+   "properties": {
+    "name": "Sangam Vihar",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (1.0 m)",
+     "low-lying overall",
+     "close to a mapped drain (1.5 km)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.2323949,
+     28.5127982
+    ]
+   },
+   "properties": {
+    "name": "Khanpur",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (2.8 m)",
+     "low-lying overall",
+     "low above the nearest drainage (1.1 m)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.2885562,
+     28.5381584
+    ]
+   },
+   "properties": {
+    "name": "Sarita Vihar underpass",
+    "tier": "recurring",
+    "band": "high",
+    "relative_score": 0.999,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (3.0 m)",
+     "near a river or large channel (2.2 km)",
+     "on higher ground overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.0371069,
+     28.4277156
+    ]
+   },
+   "properties": {
+    "name": "Subhash Chowk",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (1.4 m)",
+     "near a river or large channel (28.8 km)",
+     "a local high point (9.8 m)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.0328365,
+     28.4474696
+    ]
+   },
+   "properties": {
+    "name": "Rajiv Chowk",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (1.8 m)",
+     "lower than the area around it (3.4 m)",
+     "near a river or large channel (27.7 km)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.0952033,
+     28.4630889
+    ]
+   },
+   "properties": {
+    "name": "Golf Course Road",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (1.8 m)",
+     "lower than the area around it (4.5 m)",
+     "low-lying overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.0601559,
+     28.466998
+    ]
+   },
+   "properties": {
+    "name": "Signature Tower Chowk underpass",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (1.7 m)",
+     "far from any mapped drain (2.9 km)",
+     "near a river or large channel (24.5 km)"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.3423721,
+     28.6769893
+    ]
+   },
+   "properties": {
+    "name": "GT Road Vijay Nagar",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (1.9 m)",
+     "near a river or large channel (8.7 km)",
+     "a lot of land drains toward it"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.3644168,
+     28.6380466
+    ]
+   },
+   "properties": {
+    "name": "Indirapuram",
+    "tier": "recurring",
+    "band": "severe",
+    "relative_score": 1.0,
+    "why": [
+     "a pronounced bowl / low point (underpass-like) (4.2 m)",
+     "near a river or large channel (8.6 km)",
+     "on higher ground overall"
+    ],
+    "imagery": "street-level \u2014 radar can't confirm"
+   }
+  }
+ ]
+}
