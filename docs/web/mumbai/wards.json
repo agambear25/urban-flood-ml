@@ -1,0 +1,125 @@
+{
+ "unit": "OSM district / zone (admin_level 8)",
+ "wards": [
+  {
+   "name": "Mumbai Suburban District",
+   "people": 9380258,
+   "at_risk": 3365604,
+   "pct": 35.9
+  },
+  {
+   "name": "Thane Subdistrict",
+   "people": 4253242,
+   "at_risk": 1520863,
+   "pct": 35.8
+  },
+  {
+   "name": "Mumbai Zone 5",
+   "people": 2171836,
+   "at_risk": 940154,
+   "pct": 43.3
+  },
+  {
+   "name": "Mumbai Zone 4",
+   "people": 2800016,
+   "at_risk": 888747,
+   "pct": 31.7
+  },
+  {
+   "name": "Mumbai Zone 3",
+   "people": 2352734,
+   "at_risk": 851893,
+   "pct": 36.2
+  },
+  {
+   "name": "Mumbai Zone 6",
+   "people": 2213104,
+   "at_risk": 749388,
+   "pct": 33.9
+  },
+  {
+   "name": "Thane",
+   "people": 2346146,
+   "at_risk": 684887,
+   "pct": 29.2
+  },
+  {
+   "name": "Mumbai City District",
+   "people": 2442418,
+   "at_risk": 655897,
+   "pct": 26.9
+  },
+  {
+   "name": "Mira-Bhayander",
+   "people": 1216742,
+   "at_risk": 543601,
+   "pct": 44.7
+  },
+  {
+   "name": "Mumbai Zone 2",
+   "people": 1429003,
+   "at_risk": 498741,
+   "pct": 34.9
+  },
+  {
+   "name": "M/W Ward",
+   "people": 668962,
+   "at_risk": 421179,
+   "pct": 63.0
+  },
+  {
+   "name": "N Ward",
+   "people": 758704,
+   "at_risk": 321264,
+   "pct": 42.3
+  },
+  {
+   "name": "K/W Ward",
+   "people": 720236,
+   "at_risk": 296910,
+   "pct": 41.2
+  },
+  {
+   "name": "Navi Mumbai",
+   "people": 658090,
+   "at_risk": 293406,
+   "pct": 44.6
+  },
+  {
+   "name": "L Ward",
+   "people": 671554,
+   "at_risk": 283707,
+   "pct": 42.2
+  },
+  {
+   "name": "H/E Ward",
+   "people": 531448,
+   "at_risk": 280311,
+   "pct": 52.7
+  },
+  {
+   "name": "M/E Ward",
+   "people": 888623,
+   "at_risk": 266288,
+   "pct": 30.0
+  },
+  {
+   "name": "S Ward",
+   "people": 856952,
+   "at_risk": 251922,
+   "pct": 29.4
+  },
+  {
+   "name": "P/N Ward",
+   "people": 784934,
+   "at_risk": 235494,
+   "pct": 30.0
+  },
+  {
+   "name": "R/C Ward",
+   "people": 630858,
+   "at_risk": 231337,
+   "pct": 36.7
+  }
+ ]
+}

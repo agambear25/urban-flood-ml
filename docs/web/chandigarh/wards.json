@@ -1,0 +1,77 @@
+{
+ "unit": "OSM district / zone (admin_level 8)",
+ "wards": [
+  {
+   "name": "Chandigarh",
+   "people": 792289,
+   "at_risk": 315023,
+   "pct": 39.8
+  },
+  {
+   "name": "S.A.S. Nagar (Mohali) Tahsil",
+   "people": 614327,
+   "at_risk": 263359,
+   "pct": 42.9
+  },
+  {
+   "name": "Dera Bassi Tahsil",
+   "people": 279532,
+   "at_risk": 109205,
+   "pct": 39.1
+  },
+  {
+   "name": "Panchkula",
+   "people": 228873,
+   "at_risk": 54223,
+   "pct": 23.7
+  },
+  {
+   "name": "Ward 1",
+   "people": 97115,
+   "at_risk": 18374,
+   "pct": 18.9
+  },
+  {
+   "name": "Barwala",
+   "people": 71725,
+   "at_risk": 17007,
+   "pct": 23.7
+  },
+  {
+   "name": "Reserved Area",
+   "people": 50652,
+   "at_risk": 12017,
+   "pct": 23.7
+  },
+  {
+   "name": "Bassi Pathana Tahsil",
+   "people": 9864,
+   "at_risk": 3212,
+   "pct": 32.6
+  },
+  {
+   "name": "Raipur Rani",
+   "people": 5338,
+   "at_risk": 1884,
+   "pct": 35.3
+  },
+  {
+   "name": "Kalka",
+   "people": 109026,
+   "at_risk": 760,
+   "pct": 0.7
+  },
+  {
+   "name": "Kasauli",
+   "people": 26188,
+   "at_risk": 117,
+   "pct": 0.4
+  },
+  {
+   "name": "Morni",
+   "people": 11213,
+   "at_risk": 36,
+   "pct": 0.3
+  }
+ ]
+}

@@ -16,9 +16,30 @@
     "band": "low",
     "relative_score": 0.906,
     "why": [
-     "low-lying overall",
-     "low above the nearest drainage (0.0 m)",
-     "not a low point (0.4 m)"
+     {
+      "factor": "elevation",
+      "direction": "raises",
+      "plain": "low-lying overall",
+      "contribution": 1.5138
+     },
+     {
+      "factor": "hand",
+      "direction": "raises",
+      "plain": "low above the nearest drainage (0.0 m)",
+      "contribution": 1.3296
+     },
+     {
+      "factor": "sink_depth",
+      "direction": "lowers",
+      "plain": "not a low point (0.4 m)",
+      "contribution": -1.2664
+     },
+     {
+      "factor": "curvature",
+      "direction": "raises",
+      "plain": "a concave hollow that collects water",
+      "contribution": 0.9147
+     }
     ],
     "imagery": "satellite-checkable"
    }
@@ -38,9 +59,30 @@
     "band": "high",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (11.4 m)",
-     "lower than the area around it (8.0 m)",
-     "on higher ground overall"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (11.4 m)",
+      "contribution": 6.9696
+     },
+     {
+      "factor": "local_relief",
+      "direction": "raises",
+      "plain": "lower than the area around it (8.0 m)",
+      "contribution": 4.5049
+     },
+     {
+      "factor": "elevation",
+      "direction": "lowers",
+      "plain": "on higher ground overall",
+      "contribution": -1.5701
+     },
+     {
+      "factor": "hand",
+      "direction": "raises",
+      "plain": "low above the nearest drainage (7.0 m)",
+      "contribution": 0.6196
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }
@@ -60,9 +102,30 @@
     "band": "high",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (3.3 m)",
-     "lower than the area around it (9.6 m)",
-     "little land drains toward it"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (3.3 m)",
+      "contribution": 6.0353
+     },
+     {
+      "factor": "local_relief",
+      "direction": "raises",
+      "plain": "lower than the area around it (9.6 m)",
+      "contribution": 5.4402
+     },
+     {
+      "factor": "upstream_area",
+      "direction": "lowers",
+      "plain": "little land drains toward it",
+      "contribution": -1.3323
+     },
+     {
+      "factor": "drain_density",
+      "direction": "raises",
+      "plain": "few drains nearby",
+      "contribution": 0.4385
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }
@@ -82,9 +145,30 @@
     "band": "severe",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (4.6 m)",
-     "lower than the area around it (5.2 m)",
-     "low-lying overall"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (4.6 m)",
+      "contribution": 6.2916
+     },
+     {
+      "factor": "local_relief",
+      "direction": "raises",
+      "plain": "lower than the area around it (5.2 m)",
+      "contribution": 4.7628
+     },
+     {
+      "factor": "elevation",
+      "direction": "raises",
+      "plain": "low-lying overall",
+      "contribution": 0.67
+     },
+     {
+      "factor": "curvature",
+      "direction": "lowers",
+      "plain": "convex ground that sheds water",
+      "contribution": -0.3573
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }
@@ -104,9 +188,30 @@
     "band": "severe",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (3.5 m)",
-     "lower than the area around it (3.2 m)",
-     "low-lying overall"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (3.5 m)",
+      "contribution": 6.4141
+     },
+     {
+      "factor": "local_relief",
+      "direction": "raises",
+      "plain": "lower than the area around it (3.2 m)",
+      "contribution": 4.6835
+     },
+     {
+      "factor": "elevation",
+      "direction": "raises",
+      "plain": "low-lying overall",
+      "contribution": 0.6144
+     },
+     {
+      "factor": "hand",
+      "direction": "raises",
+      "plain": "low above the nearest drainage (0.2 m)",
+      "contribution": 0.6
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }
@@ -126,9 +231,30 @@
     "band": "severe",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (0.9 m)",
-     "lower than the area around it (9.5 m)",
-     "plenty of drains nearby"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (0.9 m)",
+      "contribution": 6.1833
+     },
+     {
+      "factor": "local_relief",
+      "direction": "raises",
+      "plain": "lower than the area around it (9.5 m)",
+      "contribution": 4.7165
+     },
+     {
+      "factor": "drain_density",
+      "direction": "lowers",
+      "plain": "plenty of drains nearby",
+      "contribution": -0.6287
+     },
+     {
+      "factor": "curvature",
+      "direction": "raises",
+      "plain": "a concave hollow that collects water",
+      "contribution": 0.3573
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }
@@ -148,9 +274,30 @@
     "band": "severe",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (6.2 m)",
-     "lower than the area around it (13.2 m)",
-     "low-lying overall"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (6.2 m)",
+      "contribution": 6.6997
+     },
+     {
+      "factor": "local_relief",
+      "direction": "raises",
+      "plain": "lower than the area around it (13.2 m)",
+      "contribution": 4.5009
+     },
+     {
+      "factor": "elevation",
+      "direction": "raises",
+      "plain": "low-lying overall",
+      "contribution": 0.9848
+     },
+     {
+      "factor": "drain_density",
+      "direction": "raises",
+      "plain": "few drains nearby",
+      "contribution": 0.4278
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }
@@ -170,9 +317,30 @@
     "band": "high",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (1.9 m)",
-     "few drains nearby",
-     "a lot of land drains toward it"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (1.9 m)",
+      "contribution": 6.2437
+     },
+     {
+      "factor": "drain_density",
+      "direction": "raises",
+      "plain": "few drains nearby",
+      "contribution": 1.7406
+     },
+     {
+      "factor": "upstream_area",
+      "direction": "raises",
+      "plain": "a lot of land drains toward it",
+      "contribution": 1.23
+     },
+     {
+      "factor": "local_relief",
+      "direction": "lowers",
+      "plain": "a local high point (16.7 m)",
+      "contribution": -0.4896
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }
@@ -192,9 +360,30 @@
     "band": "high",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (3.8 m)",
-     "few drains nearby",
-     "low-lying overall"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (3.8 m)",
+      "contribution": 6.9029
+     },
+     {
+      "factor": "drain_density",
+      "direction": "raises",
+      "plain": "few drains nearby",
+      "contribution": 1.3033
+     },
+     {
+      "factor": "elevation",
+      "direction": "raises",
+      "plain": "low-lying overall",
+      "contribution": 0.6547
+     },
+     {
+      "factor": "local_relief",
+      "direction": "lowers",
+      "plain": "a local high point (16.0 m)",
+      "contribution": -0.451
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }
@@ -214,9 +403,30 @@
     "band": "high",
     "relative_score": 1.0,
     "why": [
-     "a pronounced bowl / low point (underpass-like) (1.8 m)",
-     "few drains nearby",
-     "low-lying overall"
+     {
+      "factor": "sink_depth",
+      "direction": "raises",
+      "plain": "a pronounced bowl / low point (underpass-like) (1.8 m)",
+      "contribution": 7.0574
+     },
+     {
+      "factor": "drain_density",
+      "direction": "raises",
+      "plain": "few drains nearby",
+      "contribution": 1.292
+     },
+     {
+      "factor": "elevation",
+      "direction": "raises",
+      "plain": "low-lying overall",
+      "contribution": 0.7668
+     },
+     {
+      "factor": "builtup",
+      "direction": "raises",
+      "plain": "heavily built-up and paved (100% built-up)",
+      "contribution": 0.4071
+     }
     ],
     "imagery": "street-level \u2014 radar can't confirm"
    }

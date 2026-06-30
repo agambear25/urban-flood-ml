@@ -1,0 +1,125 @@
+{
+ "unit": "OSM district / zone (admin_level 8)",
+ "wards": [
+  {
+   "name": "West Delhi",
+   "people": 2572218,
+   "at_risk": 1027043,
+   "pct": 39.9
+  },
+  {
+   "name": "Ghaziabad",
+   "people": 2888324,
+   "at_risk": 838509,
+   "pct": 29.0
+  },
+  {
+   "name": "North Delhi",
+   "people": 1883382,
+   "at_risk": 677757,
+   "pct": 36.0
+  },
+  {
+   "name": "North West Delhi",
+   "people": 2162511,
+   "at_risk": 666186,
+   "pct": 30.8
+  },
+  {
+   "name": "South East Delhi",
+   "people": 1526426,
+   "at_risk": 616575,
+   "pct": 40.4
+  },
+  {
+   "name": "North East Delhi",
+   "people": 1448612,
+   "at_risk": 539610,
+   "pct": 37.3
+  },
+  {
+   "name": "Central Delhi",
+   "people": 1436402,
+   "at_risk": 493316,
+   "pct": 34.3
+  },
+  {
+   "name": "Faridabad",
+   "people": 1642064,
+   "at_risk": 490290,
+   "pct": 29.9
+  },
+  {
+   "name": "Punjabi Bagh Tehsil",
+   "people": 1015778,
+   "at_risk": 450732,
+   "pct": 44.4
+  },
+  {
+   "name": "Patel Nagar",
+   "people": 1301071,
+   "at_risk": 439476,
+   "pct": 33.8
+  },
+  {
+   "name": "East Delhi",
+   "people": 1235305,
+   "at_risk": 439352,
+   "pct": 35.6
+  },
+  {
+   "name": "Shahdara",
+   "people": 1398134,
+   "at_risk": 421917,
+   "pct": 30.2
+  },
+  {
+   "name": "South West Delhi",
+   "people": 1302232,
+   "at_risk": 420382,
+   "pct": 32.3
+  },
+  {
+   "name": "Dadri",
+   "people": 1324866,
+   "at_risk": 415524,
+   "pct": 31.4
+  },
+  {
+   "name": "Noida",
+   "people": 1198316,
+   "at_risk": 367873,
+   "pct": 30.7
+  },
+  {
+   "name": "Saraswati Vihar Tehsil",
+   "people": 963908,
+   "at_risk": 351726,
+   "pct": 36.5
+  },
+  {
+   "name": "Gurgaon",
+   "people": 1141498,
+   "at_risk": 339287,
+   "pct": 29.7
+  },
+  {
+   "name": "Vivek Vihar Tehsil",
+   "people": 934859,
+   "at_risk": 323301,
+   "pct": 34.6
+  },
+  {
+   "name": "South Delhi",
+   "people": 1337718,
+   "at_risk": 310541,
+   "pct": 23.2
+  },
+  {
+   "name": "Model Town Tehsil",
+   "people": 658148,
+   "at_risk": 308235,
+   "pct": 46.8
+  }
+ ]
+}

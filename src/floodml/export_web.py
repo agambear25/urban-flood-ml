@@ -18,6 +18,7 @@ import numpy as np
 import rasterio
 from rasterio.warp import transform_bounds
 
+from . import FEATURES
 from . import explain as expl
 from .config import load_city
 
@@ -137,7 +138,7 @@ def export_city(city, data_dir="data", out_dir="docs/web", configs="configs/city
                     "tier": p.get("tier"),
                     "band": _band_of(susc[r, c], thr),
                     "relative_score": w.get("relative_risk"),
-                    "why": [x["plain"] for x in w.get("why", [])][:3],
+                    "why": w.get("why", [])[:4],
                     "imagery": "satellite-checkable" if checkable else "street-level — radar can't confirm",
                 },
             })
@@ -165,3 +166,145 @@ def export_city(city, data_dir="data", out_dir="docs/web", configs="configs/city
     (out / "meta.json").write_text(json.dumps(meta, indent=2))
     return {"city": city, "n_hotspots": len(out_feats), "thresholds": [round(t, 3) for t in thr],
             "bounds": [round(b, 4) for b in bounds], "events": [e["date"] for e in events]}
+
+
+def export_inference_grid(city, data_dir="data", out_dir="docs/web", step=38):
+    """Precompute a coarse grid so the map can infer at ANY clicked point, not just hotspots.
+
+    For each ~step-pixel cell we store its relative band and the model's top-3 signed feature
+    contributions (tree SHAP) — enough to render the same evidence + SHAP chart anywhere.
+    """
+    import xgboost as xgb
+
+    model = xgb.XGBClassifier()
+    model.load_model(f"models/{city}_waterlog_model.json")
+    booster = model.get_booster()
+    d = Path(data_dir) / city
+    with rasterio.open(d / "waterlog_susceptibility.tif") as s:
+        susc = s.read(1)
+        tr = s.transform
+        h, w = s.height, s.width
+    with rasterio.open(d / "feature_stack.tif") as fs:
+        bn = list(fs.descriptions)
+        stack = fs.read().astype("float32")[[bn.index(f) for f in FEATURES]]
+    v = susc[np.isfinite(susc)]
+    thr = [float(np.percentile(v, p)) for p in (50, 75, 90)]
+
+    rc, X = [], []
+    half = step // 2
+    for r in range(half, h, step):
+        for c in range(half, w, step):
+            vals = stack[:, r, c]
+            if np.isfinite(susc[r, c]) and np.isfinite(vals).all():
+                rc.append((r, c)); X.append(vals)
+    contribs = booster.predict(xgb.DMatrix(np.array(X, "float32")), pred_contribs=True)[:, :len(FEATURES)]
+
+    cells = []
+    for i, (r, c) in enumerate(rc):
+        lng = tr.c + tr.a * (c + 0.5)
+        lat = tr.f + tr.e * (r + 0.5)
+        order = np.argsort(-np.abs(contribs[i]))[:3]
+        top = [[int(j), round(float(contribs[i][j]), 3)] for j in order]
+        cells.append({"lat": round(lat, 4), "lng": round(lng, 4), "band": _band_of(susc[r, c], thr), "top": top})
+
+    grid = {
+        "feature_names": list(FEATURES),
+        "labels": [list(expl.PHRASES[f]) for f in FEATURES],  # [raises-phrase, lowers-phrase] per feature
+        "step_m": round(abs(tr.a) * 111320 * 0.88 * step),
+        "cells": cells,
+    }
+    (Path(out_dir) / city / "grid.json").write_text(json.dumps(grid))
+    return {"city": city, "cells": len(cells), "step_m": grid["step_m"]}
+
+
+def export_drains(city, data_dir="data", out_dir="docs/web", configs="configs/city"):
+    """Export the major drain / canal / river network (OSM) as GeoJSON for a map overlay.
+
+    Keeps named waterways (so the Najafgarh drain is labelled) plus any long unnamed segment;
+    simplifies geometry to keep the file light. First cut of the 'drains as entities' idea —
+    a structural layer the eye can read, not yet a routed catchment model.
+    """
+    import osmnx as ox
+    from shapely.geometry import mapping
+
+    cfg = load_city(city, configs)
+    tags = {"waterway": ["drain", "canal", "river"]}
+    g = ox.features_from_bbox(bbox=(cfg.west, cfg.south, cfg.east, cfg.north), tags=tags)
+    g = g[g.geom_type.isin(["LineString", "MultiLineString"])].to_crs(4326)
+
+    feats = []
+    for _, row in g.iterrows():
+        geom = row.geometry
+        name = row.get("name")
+        wtype = row.get("waterway")
+        named = isinstance(name, str) and name.strip()
+        if not named and geom.length < 0.02:   # ~2 km (degrees); drop tiny unnamed ditches
+            continue
+        gs = geom.simplify(0.0004, preserve_topology=False)
+        nm = name if named else None
+        major = bool(named and ("najafgarh" in name.lower() or wtype in ("canal", "river")))
+        feats.append({"type": "Feature", "geometry": mapping(gs),
+                      "properties": {"name": nm, "waterway": wtype, "major": major}})
+
+    out = Path(out_dir) / city
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "drains.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats}))
+    named_ct = sum(1 for f in feats if f["properties"]["name"])
+    return {"city": city, "drains": len(feats), "named": named_ct}
+
+
+def export_wards(city, data_dir="data", out_dir="docs/web", configs="configs/city"):
+    """Rank districts by how many PEOPLE sit in high-risk zones (population x risk).
+
+    Population (WorldPop, native grid = correct counts) intersected with the high+severe
+    risk band. Honest: relative screening from a presence-only model at ~30 m + ~100 m
+    population — a ranking of exposure, not a count of who will flood.
+    """
+    import rioxarray as rxr
+    import osmnx as ox
+    from rasterio.features import rasterize
+
+    cfg = load_city(city, configs)
+    g = ox.features_from_bbox(bbox=(cfg.west, cfg.south, cfg.east, cfg.north),
+                              tags={"boundary": "administrative", "admin_level": ["8"]})
+    g = g[g.geom_type.isin(["Polygon", "MultiPolygon"])].to_crs(4326)
+
+    d = Path(data_dir) / city
+    with rasterio.open(d / "worldpop.tif") as p:
+        pop = p.read(1).astype("float32")
+        ptr = p.transform
+        pshape = (p.height, p.width)
+    pop = np.where(np.isfinite(pop) & (pop > 0), pop, 0.0)
+    susc = rxr.open_rasterio(d / "waterlog_susceptibility.tif").squeeze().rio.reproject_match(
+        rxr.open_rasterio(d / "worldpop.tif").squeeze()).values
+    fin = np.isfinite(susc)
+    thr = float(np.percentile(susc[fin], 75))   # high + severe
+    high = fin & (susc >= thr)
+
+    # OSM admin levels are inconsistent in India — filter by AREA to keep district/zone-sized
+    # units (drops country / state / whole-city polygons and tiny slivers); dedup by name.
+    areas_km2 = (g.to_crs("ESRI:54009").geometry.area / 1e6).tolist()
+    names = g["name"].tolist() if "name" in g.columns else [None] * len(g)
+    geoms = g.geometry.tolist()
+    rows, seen = [], set()
+    for i, geom in enumerate(geoms):
+        name = names[i]
+        if not isinstance(name, str) or not name.strip():
+            continue
+        if not (8 <= areas_km2[i] <= 500):
+            continue
+        key = name.strip().lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        m = rasterize([(geom, 1)], out_shape=pshape, transform=ptr, fill=0, all_touched=True).astype(bool)
+        tot = float(pop[m].sum())
+        if tot < 5000:
+            continue
+        ar = float(pop[m & high].sum())
+        rows.append({"name": name.strip(), "people": int(round(tot)), "at_risk": int(round(ar)),
+                     "pct": round(100 * ar / tot, 1)})
+    rows.sort(key=lambda x: -x["at_risk"])
+    (Path(out_dir) / city / "wards.json").write_text(
+        json.dumps({"unit": "OSM district / zone (admin_level 8)", "wards": rows[:20]}, indent=1))
+    return {"city": city, "wards": len(rows)}

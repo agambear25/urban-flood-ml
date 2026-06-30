@@ -1,0 +1,119 @@
+{
+ "unit": "OSM district / zone (admin_level 8)",
+ "wards": [
+  {
+   "name": "Bangalore North",
+   "people": 7905626,
+   "at_risk": 2524267,
+   "pct": 31.9
+  },
+  {
+   "name": "Bengaluru North City Corporation",
+   "people": 3050178,
+   "at_risk": 1221774,
+   "pct": 40.1
+  },
+  {
+   "name": "Bengaluru Central City Corporation",
+   "people": 2051533,
+   "at_risk": 870912,
+   "pct": 42.5
+  },
+  {
+   "name": "Bengaluru West City Corporation",
+   "people": 3445299,
+   "at_risk": 773732,
+   "pct": 22.5
+  },
+  {
+   "name": "Yelahanka taluku",
+   "people": 2263724,
+   "at_risk": 687955,
+   "pct": 30.4
+  },
+  {
+   "name": "Agaram",
+   "people": 186389,
+   "at_risk": 89193,
+   "pct": 47.9
+  },
+  {
+   "name": "Bengaluru South City Corporation",
+   "people": 173558,
+   "at_risk": 79525,
+   "pct": 45.8
+  },
+  {
+   "name": "Bangalore East",
+   "people": 150493,
+   "at_risk": 69911,
+   "pct": 46.5
+  },
+  {
+   "name": "Akash Ward",
+   "people": 107362,
+   "at_risk": 42082,
+   "pct": 39.2
+  },
+  {
+   "name": "Bengaluru East City Corporation",
+   "people": 85929,
+   "at_risk": 41677,
+   "pct": 48.5
+  },
+  {
+   "name": "Kogilu",
+   "people": 112536,
+   "at_risk": 33332,
+   "pct": 29.6
+  },
+  {
+   "name": "Sampigehalli",
+   "people": 69732,
+   "at_risk": 25873,
+   "pct": 37.1
+  },
+  {
+   "name": "Bagaluru",
+   "people": 49471,
+   "at_risk": 14494,
+   "pct": 29.3
+  },
+  {
+   "name": "Hosur",
+   "people": 22768,
+   "at_risk": 3207,
+   "pct": 14.1
+  },
+  {
+   "name": "Hemmigepura",
+   "people": 9129,
+   "at_risk": 2650,
+   "pct": 29.0
+  },
+  {
+   "name": "Devanahalli taluku",
+   "people": 14017,
+   "at_risk": 2558,
+   "pct": 18.3
+  },
+  {
+   "name": "Talagattapura",
+   "people": 6067,
+   "at_risk": 1104,
+   "pct": 18.2
+  },
+  {
+   "name": "Badamanavarthekaval",
+   "people": 7139,
+   "at_risk": 296,
+   "pct": 4.1
+  },
+  {
+   "name": "Bannerughatta",
+   "people": 8985,
+   "at_risk": 202,
+   "pct": 2.2
+  }
+ ]
+}

@@ -5,62 +5,113 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FloodLens — urban flood risk</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  :root{
+    --bg:#f6f8fa; --panel:#ffffff; --ink:#16222e; --muted:#64727e; --line:#e6ecf0;
+    --accent:#0d9488; --ink2:#0f1b24;
+    --sev:#c0392b; --high:#e67e22; --mod:#f1c40f; --low:#27ae60;
+    --raise:#d4564b; --lower:#3d84c6;
+  }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;color:#14202b;font-size:14px;height:100vh;display:flex;flex-direction:column;}
-  header{display:flex;align-items:center;gap:12px;padding:9px 13px;border-bottom:1px solid #e0e6ea;flex-wrap:wrap;}
-  .brand{font-weight:800;font-size:16px;}.brand .b2{color:#2e7d8c;}
-  select#citySel{font-weight:600;border:1px solid #cdd8df;border-radius:8px;padding:5px 10px;background:#fff;font-size:14px;}
-  .lenses{display:flex;gap:4px;margin-left:auto;}
-  .lens{border:1px solid #cdd8df;background:#fff;border-radius:8px;padding:6px 11px;cursor:pointer;font-weight:600;font-size:12.5px;color:#3a4a56;}
-  .lens.active{background:#14202b;color:#fff;border-color:#14202b;}
+  body{font-family:"Inter",-apple-system,system-ui,sans-serif;color:var(--ink);background:var(--bg);
+    height:100vh;display:flex;flex-direction:column;font-size:13.5px;-webkit-font-smoothing:antialiased;}
+  header{display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--panel);
+    border-bottom:1px solid var(--line);flex-wrap:wrap;z-index:500;}
+  .brand{display:flex;align-items:baseline;gap:8px;}
+  .brand .logo{font-size:18px;font-weight:800;letter-spacing:-.02em;}
+  .brand .logo span{color:var(--accent);}
+  .brand .tag{font-size:11px;color:var(--muted);font-weight:500;}
+  select#citySel{font-family:inherit;font-weight:600;font-size:13.5px;color:var(--ink);
+    border:1px solid var(--line);border-radius:9px;padding:7px 11px;background:var(--panel);cursor:pointer;}
+  .lenses{display:flex;gap:5px;margin-left:auto;background:var(--bg);padding:3px;border-radius:11px;border:1px solid var(--line);}
+  .lens{border:none;background:transparent;border-radius:8px;padding:6px 13px;cursor:pointer;font-family:inherit;
+    font-weight:600;font-size:12.5px;color:var(--muted);transition:all .12s;}
+  .lens:hover{color:var(--ink);}
+  .lens.active{background:var(--ink2);color:#fff;}
   .body{flex:1;display:flex;min-height:0;}
-  #map{flex:1;}
-  .side{width:360px;border-left:1px solid #e0e6ea;display:flex;flex-direction:column;min-height:0;}
-  .panel{padding:13px 14px;overflow:auto;flex:1;}
-  .ph{color:#6a7884;font-size:13px;}
-  .band{display:inline-block;font-weight:800;font-size:11px;padding:2px 9px;border-radius:999px;color:#fff;}
-  .b-severe{background:#c62828;}.b-high{background:#ef6c00;}.b-moderate{background:#f9a825;color:#3a2c00;}.b-low{background:#2e7d32;}
-  .tier{font-size:11px;color:#6a7884;text-transform:capitalize;margin-left:6px;}
-  .imagery{font-size:11.5px;color:#41525e;margin:9px 0;border:1px dashed #c3ced6;border-radius:7px;padding:6px 9px;background:#f7fafb;}
-  h3{font-size:16px;margin-bottom:6px;}h4{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#7a8893;margin:12px 0 5px;}
-  ul.why{margin-left:16px;}ul.why li{margin:3px 0;}
-  .score{font-size:11px;color:#8593a0;margin-top:8px;}
-  .dl a{display:inline-block;border:1px solid #cdd8df;border-radius:8px;padding:6px 10px;margin:3px 4px 0 0;font-size:12px;font-weight:600;color:#1d3c5a;text-decoration:none;}
-  .disc{border:1px solid #e3b3b3;background:#fdf3f3;color:#8c2f2f;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;margin-top:10px;}
-  .events{padding:8px 14px;border-top:1px solid #eef2f4;font-size:11.5px;color:#5b6b78;}
-  .chip{display:inline-block;background:#eef3f5;border-radius:999px;padding:2px 8px;margin:2px 3px 0 0;font-weight:600;color:#37474f;}
-  .mhead{display:flex;align-items:center;gap:8px;}
-  .mplay{width:24px;height:24px;border-radius:50%;border:none;background:#14202b;color:#fff;cursor:pointer;font-size:11px;flex:none;}
-  .mcap{margin-left:auto;font-weight:700;color:#1d3c5a;}
-  .mrow{display:flex;align-items:flex-end;gap:8px;height:54px;margin:7px 0 2px;}
-  .mcol{display:flex;flex-direction:column;align-items:center;cursor:pointer;}
-  .mbar{width:20px;background:#9cc1d6;border-radius:3px 3px 0 0;transition:background .2s;}
-  .mcol.on .mbar{background:#1565c0;}
-  .myr{font-size:10px;color:#5b6b78;margin-top:2px;}
-  .mcol.on .myr{font-weight:800;color:#14202b;}
-  .mnote{font-size:10px;color:#90a0ab;}
-  .caveats{padding:9px 14px;border-top:1px solid #eef2f4;font-size:11px;color:#6a7884;background:#fcfdfe;}
-  .caveats summary{cursor:pointer;font-weight:700;color:#5b6b78;}
-  .caveats li{margin:4px 0 4px 16px;}
-  .legend{background:rgba(255,255,255,.94);padding:7px 9px;border-radius:8px;font-size:11px;line-height:1.5;box-shadow:0 1px 4px rgba(0,0,0,.15);}
-  .legend b{display:block;margin-bottom:3px;}.sw{display:inline-block;width:13px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle;}
-  .opacity{background:rgba(255,255,255,.94);padding:6px 9px;border-radius:8px;font-size:11px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+  #map{flex:1;background:#e9eef1;}
+  .side{width:384px;background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0;}
+  .panel{padding:16px;overflow:auto;flex:1;}
+  .ph{color:var(--muted);line-height:1.5;}
+  h3{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:3px;}
+  h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:15px 0 7px;}
+  .card{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:11px;background:var(--panel);}
+  .band{display:inline-block;font-weight:800;font-size:11px;letter-spacing:.04em;padding:3px 11px;border-radius:999px;color:#fff;}
+  .band.severe{background:var(--sev);}.band.high{background:var(--high);}.band.moderate{background:var(--mod);color:#5a4a00;}.band.low{background:var(--low);}
+  .subtle{font-size:11.5px;color:var(--muted);}
+  .tier{font-size:11px;color:var(--muted);text-transform:capitalize;margin-left:7px;}
+  .imagery{font-size:11.5px;color:#3a4855;margin:11px 0 0;border:1px dashed #c8d2d9;border-radius:9px;padding:8px 10px;background:#f8fafb;}
+  .shap{margin:9px 0 4px;}
+  .shrow{display:flex;align-items:center;gap:9px;margin:6px 0;}
+  .shlabel{flex:0 0 150px;font-size:11.5px;color:#33414d;line-height:1.25;}
+  .shbar{flex:1;position:relative;height:15px;background:#f0f4f6;border-radius:4px;}
+  .shbar::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:#cfd9df;}
+  .shfill{position:absolute;top:0;bottom:0;border-radius:4px;}
+  .shfill.up{background:var(--raise);}.shfill.down{background:var(--lower);}
+  .shkey{font-size:10.5px;color:var(--muted);margin-top:5px;}
+  .shkey i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:3px;}
+  .shkey i.up{background:var(--raise);}.shkey i.down{background:var(--lower);}
+  .note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.45;}
+  .backlink{font-size:12px;color:var(--accent);font-weight:600;cursor:pointer;display:inline-block;margin-bottom:9px;}
+  .rel{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:11px;}
+  .reldot{width:11px;height:11px;border-radius:50%;flex:none;}
+  .rel.lvl-moderate .reldot{background:var(--high);} .rel.lvl-low .reldot{background:var(--sev);} .rel.lvl-good .reldot{background:var(--low);}
+  .rel b{font-weight:700;} .rel .rsub{font-size:11px;color:var(--muted);}
+  .rel a{color:var(--accent);}
+  .fc{border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin-bottom:11px;}
+  .fc .fhead{display:flex;align-items:center;justify-content:space-between;font-weight:700;}
+  .fc .pillstat{font-weight:800;font-size:11px;padding:3px 10px;border-radius:999px;}
+  .fc .pillstat.watch{background:#fdeede;color:#9a5a12;} .fc .pillstat.clear{background:#e7f6ec;color:#1e7a3d;}
+  .fcbars{display:flex;align-items:flex-end;gap:5px;margin:9px 0 2px;}
+  .fb{flex:1;background:#cfe0ea;border-radius:3px 3px 0 0;}
+  .fb.hot{background:var(--high);}
+  .fcday{flex:1;font-size:9px;color:var(--muted);text-align:center;}
+  .opt{border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-bottom:8px;}
+  .opt.best{border-color:var(--low);box-shadow:0 0 0 2px rgba(39,174,96,.13);}
+  .opt .otop{display:flex;align-items:center;justify-content:space-between;font-weight:700;}
+  .opt .ometa{font-size:11.5px;color:#51606b;margin-top:3px;}
+  .wrow{display:flex;align-items:center;gap:8px;margin:5px 0;}
+  .wname{flex:0 0 130px;font-size:11.5px;color:#33414d;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .wbar{flex:1;height:9px;background:#eef3f5;border-radius:5px;overflow:hidden;}
+  .wfill{height:100%;background:linear-gradient(90deg,#e67e22,#c0392b);border-radius:5px;}
+  .wval{flex:0 0 36px;text-align:right;font-size:11px;font-weight:700;color:#51606b;}
+  .dl a{display:inline-block;border:1px solid var(--line);border-radius:9px;padding:7px 11px;margin:4px 5px 0 0;
+    font-size:12px;font-weight:600;color:#1d3c5a;text-decoration:none;background:var(--panel);}
+  .disc{border:1px solid #e9bcbc;background:#fdf4f4;color:#8c2f2f;border-radius:10px;padding:10px 11px;font-size:12px;font-weight:600;margin-top:11px;}
+  .events{padding:11px 16px;border-top:1px solid var(--line);}
+  .mhead{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;}
+  .mplay{width:26px;height:26px;border-radius:50%;border:none;background:var(--ink2);color:#fff;cursor:pointer;font-size:11px;flex:none;}
+  .mcap{margin-left:auto;font-weight:700;color:#0d5e6b;font-size:12px;}
+  .mrow{display:flex;align-items:flex-end;gap:9px;height:52px;margin:9px 0 3px;}
+  .mcol{display:flex;flex-direction:column;align-items:center;cursor:pointer;flex:1;}
+  .mbar{width:100%;max-width:26px;background:#bcd6e4;border-radius:4px 4px 0 0;transition:background .15s,height .3s;}
+  .mcol.on .mbar{background:var(--accent);}
+  .myr{font-size:10px;color:var(--muted);margin-top:3px;}.mcol.on .myr{font-weight:800;color:var(--ink);}
+  .mnote{font-size:10px;color:#9aa7b1;}
+  .caveats{padding:10px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);background:#fbfcfd;}
+  .caveats summary{cursor:pointer;font-weight:700;}
+  .caveats li{margin:5px 0 5px 16px;line-height:1.4;}
+  .legend{background:rgba(255,255,255,.96);padding:9px 11px;border-radius:11px;font-size:11px;line-height:1.6;
+    box-shadow:0 2px 10px rgba(20,34,46,.13);border:1px solid var(--line);}
+  .legend b{display:block;margin-bottom:4px;font-weight:700;}
+  .sw{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle;}
+  .opacity{background:rgba(255,255,255,.96);padding:8px 11px;border-radius:11px;font-size:11px;font-weight:600;
+    box-shadow:0 2px 10px rgba(20,34,46,.13);border:1px solid var(--line);}
 </style>
 </head>
 <body>
 <header>
-  <div class="brand">Flood<span class="b2">Lens</span></div>
+  <div class="brand"><span class="logo">Flood<span>Lens</span></span><span class="tag">urban flood risk · India</span></div>
   <select id="citySel">
-    <option value="delhi">Delhi</option>
-    <option value="mumbai">Mumbai</option>
-    <option value="bengaluru">Bengaluru</option>
-    <option value="chandigarh">Chandigarh</option>
+    <option value="delhi">Delhi</option><option value="mumbai">Mumbai</option>
+    <option value="bengaluru">Bengaluru</option><option value="chandigarh">Chandigarh</option>
   </select>
   <div class="lenses">
-    <div class="lens active" data-lens="address">🏠 Explore</div>
-    <div class="lens" data-lens="route">🚗 Route</div>
-    <div class="lens" data-lens="data">📊 Data</div>
+    <button class="lens active" data-lens="explore">Explore</button>
+    <button class="lens" data-lens="route">Route</button>
+    <button class="lens" data-lens="data">Data</button>
   </div>
 </header>
 <div class="body">
@@ -74,177 +125,216 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const BAND={severe:"b-severe",high:"b-high",moderate:"b-moderate",low:"b-low"};
-const BAND_LEGEND=[["severe","#c62828"],["high","#ef6c00"],["moderate","#f9a825"],["low","#2e7d32"]];
-let lens="address", clickedSpot=null, city="delhi";
+const RELIABILITY={delhi:{auc:0.72,level:"moderate"},mumbai:{auc:0.59,level:"low"},
+  bengaluru:{auc:0.71,level:"moderate"},chandigarh:{auc:0.77,level:"moderate"}};
+const BAND_LEGEND=[["severe","#c0392b"],["high","#e67e22"],["moderate","#f1c40f"],["low","#27ae60"]];
+const BAND_COL={severe:"#c0392b",high:"#e67e22",moderate:"#f1c40f",low:"#27ae60"};
+const BAND_R={severe:9,high:8,moderate:7,low:6};
+let lens="explore", city="delhi", meta=null, grid=null, hotspots=null, clicked=null;
 let overlay=null, hotspotLayer=null, overlayOpacity=0.55;
 let monsoonTimer=null, monsoonIdx=0, monsoonEvents=[];
 let routeA=null, routeB=null, routeGroup=null, currentHotspots=[];
+let drainLayer=null, drainsOn=false, wards=null;
 const SEVW={severe:3,high:2,moderate:1,low:0};
+const panel=document.getElementById("panel");
+function esc(s){return (s==null?"":String(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function setLens(l){lens=l;document.querySelectorAll(".lens").forEach(t=>t.classList.toggle("active",t.dataset.lens===l));}
 
 const map=L.map("map",{zoomControl:true});
 L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
   {attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19,subdomains:"abcd"}).addTo(map);
-
-// static legend + opacity controls (band scheme is identical across cities)
 const lg=L.control({position:"bottomright"});
 lg.onAdd=()=>{const d=L.DomUtil.create("div","legend");
-  d.innerHTML="<b>Flood-proneness (relative)</b>"+BAND_LEGEND.map(([n,c])=>
-    `<div><span class="sw" style="background:${c}"></span>${n}</div>`).join("")+
-    '<div style="margin-top:4px"><span class="sw" style="background:#37474f;border-radius:50%"></span>reported hotspot</div>';
-  return d;};
+  d.innerHTML="<b>Flood-proneness (relative)</b>"+BAND_LEGEND.map(([n,c])=>`<div><span class="sw" style="background:${c}"></span>${n}</div>`).join("")+
+  '<div style="margin-top:5px"><span class="sw" style="background:#37474f;border-radius:50%"></span>reported hotspot</div>';return d;};
 lg.addTo(map);
 const oc=L.control({position:"topright"});
 oc.onAdd=()=>{const d=L.DomUtil.create("div","opacity");
   d.innerHTML='risk overlay <input id="op" type="range" min="0" max="100" value="55" style="vertical-align:middle">';
   L.DomEvent.disableClickPropagation(d);
-  setTimeout(()=>document.getElementById("op").addEventListener("input",e=>{
-    overlayOpacity=e.target.value/100; if(overlay) overlay.setOpacity(overlayOpacity);}),0);
+  setTimeout(()=>document.getElementById("op").addEventListener("input",e=>{overlayOpacity=e.target.value/100;if(overlay)overlay.setOpacity(overlayOpacity);}),0);
   return d;};
 oc.addTo(map);
+const dc=L.control({position:"topright"});
+dc.onAdd=()=>{const d=L.DomUtil.create("div","opacity");
+  d.innerHTML='<label style="cursor:pointer"><input id="drToggle" type="checkbox"> 🌊 drains</label>';
+  L.DomEvent.disableClickPropagation(d);
+  setTimeout(()=>document.getElementById("drToggle").addEventListener("change",e=>{drainsOn=e.target.checked;applyDrains();}),0);
+  return d;};
+dc.addTo(map);
 map.on("click", onMapClick);
+function applyDrains(){if(!drainLayer)return;
+  if(drainsOn){drainLayer.addTo(map);drainLayer.bringToFront();if(overlay)overlay.setOpacity(Math.min(overlayOpacity,0.28));}
+  else{map.removeLayer(drainLayer);if(overlay)overlay.setOpacity(overlayOpacity);}}
 
-const panel=document.getElementById("panel");
-function esc(s){return (s==null?"":String(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-
+function shapChart(items){
+  const max=Math.max.apply(null,items.map(i=>Math.abs(i.contribution)).concat([0.001]));
+  return `<div class="shap">`+items.map(it=>{
+    const c=it.contribution, pct=Math.abs(c)/max*50, up=c>0;
+    return `<div class="shrow"><div class="shlabel">${esc(it.plain)}</div>
+      <div class="shbar"><div class="shfill ${up?"up":"down"}" style="width:${pct.toFixed(0)}%;${up?"left:50%":"right:50%"}"></div></div></div>`;
+  }).join("")+`</div><div class="shkey"><i class="up"></i>raises risk &nbsp; <i class="down"></i>lowers risk</div>`;
+}
 function showSpot(p){
-  clickedSpot=p;
-  if(lens!=="address"){renderLens();return;}
-  panel.innerHTML=`<h3>${esc(p.name)}</h3>
-    <span class="band ${BAND[p.band]||"b-low"}">${(p.band||"").toUpperCase()}</span>
-    <span class="tier">${esc(p.tier||"")} hotspot</span>
+  clicked={kind:"spot",p}; setLens("explore");
+  const items=(p.why||[]).map(w=>({plain:w.plain,contribution:w.contribution}));
+  panel.innerHTML=`<span class="backlink" onclick="clearClick()">← overview</span>
+    <h3>${esc(p.name)}</h3>
+    <div style="margin:4px 0 2px"><span class="band ${p.band}">${(p.band||"").toUpperCase()}</span><span class="tier">${esc(p.tier||"")} hotspot</span></div>
+    <h4>Why the model flags it</h4>${shapChart(items)}
     <div class="imagery">🛰️ ${esc(p.imagery)}</div>
-    <h4>Why the model flags it</h4>
-    <ul class="why">${(p.why||[]).map(w=>`<li>${esc(w)}</li>`).join("")||"<li>—</li>"}</ul>
-    <div class="score">relative score ${p.relative_score} · a ranking within the city, not a probability</div>`;
+    <div class="note">Relative score ${p.relative_score} — a ranking within the city, not a probability.</div>`;
 }
-function showEmpty(){
-  clickedSpot=null;
-  if(lens!=="address")return;
-  panel.innerHTML=`<p class="ph"><b>No reported flood point here.</b><br>The map has no record at this spot — that means <b>"not on record", not "safe"</b>. Click a coloured marker to see why it floods.</p>`;
+function showInference(latlng){
+  if(!grid)return; let best=null,bd=1e15;
+  for(const c of grid.cells){const d=L.latLng(c.lat,c.lng).distanceTo(latlng);if(d<bd){bd=d;best=c;}}
+  if(!best||bd>grid.step_m*1.6){clicked=null;panel.innerHTML=`<p class="ph"><b>Outside the mapped area.</b><br>Pick a point inside the city.</p>`;return;}
+  clicked={kind:"infer",latlng}; setLens("explore");
+  const items=best.top.map(([f,c])=>({plain:grid.labels[f][c>0?0:1],contribution:c}));
+  panel.innerHTML=`<span class="backlink" onclick="clearClick()">← overview</span>
+    <h3>This location</h3>
+    <div style="margin:4px 0 2px"><span class="band ${best.band}">${best.band.toUpperCase()}</span>
+      <span class="tier">${best.lat.toFixed(3)}, ${best.lng.toFixed(3)} · ~${grid.step_m} m patch</span></div>
+    <h4>What's driving the model here</h4>${shapChart(items)}
+    <div class="note">The model's read for this ~${grid.step_m} m patch — relative within the city, not a probability. No reported flood here means <b>"not on record", not "safe."</b></div>`;
 }
+function clearClick(){clicked=null;renderLens();}
+
+function reliabilityCard(){
+  const r=RELIABILITY[city]||{auc:0,level:"low"};
+  const txt=r.level==="low"?"coastal flooding isn't learned here — treat with caution":"holds up on a city it never trained on";
+  return `<div class="rel lvl-${r.level}"><div class="reldot"></div>
+    <div><b>Model reliability: ${r.level}</b> <span class="rsub">(${r.auc.toFixed(2)} on the unseen-city test)</span><br>
+    <span class="rsub">${txt} · <a href="EVALUATION.md" target="_blank">how it's measured</a></span></div></div>`;
+}
+async function forecastCard(){
+  const b=meta.bounds, lat=((b.south+b.north)/2).toFixed(3), lng=((b.west+b.east)/2).toFixed(3);
+  const evMax=Math.max.apply(null,(meta.events||[]).map(e=>e.peak_day_mm||0).concat([1]));
+  const el=document.getElementById("fc"); if(!el)return;
+  try{
+    const u=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=precipitation_sum&forecast_days=7&timezone=auto`;
+    const d=await (await fetch(u)).json();
+    const days=d.daily.precipitation_sum.map(x=>x==null?0:x);
+    const max=Math.max.apply(null,days), watch=max>=0.6*evMax, scale=Math.max(max,evMax);
+    const dn=["Su","Mo","Tu","We","Th","Fr","Sa"];
+    const bars=days.map((v,i)=>`<div class="fb ${v>=0.6*evMax?"hot":""}" style="height:${Math.max(3,Math.min(1,v/scale)*34)}px"></div>`).join("");
+    const labs=d.daily.time.map(t=>`<div class="fcday">${dn[new Date(t).getDay()]}</div>`).join("");
+    el.innerHTML=`<div class="fhead">Next 7 days<span class="pillstat ${watch?"watch":"clear"}">${watch?"⛆ watch":"clear"}</span></div>
+      <div class="fcbars" style="height:38px">${bars}</div><div class="fcbars">${labs}</div>
+      <div class="note">Up to <b>~${max.toFixed(0)} mm</b>/day forecast. Past flood events here peaked near <b>~${evMax.toFixed(0)} mm</b>. ${watch?"Rain is approaching flood-event levels — watch the severe spots.":"No flood-grade rain in the next week."} <span class="subtle">(city-centre forecast, near-term only)</span></div>`;
+  }catch(err){el.innerHTML=`<div class="note">Live forecast unavailable right now.</div>`;}
+}
+function wardCard(){
+  if(!wards||!wards.length)return "";
+  const max=Math.max.apply(null,wards.map(w=>w.at_risk).concat([1]));
+  const rows=wards.slice(0,6).map(w=>`<div class="wrow"><div class="wname" title="${esc(w.name)}">${esc(w.name)}</div>
+    <div class="wbar"><div class="wfill" style="width:${Math.round(w.at_risk/max*100)}%"></div></div>
+    <div class="wval">${(w.at_risk/1000).toFixed(0)}k</div></div>`).join("");
+  return `<div class="card"><b>Most people in high-risk zones</b>
+    <div class="note" style="margin:3px 0 8px">people in high + severe areas, by district (population × risk)</div>${rows}
+    <div class="note">Relative exposure ranking from a presence-only model + ~100 m population — not a count of who will flood. Districts are OSM-derived.</div></div>`;
+}
+function overview(){
+  panel.innerHTML=reliabilityCard()+`<div class="fc" id="fc"><div class="note">Loading forecast…</div></div>
+    <div class="card"><b>Explore the map</b><div class="note" style="margin-top:4px">Click <b>any point</b> for the model's read and what's driving it, or a <b>coloured hotspot</b> for a documented spot. Switch to <b>Route</b> to plan a trip.</div></div>`+wardCard();
+  forecastCard();
+}
+
 function renderLens(){
   document.querySelectorAll(".lens").forEach(t=>t.classList.toggle("active",t.dataset.lens===lens));
-  if(lens==="address"){clickedSpot?showSpot(clickedSpot):showEmpty();}
-  else if(lens==="route"){ routeInstructions(); } else {
-    panel.innerHTML=`<h3>Data — ${esc(city)}</h3><p class="ph">The same data, downloadable:</p>
-      <div class="dl"><a href="web/${city}/risk.png" download>risk overlay (PNG)</a>
-      <a href="web/${city}/hotspots.geojson" download>hotspots (GeoJSON)</a>
-      <a href="web/${city}/meta.json" download>meta (JSON)</a></div>
-      <div class="disc">⚠ Relative screening signal — not an actuarial flood model. No return periods, depths, or loss curves.</div>`;
-  }
+  if(lens==="explore"){ if(clicked&&clicked.kind==="spot")showSpot(clicked.p); else if(clicked&&clicked.kind==="infer")showInference(clicked.latlng); else overview(); }
+  else if(lens==="route"){ routeInstructions(); }
+  else { panel.innerHTML=`<h3>Data — ${esc(meta?meta.city:city)}</h3><p class="ph">The same data, downloadable:</p>
+    <div class="dl"><a href="web/${city}/risk.png" download>risk overlay (PNG)</a><a href="web/${city}/hotspots.geojson" download>hotspots (GeoJSON)</a>
+    <a href="web/${city}/grid.json" download>inference grid (JSON)</a><a href="web/${city}/meta.json" download>meta (JSON)</a></div>
+    <div class="disc">⚠ Relative screening signal — not an actuarial flood model. No return periods, depths, or loss curves.</div>`; }
 }
 document.querySelectorAll(".lens").forEach(t=>t.addEventListener("click",()=>{lens=t.dataset.lens;renderLens();}));
 document.getElementById("citySel").addEventListener("change",e=>loadCity(e.target.value));
 
-function onMapClick(e){ if(lens==="route"){ setRoutePoint(e.latlng); } else { showEmpty(); } }
-function ensureRouteGroup(){ if(!routeGroup) routeGroup=L.layerGroup().addTo(map); return routeGroup; }
-function clearRoute(){ routeA=null; routeB=null; if(routeGroup) routeGroup.clearLayers(); }
-function routeInstructions(){
-  panel.innerHTML=`<h3>Route</h3><p class="ph">Click your <b>start</b> on the map, then your <b>destination</b>. I'll draw the routes, flag the known flood spots you'd pass, and recommend the lower-risk one.</p>`;
-}
-function ptMarker(ll,color){ return L.circleMarker(ll,{radius:7,color:"#fff",weight:2,fillColor:color,fillOpacity:1}); }
-function setRoutePoint(ll){
-  ensureRouteGroup();
-  if(!routeA || (routeA && routeB)){ clearRoute(); routeA=ll; routeGroup.addLayer(ptMarker(ll,"#1565c0"));
-    if(lens==="route") panel.innerHTML=`<h3>Route</h3><p class="ph">Start set. Now click your <b>destination</b>.</p>`; }
-  else { routeB=ll; routeGroup.addLayer(ptMarker(ll,"#6a1b9a")); computeRoute(); }
-}
-async function computeRoute(){
-  if(lens==="route") panel.innerHTML=`<h3>Route</h3><p class="ph">Finding routes…</p>`;
-  try{
-    const u=`https://router.project-osrm.org/route/v1/driving/${routeA.lng},${routeA.lat};${routeB.lng},${routeB.lat}?overview=full&geometries=geojson&alternatives=true`;
-    const data=await (await fetch(u)).json();
-    if(!data.routes||!data.routes.length){ if(lens==="route") panel.innerHTML=`<h3>Route</h3><p class="ph">No driving route found between those points.</p>`; return; }
-    routeGroup.clearLayers();
-    routeGroup.addLayer(ptMarker(routeA,"#1565c0")); routeGroup.addLayer(ptMarker(routeB,"#6a1b9a"));
-    const scored=data.routes.map(r=>{
-      const latlngs=r.geometry.coordinates.map(c=>L.latLng(c[1],c[0]));
-      const spots=onRouteSpots(latlngs);
-      return {latlngs,spots,score:spots.reduce((a,s)=>a+SEVW[s.band||"low"],0),dist:r.distance,dur:r.duration};
-    }).sort((a,b)=>a.score-b.score||a.dur-b.dur);
-    scored.forEach((s,rank)=>routeGroup.addLayer(L.polyline(s.latlngs,{color:rank===0?"#2e7d32":"#9aa7b1",weight:rank===0?6:4,opacity:rank===0?0.95:0.55})));
-    renderRouteResults(scored);
-  }catch(err){ if(lens==="route") panel.innerHTML=`<h3>Route</h3><p class="ph">Routing service is unavailable right now (${esc(err.message)}). A production build would run its own routing engine.</p><p class="ph"><a href="#" onclick="clearRoute();routeInstructions();return false;">try again</a></p>`; }
-}
-function onRouteSpots(latlngs){
-  const out=[];
-  currentHotspots.forEach(f=>{
-    const c=f.geometry.coordinates, hl=L.latLng(c[1],c[0]);
-    let min=1e12; for(let k=0;k<latlngs.length;k+=2){ const d=hl.distanceTo(latlngs[k]); if(d<min) min=d; }
-    if(min<450) out.push(f.properties);
-  });
-  return out.sort((a,b)=>SEVW[b.band]-SEVW[a.band]);
-}
-function renderRouteResults(scored){
-  if(lens!=="route") return;
-  const fmt=s=>`${(s.dist/1000).toFixed(1)} km · ${Math.round(s.dur/60)} min`;
-  const opt=(s,rank)=>{
-    const names=s.spots.slice(0,3).map(x=>(x.name||"").split(",")[0]).join(", ");
-    const sub=s.spots.length?`passes ${s.spots.length} known flood spot${s.spots.length>1?"s":""}${names?": "+names:""}`:"no known flood spots on the way";
-    return `<div style="border:1px solid ${rank===0?"#2e7d32":"#e6ecf0"};border-radius:9px;padding:9px 10px;margin-bottom:7px;${rank===0?"box-shadow:0 0 0 2px #2e7d3222;":""}">
-      <b>${rank===0?"🛟 Lower-risk":"Alternative"}</b> — ${fmt(s)}<br>
-      <span style="font-size:12px;color:#51606b">${esc(sub)}</span></div>`;
-  };
-  panel.innerHTML=`<h3>Route options</h3>${scored.map(opt).join("")}
-    <p class="ph" style="margin-top:6px">"Lower-risk" = passes fewer / less-severe <b>known</b> flood points (within ~450 m of the route). Known points only — not every flood, and not live water. <a href="#" onclick="clearRoute();routeInstructions();return false;">clear</a></p>`;
-}
+function onMapClick(e){ if(lens==="route"){setRoutePoint(e.latlng);} else { showInference(e.latlng);} }
 
 function renderMonsoon(events){
-  monsoonEvents=events; monsoonIdx=0;
-  const scale=200;  // mm cap for bar height (absolute, so Mumbai reads taller than the others)
-  const bars=events.map((e,i)=>{
-    const mm=e.peak_day_mm||0, h=Math.max(4,Math.min(1,mm/scale)*46);
-    return `<div class="mcol" data-i="${i}"><div class="mbar" style="height:${h}px"></div><div class="myr">${e.date.slice(0,4)}</div></div>`;
-  }).join("");
+  monsoonEvents=events;monsoonIdx=0;const scale=200;
+  const bars=events.map((e,i)=>{const mm=e.peak_day_mm||0,h=Math.max(5,Math.min(1,mm/scale)*44);
+    return `<div class="mcol" data-i="${i}"><div class="mbar" style="height:${h}px"></div><div class="myr">${e.date.slice(0,4)}</div></div>`;}).join("");
   document.getElementById("events").innerHTML=
-    `<div class="mhead"><button class="mplay" id="mplay">▶</button><b>Rain on recorded flood events</b><span class="mcap" id="mcap"></span></div>
-     <div class="mrow">${bars}</div>
-     <div class="mnote">peak single-day rain · satellite city-average (under-reads local cloudbursts)</div>`;
+    `<div class="mhead"><button class="mplay" id="mplay">▶</button>Rain on recorded flood events<span class="mcap" id="mcap"></span></div>
+     <div class="mrow">${bars}</div><div class="mnote">peak single-day rain · satellite city-average (under-reads local cloudbursts)</div>`;
   document.getElementById("mplay").addEventListener("click",toggleMonsoon);
   document.querySelectorAll("#events .mcol").forEach(c=>c.addEventListener("click",()=>{stopMonsoon();showMonsoon(+c.dataset.i);}));
   showMonsoon(0);
 }
-function showMonsoon(i){
-  monsoonIdx=i; const e=monsoonEvents[i]; if(!e)return;
+function showMonsoon(i){monsoonIdx=i;const e=monsoonEvents[i];if(!e)return;
   document.querySelectorAll("#events .mcol").forEach((c,j)=>c.classList.toggle("on",j===i));
-  document.getElementById("mcap").textContent=`${e.date.slice(0,4)}: ~${e.peak_day_mm==null?"?":e.peak_day_mm} mm on the wettest day`;
-}
+  document.getElementById("mcap").textContent=`${e.date.slice(0,4)}: ~${e.peak_day_mm==null?"?":e.peak_day_mm} mm wettest day`;}
 function stopMonsoon(){if(monsoonTimer){clearInterval(monsoonTimer);monsoonTimer=null;}const b=document.getElementById("mplay");if(b)b.textContent="▶";}
-function toggleMonsoon(){
-  if(monsoonTimer){stopMonsoon();return;}
-  const b=document.getElementById("mplay");if(b)b.textContent="⏸";
-  monsoonTimer=setInterval(()=>showMonsoon((monsoonIdx+1)%monsoonEvents.length),1100);
+function toggleMonsoon(){if(monsoonTimer){stopMonsoon();return;}const b=document.getElementById("mplay");if(b)b.textContent="⏸";
+  monsoonTimer=setInterval(()=>showMonsoon((monsoonIdx+1)%monsoonEvents.length),1100);}
+
+function ensureRouteGroup(){if(!routeGroup)routeGroup=L.layerGroup().addTo(map);return routeGroup;}
+function clearRoute(){routeA=null;routeB=null;if(routeGroup)routeGroup.clearLayers();}
+function routeInstructions(){panel.innerHTML=`<h3>Plan a route</h3><p class="ph">Click your <b>start</b> on the map, then your <b>destination</b>. I'll draw the routes, flag the known flood spots you'd pass, and recommend the lower-risk one.</p>`;}
+function ptMarker(ll,color){return L.circleMarker(ll,{radius:7,color:"#fff",weight:2,fillColor:color,fillOpacity:1});}
+function setRoutePoint(ll){ensureRouteGroup();
+  if(!routeA||(routeA&&routeB)){clearRoute();routeA=ll;routeGroup.addLayer(ptMarker(ll,"#1565c0"));
+    if(lens==="route")panel.innerHTML=`<h3>Plan a route</h3><p class="ph">Start set. Now click your <b>destination</b>.</p>`;}
+  else{routeB=ll;routeGroup.addLayer(ptMarker(ll,"#6a1b9a"));computeRoute();}}
+async function computeRoute(){
+  if(lens==="route")panel.innerHTML=`<h3>Plan a route</h3><p class="ph">Finding routes…</p>`;
+  try{
+    const u=`https://router.project-osrm.org/route/v1/driving/${routeA.lng},${routeA.lat};${routeB.lng},${routeB.lat}?overview=full&geometries=geojson&alternatives=true`;
+    const data=await (await fetch(u)).json();
+    if(!data.routes||!data.routes.length){if(lens==="route")panel.innerHTML=`<h3>Plan a route</h3><p class="ph">No driving route found.</p>`;return;}
+    routeGroup.clearLayers();routeGroup.addLayer(ptMarker(routeA,"#1565c0"));routeGroup.addLayer(ptMarker(routeB,"#6a1b9a"));
+    const scored=data.routes.map(r=>{const ll=r.geometry.coordinates.map(c=>L.latLng(c[1],c[0]));const sp=onRouteSpots(ll);
+      return {ll,sp,score:sp.reduce((a,s)=>a+SEVW[s.band||"low"],0),dist:r.distance,dur:r.duration};}).sort((a,b)=>a.score-b.score||a.dur-b.dur);
+    scored.forEach((s,rank)=>routeGroup.addLayer(L.polyline(s.ll,{color:rank===0?"#27ae60":"#9aa7b1",weight:rank===0?6:4,opacity:rank===0?.95:.55})));
+    renderRouteResults(scored);
+  }catch(err){if(lens==="route")panel.innerHTML=`<h3>Plan a route</h3><p class="ph">Routing service unavailable (${esc(err.message)}). A production build would run its own engine. <a href="#" onclick="clearRoute();routeInstructions();return false;">try again</a></p>`;}
 }
+function onRouteSpots(ll){const out=[];currentHotspots.forEach(f=>{const c=f.geometry.coordinates,hl=L.latLng(c[1],c[0]);
+  let m=1e12;for(let k=0;k<ll.length;k+=2){const d=hl.distanceTo(ll[k]);if(d<m)m=d;}if(m<450)out.push(f.properties);});
+  return out.sort((a,b)=>SEVW[b.band]-SEVW[a.band]);}
+function renderRouteResults(scored){if(lens!=="route")return;const fmt=s=>`${(s.dist/1000).toFixed(1)} km · ${Math.round(s.dur/60)} min`;
+  const opt=(s,rank)=>{const names=s.sp.slice(0,3).map(x=>(x.name||"").split(",")[0]).join(", ");
+    const sub=s.sp.length?`passes ${s.sp.length} known flood spot${s.sp.length>1?"s":""}${names?": "+names:""}`:"no known flood spots on the way";
+    return `<div class="opt ${rank===0?"best":""}"><div class="otop"><span>${rank===0?"🛟 Lower-risk":"Alternative"}</span><span>${fmt(s)}</span></div><div class="ometa">${esc(sub)}</div></div>`;};
+  panel.innerHTML=`<h3>Route options</h3>${scored.map(opt).join("")}
+    <div class="note">"Lower-risk" = fewer / less-severe <b>known</b> flood points within ~450 m. Known points only — not every flood, not live water. <a href="#" onclick="clearRoute();routeInstructions();return false;">clear</a></div>`;}
 
 async function loadCity(slug){
-  city=slug; clickedSpot=null; stopMonsoon();
+  city=slug;clicked=null;stopMonsoon();
   panel.innerHTML='<p class="ph">Loading…</p>';
   if(overlay){map.removeLayer(overlay);overlay=null;}
   if(hotspotLayer){map.removeLayer(hotspotLayer);hotspotLayer=null;}
+  if(routeGroup)routeGroup.clearLayers(); routeA=null;routeB=null;
   try{
-    const meta=await (await fetch(`web/${slug}/meta.json?v=`+Date.now())).json();
+    meta=await (await fetch(`web/${slug}/meta.json?v=`+Date.now())).json();
+    grid=await (await fetch(`web/${slug}/grid.json?v=`+Date.now())).json();
     const b=meta.bounds, bounds=[[b.south,b.west],[b.north,b.east]];
     map.setView([(b.south+b.north)/2,(b.west+b.east)/2],11);
-    const fit=()=>{map.invalidateSize(true); if(map.getSize().y>60) map.fitBounds(bounds);};
-    setTimeout(fit,250); window.addEventListener("load",()=>setTimeout(fit,120));
-    const colors={}; meta.bands.forEach(x=>colors[x.name]=x.color);
-
+    const fit=()=>{map.invalidateSize(true);if(map.getSize().y>60)map.fitBounds(bounds);};
+    setTimeout(fit,250);window.addEventListener("load",()=>setTimeout(fit,120));
     overlay=L.imageOverlay(`web/${slug}/risk.png?v=`+Date.now(),bounds,{opacity:overlayOpacity}).addTo(map);
-
-    const hs=await (await fetch(`web/${slug}/hotspots.geojson?v=`+Date.now())).json();
-    hotspotLayer=L.geoJSON(hs,{pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:7,weight:2,color:"#fff",
-        fillColor:colors[f.properties.band]||"#777",fillOpacity:0.95}),
+    hotspots=await (await fetch(`web/${slug}/hotspots.geojson?v=`+Date.now())).json();
+    currentHotspots=hotspots.features;
+    hotspotLayer=L.geoJSON(hotspots,{pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:BAND_R[f.properties.band]||7,weight:2,color:"#fff",
+        fillColor:BAND_COL[f.properties.band]||"#777",fillOpacity:.95}),
       onEachFeature:(f,layer)=>layer.on("click",e=>{L.DomEvent.stopPropagation(e);showSpot(f.properties);})
     }).addTo(map);
-    currentHotspots=hs.features; clearRoute();
-
+    if(drainLayer){map.removeLayer(drainLayer);drainLayer=null;}
+    try{const dr=await (await fetch(`web/${slug}/drains.geojson?v=`+Date.now())).json();
+      drainLayer=L.geoJSON(dr,{style:f=>f.properties.major?{color:"#15627a",weight:3,opacity:.9}:{color:"#6aa3c0",weight:1.4,opacity:.6},
+        onEachFeature:(f,l)=>{if(f.properties.name)l.bindTooltip(f.properties.name,{sticky:true});}});
+      applyDrains();
+    }catch(e){}
+    wards=null; try{wards=(await (await fetch(`web/${slug}/wards.json?v=`+Date.now())).json()).wards;}catch(e){}
     renderMonsoon(meta.events);
     document.querySelector("#caveats ul").innerHTML=meta.caveats.map(c=>`<li>${esc(c)}</li>`).join("");
-    if(lens==="address") showEmpty(); else renderLens();
+    renderLens();
   }catch(err){panel.innerHTML=`<p class="ph">Couldn't load ${esc(slug)}: ${esc(err.message)}</p>`;}
 }
-
 loadCity("delhi");
 </script>
 </body>
